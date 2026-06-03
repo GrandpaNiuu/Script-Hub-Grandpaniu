@@ -19,6 +19,8 @@ const textFiles = [
 const conflictMarker = "<" + "<<<<<<";
 const mainInstallUrl = "shadowrocket://install?module=https%3A%2F%2Fraw.githubusercontent.com%2FGrandpaNiuu%2FScript-Hub-Grandpaniu%2Fmain%2Fmodules%2Fscript-hub-grandpaniu.sgmodule";
 const webInstallUrl = "https://raw.githack.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/docs/grandpa-niu.html";
+const toolSiteUrl = "https://raw.githack.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/docs/index.html";
+const pagesUrl = "https://grandpaniuu.github.io/Script-Hub-Grandpaniu/";
 
 test("仓库文档没有乱码、冲突标记或截断链接", async () => {
   for (const file of textFiles) {
@@ -45,26 +47,32 @@ test("Pages workflow 会在未启用 Pages 时跳过部署并提示设置", asyn
   assert.equal(workflow.includes("enablement: true"), false);
 });
 
-test("README 面向小白提供两个清晰安装入口", async () => {
+test("README 面向小白提供安装入口和工具网站入口", async () => {
   const readme = await readFile("README.md", "utf8");
 
   assert.equal(readme.includes("[一键安装到 Shadowrocket](" + mainInstallUrl + ")"), true);
   assert.equal(readme.includes("[打开安装网页](" + webInstallUrl + ")"), true);
+  assert.equal(readme.includes("[打开完整工具网站](" + toolSiteUrl + ")"), true);
+  assert.equal(readme.includes(pagesUrl), true);
   assert.equal(readme.includes("复制到 Safari 地址栏打开"), false);
   assert.equal(readme.includes("把下面这一整行复制"), false);
 
   const mainInstallMatches = readme.match(new RegExp(escapeRegExp(mainInstallUrl), "g")) ?? [];
   const webInstallMatches = readme.match(new RegExp(escapeRegExp(webInstallUrl), "g")) ?? [];
+  const toolSiteMatches = readme.match(new RegExp(escapeRegExp(toolSiteUrl), "g")) ?? [];
   assert.equal(mainInstallMatches.length, 1, "README 不应重复出现主安装入口");
   assert.equal(webInstallMatches.length, 1, "README 不应重复出现安装网页入口");
+  assert.equal(toolSiteMatches.length, 1, "README 不应重复出现工具网站入口");
 });
 
-test("网站首页提供直接安装到 Shadowrocket 的按钮", async () => {
+test("网站首页提供直接安装到 Shadowrocket 的按钮和模块库兜底数据", async () => {
   const index = await readFile("docs/index.html", "utf8");
   assert.equal(index.includes("id=\"install-main\""), true);
   assert.equal(index.includes("一键安装到 Shadowrocket"), true);
   assert.equal(index.includes("onclick=\"return openShadowrocket(this.href)\""), true);
   assert.equal(index.includes("if (url) openShadowrocket(shadowrocketInstallUrl(url));"), true);
+  assert.equal(index.includes("FALLBACK_MODULES"), true);
+  assert.equal(index.includes("外部模块库加载失败，已使用内置兜底列表"), true);
 });
 
 function escapeRegExp(value) {
