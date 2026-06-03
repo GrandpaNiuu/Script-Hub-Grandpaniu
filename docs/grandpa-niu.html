@@ -15,14 +15,16 @@
   <main>
     <h1>Grandpa Niu 专属导入</h1>
     <p>点击按钮导入 Script Hub Grandpaniu 增强模块。</p>
-    <a id="install" href="#">一键导入 Shadowrocket</a>
+    <a id="install" href="shadowrocket://install?module=https%3A%2F%2Fraw.githubusercontent.com%2FGrandpaNiuu%2FScript-Hub-Grandpaniu%2Fmain%2Fmodules%2Fscript-hub-grandpaniu.sgmodule" onclick="return openShadowrocket()">一键导入 Shadowrocket</a>
     <code id="url"></code>
   </main>
   <script>
-    const moduleUrl = "https://raw.githubusercontent.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/modules/script-hub-grandpaniu.sgmodule";
-    const installUrl = "shadowrocket://install?module=" + encodeURIComponent(moduleUrl);
-    document.getElementById("install").href = installUrl;
+    const installUrl = "shadowrocket://install?module=https%3A%2F%2Fraw.githubusercontent.com%2FGrandpaNiuu%2FScript-Hub-Grandpaniu%2Fmain%2Fmodules%2Fscript-hub-grandpaniu.sgmodule";
     document.getElementById("url").textContent = installUrl;
+    function openShadowrocket() {
+      location.href = installUrl;
+      return false;
+    }
   </script>
 </body>
 </html>

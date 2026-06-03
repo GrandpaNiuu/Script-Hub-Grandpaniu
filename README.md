@@ -1,63 +1,62 @@
 # Script-Hub-Grandpaniu
 
-中文化的 Script Hub 增强模块项目，用来把其他工具的模块、插件或 manifest 转成 Shadowrocket（小火箭）可导入的安装入口。
+给 Shadowrocket 用的 Script Hub 增强模块。
 
-已获得 Script Hub 上游维护者允许继续开发：  
-https://github.com/Script-Hub-Org/Script-Hub/issues/56
+它可以帮助你把 Loon、Surge、Quantumult X 等工具里的模块/插件链接，转换成 Shadowrocket 可以安装的模块入口。
 
-## 一键导入
+## 只看这里
 
-[![导入增强模块](https://img.shields.io/badge/Grandpa%20Niu-直接安装到%20Shadowrocket-22c55e?style=for-the-badge)](shadowrocket://install?module=https%3A%2F%2Fraw.githubusercontent.com%2FGrandpaNiuu%2FScript-Hub-Grandpaniu%2Fmain%2Fmodules%2Fscript-hub-grandpaniu.sgmodule)
+### 主安装入口
 
-如果 GitHub 页面不允许直接打开 `shadowrocket://`，请复制下面的安装入口到 Safari 或 Shadowrocket 中打开：
+把下面这一整行复制到 Safari 地址栏打开：
 
 ```text
 shadowrocket://install?module=https%3A%2F%2Fraw.githubusercontent.com%2FGrandpaNiuu%2FScript-Hub-Grandpaniu%2Fmain%2Fmodules%2Fscript-hub-grandpaniu.sgmodule
 ```
 
-模块原始地址：
+打开后，Shadowrocket 会弹出安装提示，确认安装即可。
+
+### 安装模块网页入口
+
+不会复制链接的话，打开这个网页：
 
 ```text
-https://raw.githubusercontent.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/modules/script-hub-grandpaniu.sgmodule
+https://raw.githack.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/docs/grandpa-niu.html
 ```
 
-## 网站
-
-网站文件在 `docs/`。正式站点使用 GitHub Pages；如果 Pages 尚未启用，也可以先用备用镜像打开。
-
-正式网站入口：
+第一次打开会看到 RawGithack 的确认页。点 `Open the page`，进入页面后点：
 
 ```text
-https://grandpaniuu.github.io/Script-Hub-Grandpaniu/
+一键导入 Shadowrocket
 ```
 
-Grandpa Niu 专属导入页：
+### 工具网站入口
 
-```text
-https://grandpaniuu.github.io/Script-Hub-Grandpaniu/grandpa-niu.html
-```
-
-备用镜像入口：
+这个页面用于查看模块库、粘贴 URL、转换模块：
 
 ```text
 https://raw.githack.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/docs/index.html
 ```
 
-说明：RawGithack 首次打开会出现确认页，点击 `Open the page` 后进入工具页，页面顶部有“一键安装到 Shadowrocket”按钮。
+## GitHub Pages 入口
 
-网站提供：
+正式网站地址：
 
-- 模块库：展示当前可导入的公开模块。
-- URL 导入：粘贴任意 `.sgmodule`、`.module`、`.plugin`、`.conf` 链接，一键跳转到 Shadowrocket。
-- 内容分析：粘贴模块内容，分析 `General`、`Header Rewrite`、`URL Rewrite`、`Body Rewrite`、`Script`、`MITM` 等段落。
-- 转换输出：生成 Shadowrocket 模块文本，方便复制或保存。
-- Grandpa Niu 专属链接：`docs/grandpa-niu.html`。
+```text
+https://grandpaniuu.github.io/Script-Hub-Grandpaniu/
+```
 
-说明：仓库不再使用 GitHub Actions 部署 Pages，因为当前仓库权限会导致 `Resource not accessible`。保留失败 workflow 只会反复红叉。
+如果这里显示 404，说明仓库 Pages 还没有启用。进入仓库：
 
-## 当前支持的模块结构
+```text
+Settings -> Pages -> Source 选择 GitHub Actions
+```
 
-转换器会识别和保留这些关键段：
+然后到 `Actions` 手动运行 `Deploy Pages`。如果你只是想安装模块，不需要管这个 404，直接用上面的两个安装入口即可。
+
+## 支持内容
+
+模块转换会识别并保留这些段落：
 
 - `General`
 - `Header Rewrite`
@@ -65,11 +64,6 @@ https://raw.githack.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/docs/index.html
 - `Body Rewrite`
 - `Script`
 - `MITM`
-- `Rule`
-- `Host`
-- `Map Local`
-
-## Script-Hub 官方脚本接入
 
 增强模块引用 Script-Hub 官方脚本地址，不内嵌官方源码：
 
@@ -78,33 +72,15 @@ https://raw.githack.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/docs/index.html
 - `rule-parser.js`
 - `script-converter.js`
 
-模块还加入了 Kelee / PluginHub 页面中的常见导入链接改写：
+## 授权说明
 
-- Quantumult X rewrite 链接 -> Shadowrocket 模块
-- Surge `.sgmodule` / `.module` 链接 -> Shadowrocket 模块
-- Loon `.plugin` / `.lpx` 链接 -> Shadowrocket 模块
+本项目已获得 Script Hub 上游维护者允许继续开发：
 
-同时加入：
+https://github.com/Script-Hub-Org/Script-Hub/issues/56
 
-```text
-force-http-engine-hosts = %APPEND% script.hub, *.script.hub
-```
+本项目是独立增强工具，不是 Script Hub 官方项目，也不复制、内置或再分发 Script Hub 源码、私有 API、付费内容或不可公开分发的第三方资源。
 
-## CLI
-
-把外部模块 URL 转成小火箭安装入口：
-
-```bash
-node src/cli.js enhance https://example.com/demo.sgmodule
-```
-
-递归扫描本地示例并输出安装 URL：
-
-```bash
-node src/cli.js examples --recursive \
-  --source-url https://example.com/modules/ \
-  --format url
-```
+## 开发者命令
 
 运行测试：
 
@@ -112,22 +88,8 @@ node src/cli.js examples --recursive \
 npm test
 ```
 
-## 项目结构
+把外部模块 URL 转成 Shadowrocket 安装入口：
 
-- `docs/index.html`：模块导入与转换网站
-- `docs/redirect.html`：HTTPS 到 `shadowrocket://` 的跳转桥
-- `docs/grandpa-niu.html`：Grandpa Niu 专属导入页
-- `docs/data/modules.json`：公开模块 URL 列表
-- `modules/script-hub-grandpaniu.sgmodule`：Shadowrocket 增强模块
-- `scripts/script-hub-grandpaniu-enhance.js`：增强模块运行脚本
-- `src/module-parser.js`：模块段落解析与转换
-- `src/recognizer.js`：外部模块/插件识别
-- `src/converter.js`：Shadowrocket 安装入口生成
-- `tests/`：自动化测试
-
-## 维护规则
-
-- 只收录公开 URL，不复制第三方模块内容。
-- 第三方模块可用性、安全性和合法性请自行判断。
-- 不声称本项目是 Script Hub 官方项目。
-- 授权和边界记录见 `docs/authorization.md`。
+```bash
+node src/cli.js enhance https://example.com/demo.sgmodule
+```

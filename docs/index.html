@@ -48,7 +48,7 @@
       <h1>Script Hub Grandpaniu</h1>
       <p>模块导入、模块分析、Shadowrocket 转换工具。</p>
       <div class="hero-actions">
-        <a class="btn" id="install-main" href="#">一键安装到 Shadowrocket</a>
+        <a class="btn" id="install-main" href="shadowrocket://install?module=https%3A%2F%2Fraw.githubusercontent.com%2FGrandpaNiuu%2FScript-Hub-Grandpaniu%2Fmain%2Fmodules%2Fscript-hub-grandpaniu.sgmodule" onclick="return openShadowrocket(this.href)">一键安装到 Shadowrocket</a>
         <a class="btn secondary" href="https://raw.githubusercontent.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/modules/script-hub-grandpaniu.sgmodule">查看模块原始文件</a>
       </div>
     </div>
@@ -111,6 +111,10 @@
     function shadowrocketInstallUrl(url) {
       return "shadowrocket://install?module=" + encodeURIComponent(url);
     }
+    function openShadowrocket(url) {
+      location.href = url;
+      return false;
+    }
     function redirectUrl(url) {
       return pageBase + "redirect.html?url=" + encodeURIComponent(shadowrocketInstallUrl(url));
     }
@@ -139,7 +143,7 @@
           <p>${escapeHtml(item.description || "")}</p>
           <code>${escapeHtml(item.url)}</code>
           <div class="actions">
-            <a class="btn" href="${redirectUrl(item.url)}">一键导入</a>
+            <a class="btn" href="${shadowrocketInstallUrl(item.url)}" onclick="return openShadowrocket(this.href)">一键导入</a>
             <a class="btn secondary" href="${escapeHtml(item.url)}">查看原始文件</a>
           </div>
         </article>
@@ -200,14 +204,17 @@
       return output;
     }
 
-    document.getElementById("install-main").href = shadowrocketInstallUrl(selfModuleUrl);
     document.getElementById("install-self").href = shadowrocketInstallUrl(selfModuleUrl);
+    document.getElementById("install-self").addEventListener("click", event => {
+      event.preventDefault();
+      openShadowrocket(event.currentTarget.href);
+    });
     document.getElementById("search").addEventListener("input", renderCatalog);
     document.getElementById("refresh").addEventListener("click", loadCatalog);
     document.getElementById("custom-url").addEventListener("input", updateCustomUrl);
     document.getElementById("custom-install").addEventListener("click", () => {
       const url = document.getElementById("custom-url").value.trim();
-      if (url) location.href = shadowrocketInstallUrl(url);
+      if (url) openShadowrocket(shadowrocketInstallUrl(url));
     });
     document.getElementById("custom-copy").addEventListener("click", async () => {
       const text = updateCustomUrl();
