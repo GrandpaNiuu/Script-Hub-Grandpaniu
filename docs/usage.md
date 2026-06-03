@@ -5,7 +5,7 @@
 推荐优先使用网页：
 
 ```text
-https://grandpaniu.github.io/Script-Hub-Grandpaniu/
+https://grandpaniuu.github.io/Script-Hub-Grandpaniu/
 ```
 
 网页会从 `docs/data/modules.json` 读取模块列表，并通过 `docs/redirect.html` 跳转到：
