@@ -102,6 +102,7 @@ npm test
 
 - `docs/index.html`：模块导入与转换网站
 - `docs/redirect.html`：HTTPS 到 `shadowrocket://` 的跳转桥
+- `docs/grandpa-niu.html`：Grandpa Niu 专属导入页
 - `docs/data/modules.json`：公开模块 URL 列表
 - `modules/script-hub-grandpaniu.sgmodule`：Shadowrocket 增强模块
 - `scripts/script-hub-grandpaniu-enhance.js`：增强模块运行脚本
