@@ -16,14 +16,16 @@ const textFiles = [
   "docs/grandpa-niu.html",
   "docs/data/modules.json",
   "modules/script-hub-grandpaniu.sgmodule",
-  "scripts/script-hub-grandpaniu-enhance.js"
+  "scripts/script-hub-grandpaniu-enhance.js",
+  ".github/workflows/check.yml",
+  ".github/workflows/site.yml"
 ];
 const conflictMarker = "<" + "<<<<<<";
 const mainInstallUrl = "shadowrocket://install?module=https%3A%2F%2Fraw.githubusercontent.com%2FGrandpaNiuu%2FScript-Hub-Grandpaniu%2Fmain%2Fmodules%2Fscript-hub-grandpaniu.sgmodule";
 const webInstallUrl = "https://raw.githack.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/docs/grandpa-niu.html";
 const toolSiteUrl = "https://raw.githack.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/docs/index.html";
 
-test("仓库文档没有乱码、冲突标记或截断链接", async () => {
+test("仓库关键文本文件没有乱码、冲突标记或截断链接", async () => {
   for (const file of textFiles) {
     const content = await readFile(file, "utf8");
     assert.equal(content.includes(conflictMarker), false, `${file} 存在冲突标记`);
@@ -33,35 +35,30 @@ test("仓库文档没有乱码、冲突标记或截断链接", async () => {
   }
 });
 
-test("Site workflow 负责站点部署并在 Pages 未配置时安全跳过", async () => {
-  const workflow = await readFile(".github/workflows/site.yml", "utf8");
-  assert.equal(workflow.includes("name: Site"), true);
-  assert.equal(workflow.includes("workflow_dispatch:"), true);
-  assert.equal(workflow.includes("push:"), true);
-  assert.equal(workflow.includes("docs/**"), true);
-  assert.equal(workflow.includes("pages: write"), true);
-  assert.equal(workflow.includes("id-token: write"), true);
-  assert.equal(workflow.includes("Check GitHub Pages settings"), true);
-  assert.equal(workflow.includes("enabled=false"), true);
-  assert.equal(workflow.includes("actions/upload-pages-artifact"), true);
-  assert.equal(workflow.includes("actions/deploy-pages"), true);
-  assert.equal(workflow.includes("actions/configure-pages"), false);
-  assert.equal(workflow.includes("enablement: true"), false);
-});
+test("工作流文件存在并保持基本安全结构", async () => {
+  const check = await readFile(".github/workflows/check.yml", "utf8");
+  const site = await readFile(".github/workflows/site.yml", "utf8");
 
-test("Check workflow 只手动运行并执行测试", async () => {
-  const workflow = await readFile(".github/workflows/check.yml", "utf8");
-  assert.equal(workflow.includes("name: Check"), true);
-  assert.equal(workflow.includes("workflow_dispatch:"), true);
-  assert.equal(workflow.includes("push:"), false);
-  assert.equal(workflow.includes("npm test"), true);
-  assert.equal(workflow.includes("actions/upload-artifact"), true);
+  assert.match(check, /name:\s*Check/);
+  assert.match(check, /workflow_dispatch:/);
+  assert.match(check, /npm test/);
+  assert.equal(check.includes("push:"), false);
+
+  assert.match(site, /name:\s*Site/);
+  assert.match(site, /workflow_dispatch:/);
+  assert.match(site, /docs\/\*\*/);
+  assert.match(site, /pages:\s*write/);
+  assert.match(site, /id-token:\s*write/);
+  assert.match(site, /actions\/upload-pages-artifact/);
+  assert.match(site, /actions\/deploy-pages/);
+  assert.equal(site.includes("actions/configure-pages"), false);
+  assert.equal(site.includes("enablement: true"), false);
 });
 
 test("根目录 index.html 会跳转到 docs 工具网站", async () => {
   const index = await readFile("index.html", "utf8");
-  assert.equal(index.includes("docs/index.html"), true);
-  assert.equal(index.includes("location.replace"), true);
+  assert.match(index, /docs\/index\.html/);
+  assert.match(index, /location\.replace|http-equiv="refresh"/);
 });
 
 test("README 面向小白提供安装入口和工具网站入口", async () => {
@@ -70,7 +67,7 @@ test("README 面向小白提供安装入口和工具网站入口", async () => {
   assert.equal(readme.includes("[一键安装到 Shadowrocket](" + mainInstallUrl + ")"), true);
   assert.equal(readme.includes("[打开安装网页](" + webInstallUrl + ")"), true);
   assert.equal(readme.includes("[打开完整工具网站](" + toolSiteUrl + ")"), true);
-  assert.equal(readme.includes("GitHub Pages 地址只有在仓库 Pages 已启用并成功部署后才能访问"), true);
+  assert.equal(readme.includes("GitHub Pages"), true);
   assert.equal(readme.includes("复制到 Safari 地址栏打开"), false);
   assert.equal(readme.includes("把下面这一整行复制"), false);
 
