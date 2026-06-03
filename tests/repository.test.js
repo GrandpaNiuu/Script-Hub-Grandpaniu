@@ -17,6 +17,8 @@ const textFiles = [
   "scripts/script-hub-grandpaniu-enhance.js"
 ];
 const conflictMarker = "<" + "<<<<<<";
+const mainInstallUrl = "shadowrocket://install?module=https%3A%2F%2Fraw.githubusercontent.com%2FGrandpaNiuu%2FScript-Hub-Grandpaniu%2Fmain%2Fmodules%2Fscript-hub-grandpaniu.sgmodule";
+const webInstallUrl = "https://raw.githack.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/docs/grandpa-niu.html";
 
 test("仓库文档没有乱码、冲突标记或截断链接", async () => {
   for (const file of textFiles) {
@@ -38,15 +40,18 @@ test("仓库包含 GitHub Pages Actions 部署 workflow", async () => {
   assert.equal(workflow.includes("actions/deploy-pages"), true);
 });
 
-test("README 使用直接安装入口、备用镜像和正确的 GitHub Pages 地址", async () => {
+test("README 面向小白提供两个清晰安装入口", async () => {
   const readme = await readFile("README.md", "utf8");
-  assert.equal(readme.includes("主安装入口"), true);
-  assert.equal(readme.includes("安装模块网页入口"), true);
-  assert.equal(readme.includes("shadowrocket://install?module=https%3A%2F%2Fraw.githubusercontent.com%2FGrandpaNiuu%2FScript-Hub-Grandpaniu%2Fmain%2Fmodules%2Fscript-hub-grandpaniu.sgmodule"), true);
-  assert.equal(readme.includes("https://raw.githack.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/docs/grandpa-niu.html"), true);
-  assert.equal(readme.includes("https://raw.githack.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/docs/index.html"), true);
-  assert.equal(readme.includes("https://grandpaniuu.github.io/Script-Hub-Grandpaniu/"), true);
-  assert.equal(readme.includes("https://grandpaniu.github.io/Script-Hub-Grandpaniu/"), false);
+
+  assert.equal(readme.includes("[一键安装到 Shadowrocket](" + mainInstallUrl + ")"), true);
+  assert.equal(readme.includes("[打开安装网页](" + webInstallUrl + ")"), true);
+  assert.equal(readme.includes("复制到 Safari 地址栏打开"), false);
+  assert.equal(readme.includes("把下面这一整行复制"), false);
+
+  const mainInstallMatches = readme.match(new RegExp(escapeRegExp(mainInstallUrl), "g")) ?? [];
+  const webInstallMatches = readme.match(new RegExp(escapeRegExp(webInstallUrl), "g")) ?? [];
+  assert.equal(mainInstallMatches.length, 1, "README 不应重复出现主安装入口");
+  assert.equal(webInstallMatches.length, 1, "README 不应重复出现安装网页入口");
 });
 
 test("网站首页提供直接安装到 Shadowrocket 的按钮", async () => {
@@ -56,3 +61,7 @@ test("网站首页提供直接安装到 Shadowrocket 的按钮", async () => {
   assert.equal(index.includes("onclick=\"return openShadowrocket(this.href)\""), true);
   assert.equal(index.includes("if (url) openShadowrocket(shadowrocketInstallUrl(url));"), true);
 });
+
+function escapeRegExp(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
