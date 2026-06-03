@@ -26,7 +26,7 @@ http-response ^https?:\/\/(?:hub|pluginhub)\.kelee\.one\/.* surge:\/\/\/install-
 http-response ^https?:\/\/(?:hub|pluginhub)\.kelee\.one\/.* loon:\/\/import\?plugin=(https?:\/\/[^"'\\s&<>]+?\.(?:plugin|lpx)) shadowrocket://install?module=http://script.hub/file/_start_/$1/_end_/auto-loon.sgmodule%3Ftype%3Dloon-plugin%26target%3Dshadowrocket-module%26del%3Dtrue%26jqEnabled%3Dtrue
 
 # Kelee Loon 插件中心 lpx 链接 -> Shadowrocket 模块
-http-response ^https?:\/\/(?:hub|pluginhub)\.kelee\.one\/.* (https?:\/\/kelee\.one\/Tool\/Loon\/Lpx\/([^"'\\s&<>]+?)\.lpx) shadowrocket://install?module=http://script.hub/file/_start_/$1/_end_/$2.sgmodule%3Ftype%3Dloon-plugin%26target%3Dshadowrocket-module%26del%3Dtrue%26jqEnabled%3Dtrue
+http-response ^https?:\/\/(?:hub|pluginhub)\.kelee\.one\/.* (https?:\/\/kelee\.one\/Tool\/Loon\/Lpx\/[^"'\\s&<>]+?\.lpx) shadowrocket://install?module=http://script.hub/file/_start_/$1/_end_/auto-loon.sgmodule%3Ftype%3Dloon-plugin%26target%3Dshadowrocket-module%26del%3Dtrue%26jqEnabled%3Dtrue
 
 [Body Rewrite]
 # 保留响应体改写段，网站转换器会完整识别并保留 Body Rewrite 内容。
@@ -40,7 +40,12 @@ Script Hub: 规则集转换 = type=http-request, pattern=^https?:\/\/script\.hub
 Script Hub: 脚本转换 = type=http-request, pattern=^https?:\/\/script\.hub\/convert\/, script-path=https://raw.githubusercontent.com/Script-Hub-Org/Script-Hub/main/script-converter.js, timeout=300
 
 # Grandpa Niu 本地增强入口
-Grandpaniu: 链接分析 = type=http-request, pattern=^https?:\/\/grandpaniu\.script-hub\.local\/install, requires-body=0, script-path=https://raw.githubusercontent.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/scripts/script-hub-grandpaniu-enhance.js, timeout=30
+# /install：短链接分析，适合 ?url=xxx&convertType=surge-module
+# /analyze：完整内容分析，读取请求 body，适合长模块内容
+# /health：检查本地增强脚本是否正常响应
+Grandpaniu: 链接分析 = type=http-request, pattern=^https?:\/\/grandpaniu\.script-hub\.local\/install(?:\?|$), requires-body=0, script-path=https://raw.githubusercontent.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/scripts/script-hub-grandpaniu-enhance.js, timeout=60
+Grandpaniu: 内容分析 = type=http-request, pattern=^https?:\/\/grandpaniu\.script-hub\.local\/analyze(?:\?|$), requires-body=1, script-path=https://raw.githubusercontent.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/scripts/script-hub-grandpaniu-enhance.js, timeout=60
+Grandpaniu: 健康检查 = type=http-request, pattern=^https?:\/\/grandpaniu\.script-hub\.local\/health(?:\?|$), requires-body=0, script-path=https://raw.githubusercontent.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/scripts/script-hub-grandpaniu-enhance.js, timeout=30
 
 [MITM]
 hostname = %APPEND% script.hub, *.script.hub, hub.kelee.one, pluginhub.kelee.one, kelee.one, grandpaniu.script-hub.local
