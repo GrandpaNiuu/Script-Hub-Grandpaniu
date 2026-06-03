@@ -20,19 +20,72 @@ concurrency:
 
 jobs:
   deploy:
+    runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Check GitHub Pages settings
+        id: pages
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          status="$(curl -sS -o /tmp/pages.json -w "%{http_code}" \
+            -H "Authorization: Bearer ${GH_TOKEN}" \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "https://api.github.com/repos/${REPO}/pages")"
+
+          if [ "$status" != "200" ]; then
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+            {
+              echo "## GitHub Pages has not been enabled"
+              echo ""
+              echo "This workflow did not deploy because the repository has no GitHub Pages site yet."
+              echo ""
+              echo "Go to: Settings -> Pages -> Build and deployment -> Source -> GitHub Actions"
+              echo ""
+              echo "After saving that setting, run this workflow again."
+            } >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+
+          build_type="$(python3 - <<'PY'
+import json
+with open('/tmp/pages.json', 'r', encoding='utf-8') as f:
+    data = json.load(f)
+print(data.get('build_type', ''))
+PY
+)"
+
+          if [ "$build_type" != "workflow" ]; then
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+            {
+              echo "## GitHub Pages source is not GitHub Actions"
+              echo ""
+              echo "Current Pages build type: \`${build_type:-unknown}\`"
+              echo ""
+              echo "Go to: Settings -> Pages -> Build and deployment -> Source -> GitHub Actions"
+              echo ""
+              echo "After saving that setting, run this workflow again."
+            } >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+
+          echo "enabled=true" >> "$GITHUB_OUTPUT"
+          echo "GitHub Pages is enabled and uses GitHub Actions." >> "$GITHUB_STEP_SUMMARY"
+
       - name: Upload artifact
+        if: steps.pages.outputs.enabled == 'true'
         uses: actions/upload-pages-artifact@v3
         with:
           path: docs
 
       - name: Deploy to GitHub Pages
+        if: steps.pages.outputs.enabled == 'true'
         id: deployment
         uses: actions/deploy-pages@v4
