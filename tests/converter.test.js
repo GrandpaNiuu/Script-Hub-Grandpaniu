@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { toRocketInstallPayload } from "../src/converter.js";
+import { formatPayload, toRocketInstallPayload } from "../src/converter.js";
 
 test("builds configurable rocket install URL", () => {
   const payload = toRocketInstallPayload(
@@ -23,4 +23,23 @@ test("builds configurable rocket install URL", () => {
   assert.match(payload.installUrl, /name=demo/);
   assert.match(payload.installUrl, /kind=generic-plugin/);
   assert.match(payload.installUrl, /version=1.2.3/);
+});
+
+test("formats payload as URL and params", () => {
+  const payload = toRocketInstallPayload(
+    {
+      kind: "skill",
+      name: "demo-skill",
+      sourcePath: "SKILL.md",
+      metadata: {}
+    },
+    {
+      sourceUrl: "https://example.test/SKILL.md",
+      extraParams: { channel: "stable" }
+    }
+  );
+
+  assert.equal(formatPayload(payload, "url"), payload.installUrl);
+  assert.match(formatPayload(payload, "params"), /channel=stable/);
+  assert.match(formatPayload(payload, "json"), /"name": "demo-skill"/);
 });

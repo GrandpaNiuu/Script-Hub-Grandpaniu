@@ -27,7 +27,15 @@ export interface RocketInstallPayload {
 }
 
 export function detectModule(targetPath: string): Promise<DetectedModule>;
+export function discoverModules(
+  targetPath: string,
+  options?: { recursive?: boolean }
+): Promise<DetectedModule[]>;
 export function toRocketInstallPayload(
   module: DetectedModule,
   options: RocketInstallOptions
 ): RocketInstallPayload;
+export function formatPayload(
+  payload: RocketInstallPayload,
+  format?: "json" | "url" | "params"
+): string;

@@ -1,2 +1,2 @@
-export { detectModule } from "./detectors.js";
-export { toRocketInstallPayload } from "./converter.js";
+export { detectModule, discoverModules } from "./detectors.js";
+export { formatPayload, toRocketInstallPayload } from "./converter.js";

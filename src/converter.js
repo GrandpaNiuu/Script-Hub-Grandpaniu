@@ -1,6 +1,13 @@
 const DEFAULT_INSTALL_BASE = "rocket://install";
 
 export function toRocketInstallPayload(module, options) {
+  if (!module?.name) {
+    throw new Error("module.name is required");
+  }
+  if (!options?.sourceUrl) {
+    throw new Error("options.sourceUrl is required");
+  }
+
   const params = {
     name: module.name,
     kind: module.kind,
@@ -24,6 +31,22 @@ export function toRocketInstallPayload(module, options) {
     params,
     installUrl: buildInstallUrl(options.installBase ?? DEFAULT_INSTALL_BASE, params)
   };
+}
+
+export function formatPayload(payload, format = "json") {
+  if (format === "url") {
+    return payload.installUrl;
+  }
+
+  if (format === "params") {
+    return new URLSearchParams(payload.params).toString();
+  }
+
+  if (format === "json") {
+    return JSON.stringify(payload, null, 2);
+  }
+
+  throw new Error(`Unsupported output format: ${format}`);
 }
 
 function buildInstallUrl(base, params) {

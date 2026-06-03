@@ -1,0 +1,5 @@
+{
+  "name": "example-codex-plugin",
+  "version": "0.1.0",
+  "description": "Example Codex plugin manifest for adapter discovery."
+}

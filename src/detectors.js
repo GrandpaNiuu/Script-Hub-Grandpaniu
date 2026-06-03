@@ -1,6 +1,8 @@
 import { promises as fs } from "node:fs";
 import path from "node:path";
 
+const SKIP_DIRECTORIES = new Set([".git", "node_modules", "dist", "coverage"]);
+
 export async function detectModule(targetPath) {
   const stat = await fs.stat(targetPath);
   if (stat.isDirectory()) {
@@ -12,6 +14,33 @@ export async function detectModule(targetPath) {
   }
 
   return detectJsonManifest(targetPath);
+}
+
+export async function discoverModules(targetPath, options = {}) {
+  const stat = await fs.stat(targetPath);
+  if (!stat.isDirectory() || !options.recursive) {
+    return [await detectModule(targetPath)];
+  }
+
+  const modules = [];
+  const seenSources = new Set();
+  for await (const candidate of walkManifestCandidates(targetPath)) {
+    try {
+      const detected = await detectModule(candidate);
+      if (!seenSources.has(detected.sourcePath)) {
+        modules.push(detected);
+        seenSources.add(detected.sourcePath);
+      }
+    } catch {
+      // Discovery skips unsupported JSON files and keeps scanning.
+    }
+  }
+
+  if (modules.length === 0) {
+    throw new Error(`No supported plugin/module manifests found in ${targetPath}`);
+  }
+
+  return modules;
 }
 
 async function detectFromDirectory(dir) {
@@ -31,6 +60,33 @@ async function detectFromDirectory(dir) {
   }
 
   throw new Error(`No supported plugin/module manifest found in ${dir}`);
+}
+
+async function* walkManifestCandidates(dir) {
+  const entries = await fs.readdir(dir, { withFileTypes: true });
+  const names = new Set(entries.map((entry) => entry.name));
+
+  if (names.has(".codex-plugin")) {
+    const pluginManifest = path.join(dir, ".codex-plugin", "plugin.json");
+    if (await exists(pluginManifest)) {
+      yield dir;
+    }
+  }
+
+  if (names.has("SKILL.md")) {
+    yield path.join(dir, "SKILL.md");
+  }
+
+  if (names.has("package.json")) {
+    yield path.join(dir, "package.json");
+  }
+
+  for (const entry of entries) {
+    if (!entry.isDirectory() || SKIP_DIRECTORIES.has(entry.name)) {
+      continue;
+    }
+    yield* walkManifestCandidates(path.join(dir, entry.name));
+  }
 }
 
 async function detectCodexPlugin(filePath) {

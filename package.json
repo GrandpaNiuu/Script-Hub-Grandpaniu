@@ -3,8 +3,13 @@
   "version": "0.1.0",
   "description": "Detect tool modules/plugins and convert them into configurable rocket-install payloads for Script Hub-style workflows.",
   "type": "module",
+  "types": "./src/types.d.ts",
   "bin": {
     "script-hub-rocket-adapter": "./src/cli.js"
+  },
+  "exports": {
+    ".": "./src/index.js",
+    "./types": "./src/types.d.ts"
   },
   "scripts": {
     "test": "node --test tests/*.test.js",
@@ -12,6 +17,8 @@
   },
   "files": [
     "src",
+    "docs",
+    "examples",
     "README.md",
     "NOTICE.md",
     "LICENSE"

@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { mkdtemp, mkdir, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { detectModule } from "../src/detectors.js";
+import { detectModule, discoverModules } from "../src/detectors.js";
 
 test("detects Codex plugin manifests", async () => {
   const dir = await mkdtemp(path.join(os.tmpdir(), "rocket-adapter-"));
@@ -33,4 +33,26 @@ test("detects skills from frontmatter", async () => {
   assert.equal(detected.kind, "skill");
   assert.equal(detected.name, "demo-skill");
   assert.equal(detected.description, "Demo skill");
+});
+
+test("recursively discovers supported manifests", async () => {
+  const dir = await mkdtemp(path.join(os.tmpdir(), "rocket-adapter-"));
+  await mkdir(path.join(dir, "plugin", ".codex-plugin"), { recursive: true });
+  await mkdir(path.join(dir, "skill"), { recursive: true });
+  await writeFile(
+    path.join(dir, "plugin", ".codex-plugin", "plugin.json"),
+    JSON.stringify({ name: "nested-plugin" })
+  );
+  await writeFile(
+    path.join(dir, "skill", "SKILL.md"),
+    "---\nname: nested-skill\n---\n"
+  );
+
+  const detected = await discoverModules(dir, { recursive: true });
+  const detectedByName = Object.fromEntries(
+    detected.map((module) => [module.name, module])
+  );
+
+  assert.equal(detectedByName["nested-plugin"].kind, "codex-plugin");
+  assert.equal(detectedByName["nested-skill"].kind, "skill");
 });
