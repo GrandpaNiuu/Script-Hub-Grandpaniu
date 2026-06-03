@@ -11,7 +11,6 @@ third-party content without permission.
 
 ## Supported detection
 
-- Codex plugin manifests: `.codex-plugin/plugin.json`
 - Skill manifests: `SKILL.md`
 - MCP-style server config snippets
 - Generic JSON plugin/module manifests with `name`, `version`, and `description`
