@@ -28,7 +28,9 @@ Boundaries:
 
 Authorization status:
 
-Pending.
+Pending. Permission request submitted to upstream Script Hub maintainers:
+
+https://github.com/Script-Hub-Org/Script-Hub/issues/56
 
 Authorized by:
 
@@ -36,7 +38,7 @@ Not yet granted.
 
 Date:
 
-Not yet granted.
+Request submitted on 2026-06-04.
 
 Notes:
 
