@@ -21,5 +21,12 @@ test("增强模块包含 Script-Hub 官方脚本引用和关键段", async () =>
   assert.match(content, /type%3Dqx-rewrite/);
   assert.match(content, /type%3Dsurge-module/);
   assert.match(content, /type%3Dloon-plugin/);
-  assert.match(content, /force-http-engine-hosts = %APPEND% script\.hub, \*\.script\.hub/);
+  assert.match(
+    content,
+    /force-http-engine-hosts = %APPEND% script\.hub, \*\.script\.hub, grandpaniu\.script-hub\.local/
+  );
+  assert.match(
+    content,
+    /hostname = %APPEND% script\.hub, \*\.script\.hub, hub\.kelee\.one, pluginhub\.kelee\.one, kelee\.one, grandpaniu\.script-hub\.local/
+  );
 });
