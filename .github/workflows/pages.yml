@@ -1,0 +1,115 @@
+name: Site Tools Check
+
+on:
+  workflow_dispatch:
+    inputs:
+      deploy_pages:
+        description: "Deploy to GitHub Pages after checks pass. Enable only after Settings -> Pages -> Source is set to GitHub Actions."
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: site-tools
+  cancel-in-progress: false
+
+jobs:
+  check:
+    name: Check repository and package site files
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Run tests
+        run: npm test
+
+      - name: Verify required site files
+        run: |
+          test -f README.md
+          test -f docs/index.html
+          test -f docs/grandpa-niu.html
+          test -f docs/redirect.html
+          test -f docs/data/modules.json
+          test -f modules/script-hub-grandpaniu.sgmodule
+          test -f scripts/script-hub-grandpaniu-enhance.js
+
+      - name: Upload site files artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: site-files
+          path: docs
+
+      - name: Write summary
+        run: |
+          {
+            echo "## Site files check completed"
+            echo ""
+            echo "Tests and required file checks passed."
+            echo ""
+            echo "This workflow does not deploy GitHub Pages unless the manual input deploy_pages is enabled."
+            echo ""
+            echo "Stable RawGithack entry:"
+            echo "https://raw.githack.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/docs/index.html"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  deploy:
+    name: Deploy to GitHub Pages
+    needs: check
+    if: github.event_name == 'workflow_dispatch' && inputs.deploy_pages == true
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check GitHub Pages settings
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          status="$(curl -sS -o /tmp/pages.json -w "%{http_code}" \
+            -H "Authorization: Bearer ${GH_TOKEN}" \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "https://api.github.com/repos/${REPO}/pages")"
+
+          if [ "$status" != "200" ]; then
+            echo "GitHub Pages is not enabled. Go to Settings -> Pages -> Build and deployment -> Source -> GitHub Actions."
+            exit 1
+          fi
+
+          build_type="$(python3 - <<'PY'
+import json
+with open('/tmp/pages.json', 'r', encoding='utf-8') as f:
+    data = json.load(f)
+print(data.get('build_type', ''))
+PY
+)"
+
+          if [ "$build_type" != "workflow" ]; then
+            echo "GitHub Pages source is not GitHub Actions. Current build type: ${build_type:-unknown}"
+            echo "Go to Settings -> Pages -> Build and deployment -> Source -> GitHub Actions."
+            exit 1
+          fi
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
