@@ -30,14 +30,16 @@ test("仓库文档没有乱码、冲突标记或截断链接", async () => {
   }
 });
 
-test("仓库包含 GitHub Pages Actions 部署 workflow", async () => {
+test("仓库包含不自动创建 Pages 站点的部署 workflow", async () => {
   const workflow = await readFile(".github/workflows/pages.yml", "utf8");
   assert.equal(workflow.includes("workflow_dispatch:"), true);
-  assert.equal(workflow.includes("push:"), false);
-  assert.equal(workflow.includes("enablement: true"), true);
+  assert.equal(workflow.includes("push:"), true);
   assert.equal(workflow.includes("pages: write"), true);
   assert.equal(workflow.includes("id-token: write"), true);
+  assert.equal(workflow.includes("actions/upload-pages-artifact"), true);
   assert.equal(workflow.includes("actions/deploy-pages"), true);
+  assert.equal(workflow.includes("actions/configure-pages"), false);
+  assert.equal(workflow.includes("enablement: true"), false);
 });
 
 test("README 面向小白提供两个清晰安装入口", async () => {
