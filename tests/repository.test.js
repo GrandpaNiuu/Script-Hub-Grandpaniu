@@ -30,12 +30,15 @@ test("仓库文档没有乱码、冲突标记或截断链接", async () => {
   }
 });
 
-test("仓库包含不自动创建 Pages 站点的部署 workflow", async () => {
+test("Pages workflow 会在未启用 Pages 时跳过部署并提示设置", async () => {
   const workflow = await readFile(".github/workflows/pages.yml", "utf8");
   assert.equal(workflow.includes("workflow_dispatch:"), true);
   assert.equal(workflow.includes("push:"), true);
   assert.equal(workflow.includes("pages: write"), true);
   assert.equal(workflow.includes("id-token: write"), true);
+  assert.equal(workflow.includes("Check GitHub Pages settings"), true);
+  assert.equal(workflow.includes("Settings -> Pages -> Build and deployment -> Source -> GitHub Actions"), true);
+  assert.equal(workflow.includes("if: steps.pages.outputs.enabled == 'true'"), true);
   assert.equal(workflow.includes("actions/upload-pages-artifact"), true);
   assert.equal(workflow.includes("actions/deploy-pages"), true);
   assert.equal(workflow.includes("actions/configure-pages"), false);
