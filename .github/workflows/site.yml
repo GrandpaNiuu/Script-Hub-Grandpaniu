@@ -1,0 +1,101 @@
+name: Site
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - docs/**
+      - .github/workflows/site.yml
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: site
+  cancel-in-progress: false
+
+jobs:
+  site:
+    name: Site
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Verify site files
+        run: |
+          test -f docs/index.html
+          test -f docs/grandpa-niu.html
+          test -f docs/redirect.html
+          test -f docs/data/modules.json
+
+      - name: Check GitHub Pages settings
+        id: pages
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          status="$(curl -sS -o /tmp/pages.json -w "%{http_code}" \
+            -H "Authorization: Bearer ${GH_TOKEN}" \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "https://api.github.com/repos/${REPO}/pages")"
+
+          if [ "$status" != "200" ]; then
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+            {
+              echo "## GitHub Pages is not enabled"
+              echo ""
+              echo "No deployment was attempted. This is not a code failure."
+              echo ""
+              echo "Open: Settings -> Pages -> Build and deployment -> Source -> GitHub Actions"
+              echo ""
+              echo "After saving that setting, this workflow can deploy the site."
+              echo ""
+              echo "Temporary working entry:"
+              echo "https://raw.githack.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/docs/index.html"
+            } >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+
+          build_type="$(python3 - <<'PY'
+import json
+with open('/tmp/pages.json', 'r', encoding='utf-8') as f:
+    data = json.load(f)
+print(data.get('build_type', ''))
+PY
+)"
+
+          if [ "$build_type" != "workflow" ]; then
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+            {
+              echo "## GitHub Pages source is not GitHub Actions"
+              echo ""
+              echo "Current Pages build type: \`${build_type:-unknown}\`"
+              echo ""
+              echo "Open: Settings -> Pages -> Build and deployment -> Source -> GitHub Actions"
+              echo ""
+              echo "After saving that setting, this workflow can deploy the site."
+            } >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+
+          echo "enabled=true" >> "$GITHUB_OUTPUT"
+
+      - name: Upload Pages artifact
+        if: steps.pages.outputs.enabled == 'true'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs
+
+      - name: Deploy to GitHub Pages
+        if: steps.pages.outputs.enabled == 'true'
+        id: deployment
+        uses: actions/deploy-pages@v4
