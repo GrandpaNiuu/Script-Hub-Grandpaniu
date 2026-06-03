@@ -7,7 +7,19 @@ https://github.com/Script-Hub-Org/Script-Hub/issues/56
 
 ## 一键导入
 
-[![导入增强模块](https://img.shields.io/badge/Grandpa%20Niu-一键导入%20Shadowrocket-22c55e?style=for-the-badge)](https://grandpaniuu.github.io/Script-Hub-Grandpaniu/grandpa-niu.html)
+[![导入增强模块](https://img.shields.io/badge/Grandpa%20Niu-一键导入%20Shadowrocket-22c55e?style=for-the-badge)](https://raw.githack.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/docs/grandpa-niu.html)
+
+可立即访问的网站入口：
+
+```text
+https://raw.githack.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/docs/index.html
+```
+
+Grandpa Niu 专属导入页：
+
+```text
+https://raw.githack.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/docs/grandpa-niu.html
+```
 
 模块原始地址：
 
@@ -23,7 +35,9 @@ shadowrocket://install?module=https%3A%2F%2Fraw.githubusercontent.com%2FGrandpaN
 
 ## 网站
 
-网站文件在 `docs/`，建议在 GitHub Pages 中选择 `Deploy from a branch`，分支选 `main`，目录选 `/docs`。
+网站文件在 `docs/`，当前 README 的按钮使用 RawGithack 作为立即可用入口，避免 GitHub Pages 未启用时出现 404。
+
+如果要使用 GitHub Pages 正式域名，请在 GitHub Pages 中选择 `Deploy from a branch`，分支选 `main`，目录选 `/docs`。
 
 启用后访问：
 

@@ -4,7 +4,19 @@
 
 本仓库的网站文件在 `docs/` 目录。
 
-请在 GitHub 仓库中手动启用 Pages：
+README 的主按钮使用下面这个立即可访问的入口，不依赖 GitHub Pages 是否已经启用：
+
+```text
+https://raw.githack.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/docs/index.html
+```
+
+Grandpa Niu 专属导入页：
+
+```text
+https://raw.githack.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/docs/grandpa-niu.html
+```
+
+如果希望使用 `grandpaniuu.github.io` 正式域名，请在 GitHub 仓库中手动启用 Pages：
 
 1. 打开 `Settings -> Pages`。
 2. `Build and deployment` 选择 `Deploy from a branch`。

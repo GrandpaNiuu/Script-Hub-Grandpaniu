@@ -37,8 +37,10 @@ test("仓库不再包含会失败的 Pages Actions 部署 workflow", async () =>
   }
 });
 
-test("README 使用正确的 GitHub Pages 地址", async () => {
+test("README 使用可立即访问的站点入口和正确的 GitHub Pages 地址", async () => {
   const readme = await readFile("README.md", "utf8");
+  assert.equal(readme.includes("https://raw.githack.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/docs/index.html"), true);
+  assert.equal(readme.includes("https://raw.githack.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/docs/grandpa-niu.html"), true);
   assert.equal(readme.includes("https://grandpaniuu.github.io/Script-Hub-Grandpaniu/"), true);
   assert.equal(readme.includes("https://grandpaniu.github.io/Script-Hub-Grandpaniu/"), false);
 });
