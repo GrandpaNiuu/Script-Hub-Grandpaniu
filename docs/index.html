@@ -5,54 +5,41 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Script Hub Grandpaniu</title>
   <style>
-    :root{color-scheme:dark;--bg:#0b1120;--panel:#111827;--muted:#94a3b8;--text:#e5e7eb;--line:#243044;--green:#22c55e;--blue:#38bdf8;--red:#fb7185}
+    :root{color-scheme:dark;--bg:#0b1120;--panel:#111827;--muted:#94a3b8;--text:#e5e7eb;--line:#243044;--green:#22c55e;--blue:#38bdf8;--yellow:#f59e0b}
     *{box-sizing:border-box}
     body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text)}
     header{background:#0f172a;border-bottom:1px solid var(--line);padding:28px 20px}
     main,.inner{max-width:1120px;margin:0 auto}
     main{padding:24px 20px 48px}
-    h1{font-size:28px;margin:0 0 8px}
-    h2{font-size:20px;margin:26px 0 12px}
-    h3{font-size:16px;margin:0 0 8px}
-    p{line-height:1.7;color:#cbd5e1}
-    textarea,input{width:100%;border:1px solid var(--line);border-radius:8px;background:#0f172a;color:var(--text);font:14px ui-monospace,SFMono-Regular,Consolas,monospace;padding:12px}
-    input{min-height:44px;font-family:inherit;font-size:15px}
-    textarea{min-height:220px;resize:vertical}
-    button,.btn{min-height:42px;border:0;border-radius:8px;padding:0 14px;background:var(--green);color:#052e16;font-weight:800;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;cursor:pointer}
-    .hero-actions{display:grid;grid-template-columns:minmax(220px,320px) minmax(220px,1fr);gap:10px;margin:18px 0 0}
-    .hero-actions .btn{min-height:48px}
-    .btn.secondary,button.secondary{background:#1f2937;color:#dbeafe;border:1px solid var(--line)}
-    .btn.warn{background:#f59e0b;color:#1f1300}
-    .tabs{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 18px}
-    .tab{background:#111827;color:#cbd5e1;border:1px solid var(--line)}
-    .tab.active{background:var(--blue);color:#082f49}
-    .panel{display:none}
-    .panel.active{display:block}
-    .toolbar{display:grid;grid-template-columns:1fr auto auto;gap:10px;margin:14px 0}
-    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:12px}
-    .card{border:1px solid var(--line);border-radius:8px;background:var(--panel);padding:14px}
-    .meta{font-size:13px;color:var(--muted);margin-bottom:10px}
-    .actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
-    .notice{border:1px solid #334155;border-radius:8px;background:#0f172a;padding:12px}
-    code,pre{color:#93c5fd;word-break:break-all}
+    h1{font-size:28px;margin:0 0 8px}h2{font-size:20px;margin:26px 0 12px}h3{font-size:16px;margin:0 0 8px}
+    p{line-height:1.7;color:#cbd5e1}code,pre{color:#93c5fd;word-break:break-all}
     pre{white-space:pre-wrap;border:1px solid var(--line);border-radius:8px;background:#0f172a;padding:12px;max-height:360px;overflow:auto}
-    .summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin:12px 0}
-    .pill{border:1px solid var(--line);border-radius:8px;background:#0f172a;padding:10px}
-    .pill strong{display:block;font-size:20px;margin-top:4px}
-    @media (max-width:700px){.toolbar,.hero-actions{grid-template-columns:1fr}.actions{grid-template-columns:1fr}h1{font-size:24px}}
+    textarea,input{width:100%;border:1px solid var(--line);border-radius:8px;background:#0f172a;color:var(--text);font:14px ui-monospace,SFMono-Regular,Consolas,monospace;padding:12px}
+    input{min-height:44px;font-family:inherit;font-size:15px}textarea{min-height:220px;resize:vertical}
+    button,.btn{min-height:42px;border:0;border-radius:8px;padding:0 14px;background:var(--green);color:#052e16;font-weight:800;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;cursor:pointer}
+    .btn.secondary,button.secondary{background:#1f2937;color:#dbeafe;border:1px solid var(--line)}.btn.warn{background:var(--yellow);color:#1f1300}
+    .hero-actions{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin:18px 0 0}.hero-actions .btn{min-height:48px}
+    .tabs{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 18px}.tab{background:#111827;color:#cbd5e1;border:1px solid var(--line)}.tab.active{background:var(--blue);color:#082f49}
+    .panel{display:none}.panel.active{display:block}.toolbar{display:grid;grid-template-columns:1fr auto auto;gap:10px;margin:14px 0}
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:12px}.card{border:1px solid var(--line);border-radius:8px;background:var(--panel);padding:14px}
+    .meta{font-size:13px;color:var(--muted);margin-bottom:10px}.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+    .notice{border:1px solid #334155;border-radius:8px;background:#0f172a;padding:12px;margin:12px 0}.summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin:12px 0}.pill{border:1px solid var(--line);border-radius:8px;background:#0f172a;padding:10px}.pill strong{display:block;font-size:20px;margin-top:4px}
+    @media (max-width:700px){.toolbar,.actions{grid-template-columns:1fr}h1{font-size:24px}}
   </style>
 </head>
 <body>
   <header>
     <div class="inner">
       <h1>Script Hub Grandpaniu</h1>
-      <p>模块导入、模块分析、Shadowrocket 转换工具。</p>
+      <p>给 Shadowrocket 用的 Script Hub 增强工具。可以安装本增强模块，也可以把公开模块 URL 转成 Shadowrocket 安装入口。</p>
       <div class="hero-actions">
         <a class="btn" id="install-main" href="shadowrocket://install?module=https%3A%2F%2Fraw.githubusercontent.com%2FGrandpaNiuu%2FScript-Hub-Grandpaniu%2Fmain%2Fmodules%2Fscript-hub-grandpaniu.sgmodule" onclick="return openShadowrocket(this.href)">一键安装到 Shadowrocket</a>
+        <a class="btn secondary" href="grandpa-niu.html">打开小白安装页</a>
         <a class="btn secondary" href="https://raw.githubusercontent.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/modules/script-hub-grandpaniu.sgmodule">查看模块原始文件</a>
       </div>
     </div>
   </header>
+
   <main>
     <nav class="tabs">
       <button class="tab active" data-tab="catalog">模块库</button>
@@ -67,6 +54,7 @@
         <button id="refresh" class="secondary">刷新</button>
         <a class="btn warn" id="install-self" href="#">导入本增强模块</a>
       </div>
+      <p id="catalog-notice" class="notice">模块库已内置兜底数据。即使外部 JSON 加载失败，列表也不会空白。</p>
       <div id="modules" class="grid"></div>
     </section>
 
@@ -104,35 +92,31 @@
       ["body rewrite","Body Rewrite"],["body-rewrite","Body Rewrite"],["script","Script"],
       ["mitm","MITM"],["rule","Rule"],["host","Host"],["map local","Map Local"],["map-local","Map Local"]
     ]);
-    const pageBase = location.href.replace(/\/(?:index\.html)?(?:[?#].*)?$/, "/");
     const selfModuleUrl = "https://raw.githubusercontent.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/modules/script-hub-grandpaniu.sgmodule";
-    let modules = [];
+    const FALLBACK_MODULES = [
+      {id:"grandpaniu-enhance",name:"Script Hub Grandpaniu 增强模块",category:"本仓库",type:"sgmodule",description:"识别外部模块/插件 URL，并生成 Shadowrocket 安装入口。",url:selfModuleUrl,source:"GrandpaNiuu/Script-Hub-Grandpaniu"},
+      {id:"boxjs",name:"BoxJs 数据管理",category:"工具增强",type:"sgmodule",description:"脚本数据管理面板，常用于配合重写脚本管理配置。",url:"https://raw.githubusercontent.com/chavyleung/scripts/master/box/rewrite/boxjs.rewrite.surge.sgmodule",source:"chavyleung/scripts"},
+      {id:"blackmatrix7-block-httpdns",name:"Block HTTPDNS",category:"系统辅助",type:"sgmodule",description:"阻止部分 App HTTPDNS 的 Shadowrocket 模块。",url:"https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rewrite/Shadowrocket/BlockHTTPDNS/BlockHTTPDNS.sgmodule",source:"blackmatrix7/ios_rule_script"},
+      {id:"maasea-youtube-enhance",name:"YouTube Enhance",category:"媒体增强",type:"sgmodule",description:"公开 YouTube 增强模块，使用前请自行确认适用范围。",url:"https://raw.githubusercontent.com/Maasea/sgmodule/master/YouTube.Enhance.sgmodule",source:"Maasea/sgmodule"},
+      {id:"skk-mitm-hostnames",name:"Sukka MITM Hostnames",category:"MITM",type:"sgmodule",description:"Sukka 规则集公开 MITM hostnames 模块。",url:"https://ruleset.skk.moe/Modules/sukka_mitm_hostnames.sgmodule",source:"Sukka Ruleset"},
+      {id:"skk-mitm-all-hostnames",name:"Sukka MITM All Hostnames",category:"MITM",type:"sgmodule",description:"Sukka 规则集公开完整 MITM hostnames 模块。",url:"https://ruleset.skk.moe/Modules/sukka_mitm_all_hostnames.sgmodule",source:"Sukka Ruleset"},
+      {id:"skk-enhance-adblock",name:"Sukka Enhance AdBlock",category:"规则与去广告",type:"sgmodule",description:"Sukka 规则集公开增强去广告模块。",url:"https://ruleset.skk.moe/Modules/sukka_enhance_adblock.sgmodule",source:"Sukka Ruleset"},
+      {id:"skk-url-redirect",name:"Sukka URL Redirect",category:"Rewrite",type:"sgmodule",description:"Sukka 规则集公开 URL Redirect 模块。",url:"https://ruleset.skk.moe/Modules/sukka_url_redirect.sgmodule",source:"Sukka Ruleset"},
+      {id:"skk-url-rewrite",name:"Sukka URL Rewrite",category:"Rewrite",type:"sgmodule",description:"Sukka 规则集公开 URL Rewrite 模块。",url:"https://ruleset.skk.moe/Modules/sukka_url_rewrite.sgmodule",source:"Sukka Ruleset"},
+      {id:"skk-local-dns-mapping",name:"Sukka Local DNS Mapping",category:"General",type:"sgmodule",description:"Sukka 规则集公开本地 DNS 映射模块。",url:"https://ruleset.skk.moe/Modules/sukka_local_dns_mapping.sgmodule",source:"Sukka Ruleset"},
+      {id:"skk-disable-netease-music-update",name:"Sukka Disable Netease Music Update",category:"应用辅助",type:"sgmodule",description:"Sukka 规则集公开网易云音乐更新检查处理模块。",url:"https://ruleset.skk.moe/Modules/sukka_disable_netease_music_v2_update_check.sgmodule",source:"Sukka Ruleset"}
+    ];
+    let modules = [...FALLBACK_MODULES];
 
-    function shadowrocketInstallUrl(url) {
-      return "shadowrocket://install?module=" + encodeURIComponent(url);
-    }
-    function openShadowrocket(url) {
-      location.href = url;
-      return false;
-    }
-    function redirectUrl(url) {
-      return pageBase + "redirect.html?url=" + encodeURIComponent(shadowrocketInstallUrl(url));
-    }
-    function escapeHtml(value) {
-      return String(value).replace(/[&<>"']/g, char => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[char]));
-    }
+    function shadowrocketInstallUrl(url) { return "shadowrocket://install?module=" + encodeURIComponent(url); }
+    function openShadowrocket(url) { location.href = url; return false; }
+    function escapeHtml(value) { return String(value).replace(/[&<>"']/g, char => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[char])); }
     function setTab(name) {
       document.querySelectorAll(".tab").forEach(btn => btn.classList.toggle("active", btn.dataset.tab === name));
       document.querySelectorAll(".panel").forEach(panel => panel.classList.toggle("active", panel.id === name));
     }
     document.querySelectorAll(".tab").forEach(btn => btn.addEventListener("click", () => setTab(btn.dataset.tab)));
 
-    async function loadCatalog() {
-      const response = await fetch("data/modules.json", { cache: "no-store" });
-      const data = await response.json();
-      modules = data.modules || [];
-      renderCatalog();
-    }
     function renderCatalog() {
       const keyword = document.getElementById("search").value.trim().toLowerCase();
       const filtered = modules.filter(item => [item.name,item.category,item.source,item.description,item.url].join(" ").toLowerCase().includes(keyword));
@@ -147,7 +131,27 @@
             <a class="btn secondary" href="${escapeHtml(item.url)}">查看原始文件</a>
           </div>
         </article>
-      `).join("") || "<p>没有匹配的模块。</p>";
+      `).join("") || "<p>没有匹配的模块。请换个关键词。</p>";
+    }
+
+    async function loadCatalog() {
+      modules = [...FALLBACK_MODULES];
+      renderCatalog();
+      const notice = document.getElementById("catalog-notice");
+      try {
+        const response = await fetch("data/modules.json", { cache: "no-store" });
+        if (!response.ok) throw new Error("HTTP " + response.status);
+        const data = await response.json();
+        if (Array.isArray(data.modules) && data.modules.length) {
+          modules = data.modules;
+          notice.textContent = "模块库已加载。若外部数据异常，页面会自动使用内置兜底列表。";
+          renderCatalog();
+        }
+      } catch (error) {
+        notice.textContent = "外部模块库加载失败，已使用内置兜底列表：" + error.message;
+        modules = [...FALLBACK_MODULES];
+        renderCatalog();
+      }
     }
 
     function parseModuleContent(content) {
@@ -159,16 +163,9 @@
         const trimmed = line.trim();
         if (!trimmed) continue;
         const meta = /^#!\s*([^=]+?)\s*=\s*(.*)$/.exec(trimmed);
-        if (meta) {
-          metadata[meta[1].trim().toLowerCase()] = meta[2].trim();
-          continue;
-        }
+        if (meta) { metadata[meta[1].trim().toLowerCase()] = meta[2].trim(); continue; }
         const section = /^\[([^\]]+)\]$/.exec(trimmed);
-        if (section) {
-          currentSection = aliases.get(section[1].trim().toLowerCase()) || section[1].trim();
-          sections[currentSection] ||= [];
-          continue;
-        }
+        if (section) { currentSection = aliases.get(section[1].trim().toLowerCase()) || section[1].trim(); sections[currentSection] ||= []; continue; }
         if (currentSection) sections[currentSection].push(line);
       }
       const summary = {};
@@ -188,14 +185,11 @@
       }
       return lines.join("\n").trimEnd() + "\n";
     }
-
     function analyze() {
       const parsed = parseModuleContent(document.getElementById("module-content").value);
       const output = buildModule(parsed, document.getElementById("module-name").value.trim());
       document.getElementById("converted").textContent = output;
-      document.getElementById("summary").innerHTML = Object.entries(parsed.summary).map(([name,count]) => `
-        <div class="pill">${escapeHtml(name)}<strong>${count}</strong></div>
-      `).join("");
+      document.getElementById("summary").innerHTML = Object.entries(parsed.summary).map(([name,count]) => `<div class="pill">${escapeHtml(name)}<strong>${count}</strong></div>`).join("");
     }
     function updateCustomUrl() {
       const url = document.getElementById("custom-url").value.trim();
@@ -205,29 +199,15 @@
     }
 
     document.getElementById("install-self").href = shadowrocketInstallUrl(selfModuleUrl);
-    document.getElementById("install-self").addEventListener("click", event => {
-      event.preventDefault();
-      openShadowrocket(event.currentTarget.href);
-    });
+    document.getElementById("install-self").addEventListener("click", event => { event.preventDefault(); openShadowrocket(event.currentTarget.href); });
     document.getElementById("search").addEventListener("input", renderCatalog);
     document.getElementById("refresh").addEventListener("click", loadCatalog);
     document.getElementById("custom-url").addEventListener("input", updateCustomUrl);
-    document.getElementById("custom-install").addEventListener("click", () => {
-      const url = document.getElementById("custom-url").value.trim();
-      if (url) openShadowrocket(shadowrocketInstallUrl(url));
-    });
-    document.getElementById("custom-copy").addEventListener("click", async () => {
-      const text = updateCustomUrl();
-      if (text) await navigator.clipboard.writeText(text);
-    });
+    document.getElementById("custom-install").addEventListener("click", () => { const url = document.getElementById("custom-url").value.trim(); if (url) openShadowrocket(shadowrocketInstallUrl(url)); });
+    document.getElementById("custom-copy").addEventListener("click", async () => { const text = updateCustomUrl(); if (text) await navigator.clipboard.writeText(text); });
     document.getElementById("analyze").addEventListener("click", analyze);
-    document.getElementById("copy-output").addEventListener("click", async () => {
-      const text = document.getElementById("converted").textContent;
-      if (text) await navigator.clipboard.writeText(text);
-    });
-    loadCatalog().catch(error => {
-      document.getElementById("modules").innerHTML = `<p>模块列表加载失败：${escapeHtml(error.message)}</p>`;
-    });
+    document.getElementById("copy-output").addEventListener("click", async () => { const text = document.getElementById("converted").textContent; if (text) await navigator.clipboard.writeText(text); });
+    loadCatalog();
   </script>
 </body>
 </html>
