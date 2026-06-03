@@ -65,14 +65,20 @@ test("README 面向小白提供安装入口和工具网站入口", async () => {
   assert.equal(toolSiteMatches.length, 1, "README 不应重复出现工具网站入口");
 });
 
-test("网站首页提供直接安装到 Shadowrocket 的按钮和模块库兜底数据", async () => {
+test("网站首页提供完整工具能力", async () => {
   const index = await readFile("docs/index.html", "utf8");
   assert.equal(index.includes("id=\"install-main\""), true);
   assert.equal(index.includes("一键安装到 Shadowrocket"), true);
-  assert.equal(index.includes("onclick=\"return openShadowrocket(this.href)\""), true);
-  assert.equal(index.includes("if (url) openShadowrocket(shadowrocketInstallUrl(url));"), true);
+  assert.equal(index.includes("快速安装"), true);
+  assert.equal(index.includes("模块库"), true);
+  assert.equal(index.includes("URL 检测转换"), true);
+  assert.equal(index.includes("内容分析"), true);
   assert.equal(index.includes("FALLBACK_MODULES"), true);
   assert.equal(index.includes("外部模块库加载失败，已使用内置兜底列表"), true);
+  assert.equal(index.includes("detectUrlType"), true);
+  assert.equal(index.includes("scriptHubConvertUrl"), true);
+  assert.equal(index.includes("复制转换入口"), true);
+  assert.equal(index.includes("分类"), true);
 });
 
 function escapeRegExp(value) {
