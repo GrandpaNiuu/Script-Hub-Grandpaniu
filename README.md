@@ -4,13 +4,7 @@
 
 ## 立即安装
 
-### 方法一：一键安装到 Shadowrocket（推荐）
-
-[一键安装到 Shadowrocket](shadowrocket://install?module=https%3A%2F%2Fraw.githubusercontent.com%2FGrandpaNiuu%2FScript-Hub-Grandpaniu%2Fmain%2Fmodules%2Fscript-hub-grandpaniu.sgmodule)
-
-优先点这个。如果手机已经安装 Shadowrocket，会直接弹出模块安装提示。
-
-### 方法二：打开自动安装页
+### 打开自动安装页
 
 [打开安装网页](https://raw.githack.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/docs/grandpa-niu.html)
 
@@ -21,8 +15,6 @@
 [打开完整工具网站](https://raw.githack.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/docs/index.html)
 
 这个页面包含精选模块库、URL 检测转换、内容分析与转换。模块库已经内置精选兜底列表，即使外部 JSON 加载失败，也不会变成空白页。
-
-> GitHub Pages 地址只有在仓库 Pages 已启用并成功部署后才能访问。未启用前请优先使用上面的 RawGithack 工具网站入口。
 
 ## 安装后怎么用
 
