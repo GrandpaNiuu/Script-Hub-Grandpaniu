@@ -66,17 +66,26 @@ test("README 面向小白提供安装入口和工具网站入口", async () => {
   assert.equal(toolSiteMatches.length, 1, "README 不应重复出现工具网站入口");
 });
 
-test("模块库使用精选公开模块源", async () => {
+test("模块库使用精选公开模块源并包含风险元数据", async () => {
   const catalog = JSON.parse(await readFile("docs/data/modules.json", "utf8"));
   const ids = catalog.modules.map(item => item.id);
   assert.equal(catalog.notice.includes("精选公开模块源"), true);
+  assert.equal(Boolean(catalog.riskLevels.low), true);
+  assert.equal(Boolean(catalog.riskLevels.medium), true);
+  assert.equal(Boolean(catalog.riskLevels.high), true);
   assert.equal(ids.includes("script-hub-shadowrocket"), true);
   assert.equal(ids.includes("sub-store"), true);
   assert.equal(ids.includes("blackmatrix7-allinone"), true);
   assert.equal(ids.includes("skk-mitm-hostnames"), false);
+  for (const item of catalog.modules) {
+    assert.equal(typeof item.riskLevel, "string", `${item.id} 缺少 riskLevel`);
+    assert.equal(typeof item.riskNote, "string", `${item.id} 缺少 riskNote`);
+    assert.equal(typeof item.requiresMitm, "boolean", `${item.id} 缺少 requiresMitm`);
+    assert.equal(typeof item.containsScript, "boolean", `${item.id} 缺少 containsScript`);
+  }
 });
 
-test("网站首页提供完整工具能力和精选模块兜底", async () => {
+test("网站首页提供完整工具能力、精选模块兜底和风险展示", async () => {
   const index = await readFile("docs/index.html", "utf8");
   assert.equal(index.includes("id=\"install-main\""), true);
   assert.equal(index.includes("一键安装到 Shadowrocket"), true);
@@ -89,6 +98,9 @@ test("网站首页提供完整工具能力和精选模块兜底", async () => {
   assert.equal(index.includes("script-hub-shadowrocket"), true);
   assert.equal(index.includes("sub-store"), true);
   assert.equal(index.includes("skk-mitm-hostnames"), false);
+  assert.equal(index.includes("riskLevel"), true);
+  assert.equal(index.includes("MITM："), true);
+  assert.equal(index.includes("脚本："), true);
   assert.equal(index.includes("detectUrlType"), true);
   assert.equal(index.includes("scriptHubConvertUrl"), true);
   assert.equal(index.includes("复制转换入口"), true);
@@ -99,6 +111,16 @@ test("安装网页会自动尝试打开 Shadowrocket", async () => {
   assert.equal(page.includes("window.addEventListener(\"load\""), true);
   assert.equal(page.includes("setTimeout(openShadowrocket, 300)"), true);
   assert.equal(page.includes("确认导入弹窗无法被网页绕过"), true);
+});
+
+test("本地增强入口提供风险报告和 Script Hub 转换入口", async () => {
+  const script = await readFile("scripts/script-hub-grandpaniu-enhance.js", "utf8");
+  assert.equal(script.includes("assessRisk"), true);
+  assert.equal(script.includes("buildScriptHubConvertUrl"), true);
+  assert.equal(script.includes("风险判断"), true);
+  assert.equal(script.includes("通过 Script Hub 转换后导入"), true);
+  assert.equal(script.includes("requiresMitm"), true);
+  assert.equal(script.includes("containsScript"), true);
 });
 
 function escapeRegExp(value) {
