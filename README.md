@@ -25,14 +25,7 @@ https://github.com/Script-Hub-Org/Script-Hub/issues/56
 Shadowrocket 中可使用这个模块地址：
 
 ```text
-https://raw.githubusercontent.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/modules/script-hub-grandpaniu.sgmodule
-```
-
-也可以使用小火箭安装入口：
-
-```text
-shadowrocket://install?module=https%3A%2F%2Fraw.githubusercontent.com%2FGrandpaNiuu%2FScript-Hub-Grandpaniu%2Fmain%2Fmodules%2Fscript-hub-grandpaniu.sgmodule
-```
+https://raw.githubusercontent.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/modules/script-hub-grandpaniu.
 
 模块安装后，可访问：
 
