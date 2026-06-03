@@ -4,18 +4,6 @@
 
 ## 立即安装
 
-### 方法一：一键安装到 Shadowrocket（推荐）
-
-[一键安装到 Shadowrocket](shadowrocket://install?module=https%3A%2F%2Fraw.githubusercontent.com%2FGrandpaNiuu%2FScript-Hub-Grandpaniu%2Fmain%2Fmodules%2Fscript-hub-grandpaniu.sgmodule)
-
-优先点这个。如果手机已经安装 Shadowrocket，会直接弹出模块安装提示。
-
-### 方法二：打开安装网页
-
-[打开安装网页](https://raw.githack.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/docs/grandpa-niu.html)
-
-如果上面的“一键安装”没有反应，就点这个网页入口。第一次打开可能会看到 RawGithack 的确认页，点 `Open the page` 继续，进入页面后再点“一键导入 Shadowrocket”。
-
 ## 工具网站入口
 
 [打开完整工具网站](https://raw.githack.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/docs/index.html)
@@ -26,7 +14,6 @@
 
 https://grandpaniuu.github.io/Script-Hub-Grandpaniu/
 
-如果 GitHub Pages 打不开，不影响上面的 RawGithack 入口和 Shadowrocket 安装入口。
 
 ## 安装后怎么用
 
@@ -57,10 +44,6 @@ https://grandpaniuu.github.io/Script-Hub-Grandpaniu/
 ### 工具网站里模块库空白怎么办？
 
 刷新页面。新版页面已经内置模块库兜底数据，即使 `docs/data/modules.json` 加载失败，也会显示基础模块列表。
-
-### GitHub Pages 打不开怎么办？
-
-先使用 RawGithack 入口。GitHub Pages 需要仓库在 `Settings -> Pages` 里启用，没启用时会打不开。
 
 ### 安装后没有效果怎么办？
 
