@@ -1,0 +1,27 @@
+{
+  "name": "script-hub-rocket-adapter",
+  "version": "0.1.0",
+  "description": "Detect tool modules/plugins and convert them into configurable rocket-install payloads for Script Hub-style workflows.",
+  "type": "module",
+  "bin": {
+    "script-hub-rocket-adapter": "./src/cli.js"
+  },
+  "scripts": {
+    "test": "node --test tests/*.test.js",
+    "check": "npm test"
+  },
+  "files": [
+    "src",
+    "README.md",
+    "NOTICE.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "script-hub",
+    "plugin",
+    "module",
+    "adapter",
+    "rocket"
+  ],
+  "license": "MIT"
+}
