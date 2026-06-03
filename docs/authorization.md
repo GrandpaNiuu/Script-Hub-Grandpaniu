@@ -1,6 +1,6 @@
 # Script Hub Authorization Record
 
-Requester:
+Requester:GrandpaNiu
 
 To be filled by the maintainer or publisher.
 
