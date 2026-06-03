@@ -5,6 +5,7 @@ import { readFile } from "node:fs/promises";
 const textFiles = [
   "README.md",
   "NOTICE.md",
+  "index.html",
   "docs/usage.md",
   "docs/architecture.md",
   "docs/authorization.md",
@@ -32,17 +33,18 @@ test("仓库文档没有乱码、冲突标记或截断链接", async () => {
   }
 });
 
-test("Pages workflow 默认只手动检查，不自动部署 Pages", async () => {
-  const workflow = await readFile(".github/workflows/pages.yml", "utf8");
-  assert.equal(workflow.includes("name: Site Tools Check"), true);
+test("Site workflow 负责站点部署并在 Pages 未配置时安全跳过", async () => {
+  const workflow = await readFile(".github/workflows/site.yml", "utf8");
+  assert.equal(workflow.includes("name: Site"), true);
   assert.equal(workflow.includes("workflow_dispatch:"), true);
-  assert.equal(workflow.includes("deploy_pages:"), true);
-  assert.equal(workflow.includes("default: false"), true);
-  assert.equal(workflow.includes("push:"), false);
-  assert.equal(workflow.includes("actions/upload-artifact"), true);
+  assert.equal(workflow.includes("push:"), true);
+  assert.equal(workflow.includes("docs/**"), true);
+  assert.equal(workflow.includes("pages: write"), true);
+  assert.equal(workflow.includes("id-token: write"), true);
+  assert.equal(workflow.includes("Check GitHub Pages settings"), true);
+  assert.equal(workflow.includes("enabled=false"), true);
   assert.equal(workflow.includes("actions/upload-pages-artifact"), true);
   assert.equal(workflow.includes("actions/deploy-pages"), true);
-  assert.equal(workflow.includes("if: github.event_name == 'workflow_dispatch' && inputs.deploy_pages == true"), true);
   assert.equal(workflow.includes("actions/configure-pages"), false);
   assert.equal(workflow.includes("enablement: true"), false);
 });
@@ -54,6 +56,12 @@ test("Check workflow 只手动运行并执行测试", async () => {
   assert.equal(workflow.includes("push:"), false);
   assert.equal(workflow.includes("npm test"), true);
   assert.equal(workflow.includes("actions/upload-artifact"), true);
+});
+
+test("根目录 index.html 会跳转到 docs 工具网站", async () => {
+  const index = await readFile("index.html", "utf8");
+  assert.equal(index.includes("docs/index.html"), true);
+  assert.equal(index.includes("location.replace"), true);
 });
 
 test("README 面向小白提供安装入口和工具网站入口", async () => {
