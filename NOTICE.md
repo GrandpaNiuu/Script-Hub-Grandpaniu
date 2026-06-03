@@ -1,18 +1,16 @@
-# Notice
+# 声明
 
-This repository is an independent adapter prototype.
+本仓库是独立的 Script Hub 兼容性增强模块原型。
 
-It does not embed, redistribute, or modify Script Hub source code, private APIs,
-bundled scripts, paid content, or third-party module assets. Integration with
-Script Hub should stay within the scope of the public authorization recorded in
-`docs/authorization.md`, or within the scope clearly allowed by the upstream
-license.
+本项目不复制、内置、修改或再分发 Script Hub 源码、私有 API、内置脚本、付费
+内容或第三方模块资源。
 
-Authorization status:
+授权状态：
 
-- Permission request: https://github.com/Script-Hub-Org/Script-Hub/issues/56
-- Maintainer response: https://github.com/Script-Hub-Org/Script-Hub/issues/56#issuecomment-4615584271
-- Recorded in: `docs/authorization.md`
+- 申请 issue：https://github.com/Script-Hub-Org/Script-Hub/issues/56
+- 维护者回复：https://github.com/Script-Hub-Org/Script-Hub/issues/56#issuecomment-4615584271
+- 记录文件：`docs/authorization.md`
 
-This project remains an independent compatibility adapter unless the upstream
-maintainers separately approve official or built-in Script Hub status.
+该公开回复允许本项目继续开发。除非上游维护者另行明确授权，本项目不应被描述
+为 Script Hub 官方项目、官方背书项目、商标授权项目或可复制 Script Hub 私有/
+非公开资产的项目。

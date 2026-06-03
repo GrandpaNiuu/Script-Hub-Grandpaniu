@@ -1,53 +1,53 @@
-# Script Hub Authorization Record
+# Script Hub 授权记录
 
-Requester: GrandpaNiu
+申请人：GrandpaNiu
 
-Project: Script Hub Rocket Adapter
+项目：Script-Hub-Grandpaniu / Script Hub Grandpaniu
 
-Purpose:
+## 目的
 
-This project may request permission to provide a Script Hub-compatible
-enhancement module that detects other tools' modules/plugins and converts
-supported metadata into a rocket-install workflow.
+本项目用于提供一个 Script Hub 兼容性增强模块，识别其他工具的模块、插件或
+manifest，并转换成 Shadowrocket（小火箭）安装入口。
 
-Requested scope:
+## 申请范围
 
-- Reference Script Hub by name in documentation.
-- Provide an adapter that emits Script Hub-style install payloads.
-- Optionally include the adapter as a built-in Script Hub module if approved.
+- 在文档中以兼容目标的方式引用 Script Hub。
+- 提供一个生成 Shadowrocket 安装入口的适配器。
+- 在获得允许的范围内继续开发 Script Hub 增强模块。
 
-Boundaries:
+## 项目边界
 
-- No Script Hub source code will be copied into this repository.
-- No private APIs, paid scripts, or non-redistributable assets will be bundled.
-- Third-party plugins/modules will only be linked or converted from user-provided
-  metadata unless their licenses permit redistribution.
-- Required attribution and branding text will be preserved.
+- 不复制 Script Hub 源码。
+- 不使用 Script Hub 私有 API。
+- 不内置付费脚本、内置脚本资源或不可再分发资产。
+- 第三方模块/插件仅基于用户提供的 URL、manifest 或公开许可信息进行转换。
 
-Authorization status:
+## 授权状态
 
-Authorized for continued development. Permission request and maintainer response:
+已获准继续开发。
+
+申请 issue：
 
 https://github.com/Script-Hub-Org/Script-Hub/issues/56
 
-Direct response:
+维护者直接回复：
 
 https://github.com/Script-Hub-Org/Script-Hub/issues/56#issuecomment-4615584271
 
-Authorized by:
+授权人：
 
-xream, contributor/maintainer in the Script-Hub-Org/Script-Hub repository.
+xream，Script-Hub-Org/Script-Hub 仓库贡献者/维护者。
 
-Date:
+日期：
 
-Request submitted on 2026-06-04. Authorization response received on 2026-06-04.
+申请提交：2026-06-04
 
-Notes:
+授权回复：2026-06-04
 
-The public response says: "Please feel free to continue development."
+## 备注
 
-This record documents permission to continue development of the independent
-compatibility adapter. It should not be represented as an exclusive license,
-official endorsement, trademark grant, or permission to copy private/non-public
-Script Hub assets unless the upstream maintainers grant those permissions
-separately.
+公开回复原文为：“Please feel free to continue development.”
+
+本记录表示允许继续开发这个独立兼容性增强模块。它不应被扩大解释为官方背书、
+商标授权、排他许可，或复制 Script Hub 私有/非公开资产的许可，除非上游维护者
+另行明确授权。

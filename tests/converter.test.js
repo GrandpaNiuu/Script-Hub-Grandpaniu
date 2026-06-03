@@ -1,8 +1,12 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { formatPayload, toRocketInstallPayload } from "../src/converter.js";
+import {
+  formatPayload,
+  toRocketInstallPayload,
+  toShadowrocketInstallPayload
+} from "../src/converter.js";
 
-test("builds configurable rocket install URL", () => {
+test("builds configurable Shadowrocket install URL", () => {
   const payload = toRocketInstallPayload(
     {
       kind: "generic-plugin",
@@ -23,6 +27,26 @@ test("builds configurable rocket install URL", () => {
   assert.match(payload.installUrl, /name=demo/);
   assert.match(payload.installUrl, /kind=generic-plugin/);
   assert.match(payload.installUrl, /version=1.2.3/);
+});
+
+test("builds native Shadowrocket module install URL", () => {
+  const payload = toShadowrocketInstallPayload(
+    {
+      kind: "surge-module",
+      name: "demo-module",
+      sourcePath: "https://example.test/demo.sgmodule",
+      metadata: {}
+    },
+    {
+      sourceUrl: "https://example.test/demo.sgmodule"
+    }
+  );
+
+  assert.equal(payload.params.module, "https://example.test/demo.sgmodule");
+  assert.equal(
+    payload.installUrl,
+    "shadowrocket://install?module=https%3A%2F%2Fexample.test%2Fdemo.sgmodule"
+  );
 });
 
 test("formats payload as URL and params", () => {

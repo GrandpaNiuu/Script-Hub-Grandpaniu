@@ -1,7 +1,7 @@
 {
   "name": "script-hub-rocket-adapter",
   "version": "0.1.0",
-  "description": "Detect tool modules/plugins and convert them into configurable rocket-install payloads for Script Hub-style workflows.",
+  "description": "识别其他工具的模块、插件，并自动转换为 Shadowrocket 安装入口的 Script Hub 增强模块。",
   "type": "module",
   "types": "./src/types.d.ts",
   "bin": {
@@ -19,6 +19,8 @@
     "src",
     "docs",
     "examples",
+    "modules",
+    "scripts",
     "README.md",
     "NOTICE.md",
     "LICENSE"

@@ -1,4 +1,4 @@
-const DEFAULT_INSTALL_BASE = "rocket://install";
+const DEFAULT_INSTALL_BASE = "shadowrocket://install";
 
 export function toRocketInstallPayload(module, options) {
   if (!module?.name) {
@@ -21,6 +21,29 @@ export function toRocketInstallPayload(module, options) {
   if (module.description) {
     params.description = module.description;
   }
+
+  for (const [key, value] of Object.entries(options.extraParams ?? {})) {
+    params[key] = value;
+  }
+
+  return {
+    module,
+    params,
+    installUrl: buildInstallUrl(options.installBase ?? DEFAULT_INSTALL_BASE, params)
+  };
+}
+
+export function toShadowrocketInstallPayload(module, options) {
+  if (!module?.name) {
+    throw new Error("module.name is required");
+  }
+  if (!options?.sourceUrl) {
+    throw new Error("options.sourceUrl is required");
+  }
+
+  const params = {
+    module: options.sourceUrl
+  };
 
   for (const [key, value] of Object.entries(options.extraParams ?? {})) {
     params[key] = value;

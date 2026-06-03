@@ -1,39 +1,50 @@
-# Architecture
+# 架构说明
 
-The adapter is split into two small layers.
+项目分成四层。
 
-## Detection
+## 识别层
 
-`src/detectors.js` turns a local path into normalized module metadata.
+`src/recognizer.js` 负责识别外部模块或插件 URL。
 
-Supported sources:
+当前支持：
 
-- `.codex-plugin/plugin.json`
-- `SKILL.md`
-- MCP config JSON with `mcpServers`
-- generic JSON manifests with `name` or `id`
+- Surge / Shadowrocket 模块
+- Loon 插件
+- Stash override
+- Quantumult X 配置或 rewrite 内容
+- Codex plugin、Skill、MCP config、通用 JSON manifest
 
-`discoverModules(path, { recursive: true })` walks directories and returns every
-supported module it can identify, skipping build and dependency directories.
+`src/detectors.js` 负责识别本地文件或目录，适合仓库扫描、测试和批量转换。
 
-## Conversion
+## 转换层
 
-`src/converter.js` turns normalized metadata into an install payload:
+`src/converter.js` 把识别后的模块转换成 Shadowrocket 安装入口：
 
-- `params`: normalized key/value fields
-- `installUrl`: configured install base plus encoded query parameters
-- `module`: original normalized metadata
+```text
+shadowrocket://install?module=<模块URL>
+```
 
-The converter intentionally does not copy Script Hub internals. The install base
-and additional parameters are caller-provided so the project can adapt to future
-Script Hub guidance without hard-coding private behavior.
+转换层只使用公开 URL，不复制 Script Hub 私有逻辑或第三方资源。
 
-## CLI
+## CLI 层
 
-`src/cli.js` wires discovery and conversion together.
+`src/cli.js` 提供两个入口：
 
-Useful output modes:
+- `enhance <url>`：识别外部模块 URL 并输出小火箭安装入口
+- `<path> --source-url <url>`：扫描本地 manifest 并转换
 
-- `json` for inspection and automation
-- `url` for direct install links
-- `params` for embedding into another tool
+## Shadowrocket 模块层
+
+`modules/script-hub-grandpaniu.sgmodule` 会加载：
+
+```text
+scripts/script-hub-grandpaniu-enhance.js
+```
+
+该脚本拦截：
+
+```text
+https://grandpaniu.script-hub.local/install
+```
+
+并根据 `url` 参数生成安装页面、JSON 或纯 URL。

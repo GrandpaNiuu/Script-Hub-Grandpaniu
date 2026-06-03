@@ -2,7 +2,12 @@ export type DetectedKind =
   | "codex-plugin"
   | "skill"
   | "mcp-server"
-  | "generic-plugin";
+  | "generic-plugin"
+  | "surge-module"
+  | "loon-plugin"
+  | "stash-override"
+  | "quantumult-x-config"
+  | "unknown-module";
 
 export interface DetectedModule {
   kind: DetectedKind;
@@ -26,6 +31,12 @@ export interface RocketInstallPayload {
   params: Record<string, string>;
 }
 
+export interface RecognizeInput {
+  sourceUrl?: string;
+  url?: string;
+  content?: string;
+}
+
 export function detectModule(targetPath: string): Promise<DetectedModule>;
 export function discoverModules(
   targetPath: string,
@@ -35,7 +46,12 @@ export function toRocketInstallPayload(
   module: DetectedModule,
   options: RocketInstallOptions
 ): RocketInstallPayload;
+export function toShadowrocketInstallPayload(
+  module: DetectedModule,
+  options: RocketInstallOptions
+): RocketInstallPayload;
 export function formatPayload(
   payload: RocketInstallPayload,
   format?: "json" | "url" | "params"
 ): string;
+export function recognizeExternalModule(input: RecognizeInput): DetectedModule;
