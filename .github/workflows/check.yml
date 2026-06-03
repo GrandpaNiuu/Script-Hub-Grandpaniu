@@ -29,11 +29,15 @@ jobs:
       - name: Verify required files
         run: |
           test -f README.md
+          test -f index.html
           test -f docs/index.html
           test -f docs/grandpa-niu.html
           test -f docs/redirect.html
           test -f docs/data/modules.json
           test -f modules/script-hub-grandpaniu.sgmodule
+          test -f scripts/script-hub-grandpaniu-enhance.js
+          test -f .github/workflows/check.yml
+          test -f .github/workflows/site.yml
 
       - name: Upload site files artifact
         uses: actions/upload-artifact@v4
