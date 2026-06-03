@@ -21,7 +21,6 @@ const conflictMarker = "<" + "<<<<<<";
 const mainInstallUrl = "shadowrocket://install?module=https%3A%2F%2Fraw.githubusercontent.com%2FGrandpaNiuu%2FScript-Hub-Grandpaniu%2Fmain%2Fmodules%2Fscript-hub-grandpaniu.sgmodule";
 const webInstallUrl = "https://raw.githack.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/docs/grandpa-niu.html";
 const toolSiteUrl = "https://raw.githack.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/docs/index.html";
-const pagesUrl = "https://grandpaniuu.github.io/Script-Hub-Grandpaniu/";
 
 test("仓库文档没有乱码、冲突标记或截断链接", async () => {
   for (const file of textFiles) {
@@ -33,7 +32,7 @@ test("仓库文档没有乱码、冲突标记或截断链接", async () => {
   }
 });
 
-test("站点 workflow 默认只手动检查，不自动部署 Pages", async () => {
+test("Pages workflow 默认只手动检查，不自动部署 Pages", async () => {
   const workflow = await readFile(".github/workflows/pages.yml", "utf8");
   assert.equal(workflow.includes("name: Site Tools Check"), true);
   assert.equal(workflow.includes("workflow_dispatch:"), true);
@@ -48,13 +47,22 @@ test("站点 workflow 默认只手动检查，不自动部署 Pages", async () =
   assert.equal(workflow.includes("enablement: true"), false);
 });
 
+test("Check workflow 只手动运行并执行测试", async () => {
+  const workflow = await readFile(".github/workflows/check.yml", "utf8");
+  assert.equal(workflow.includes("name: Check"), true);
+  assert.equal(workflow.includes("workflow_dispatch:"), true);
+  assert.equal(workflow.includes("push:"), false);
+  assert.equal(workflow.includes("npm test"), true);
+  assert.equal(workflow.includes("actions/upload-artifact"), true);
+});
+
 test("README 面向小白提供安装入口和工具网站入口", async () => {
   const readme = await readFile("README.md", "utf8");
 
   assert.equal(readme.includes("[一键安装到 Shadowrocket](" + mainInstallUrl + ")"), true);
   assert.equal(readme.includes("[打开安装网页](" + webInstallUrl + ")"), true);
   assert.equal(readme.includes("[打开完整工具网站](" + toolSiteUrl + ")"), true);
-  assert.equal(readme.includes(pagesUrl), true);
+  assert.equal(readme.includes("GitHub Pages 地址只有在仓库 Pages 已启用并成功部署后才能访问"), true);
   assert.equal(readme.includes("复制到 Safari 地址栏打开"), false);
   assert.equal(readme.includes("把下面这一整行复制"), false);
 
