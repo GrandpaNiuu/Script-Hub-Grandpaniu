@@ -16,6 +16,18 @@
 
 如果上面的“一键安装”没有反应，就点这个网页入口。第一次打开可能会看到 RawGithack 的确认页，点 `Open the page` 继续，进入页面后再点“一键导入 Shadowrocket”。
 
+## 工具网站入口
+
+[打开完整工具网站](https://raw.githack.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/docs/index.html)
+
+这个页面包含模块库、URL 导入、内容分析与转换。模块库已经内置兜底列表，就算外部 JSON 加载失败，也不会变成空白页。
+
+如果 GitHub Pages 已经启用，也可以访问：
+
+https://grandpaniuu.github.io/Script-Hub-Grandpaniu/
+
+如果 GitHub Pages 打不开，不影响上面的 RawGithack 入口和 Shadowrocket 安装入口。
+
 ## 安装后怎么用
 
 1. 打开 Shadowrocket。
@@ -41,6 +53,14 @@
 ### 打开网页后看到 RawGithack 提示怎么办？
 
 点 `Open the page` 继续打开页面，然后点页面里的“一键导入 Shadowrocket”。
+
+### 工具网站里模块库空白怎么办？
+
+刷新页面。新版页面已经内置模块库兜底数据，即使 `docs/data/modules.json` 加载失败，也会显示基础模块列表。
+
+### GitHub Pages 打不开怎么办？
+
+先使用 RawGithack 入口。GitHub Pages 需要仓库在 `Settings -> Pages` 里启用，没启用时会打不开。
 
 ### 安装后没有效果怎么办？
 
