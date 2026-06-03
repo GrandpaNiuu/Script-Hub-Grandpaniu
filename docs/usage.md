@@ -1,22 +1,26 @@
 # 使用说明
 
-## 在线安装页面
+## 1. 启用一键安装网站
 
-推荐优先使用网页：
+本仓库的网站文件在 `docs/` 目录。
+
+请在 GitHub 仓库中手动启用 Pages：
+
+1. 打开 `Settings -> Pages`。
+2. `Build and deployment` 选择 `Deploy from a branch`。
+3. Branch 选择 `main`。
+4. Folder 选择 `/docs`。
+5. 保存。
+
+启用后访问：
 
 ```text
 https://grandpaniuu.github.io/Script-Hub-Grandpaniu/
 ```
 
-网页会从 `docs/data/modules.json` 读取模块列表，并通过 `docs/redirect.html` 跳转到：
+不再使用 GitHub Actions 部署 Pages。原因是当前仓库 Actions 无法创建 Pages 站点，会出现 `Resource not accessible`，保留该 workflow 只会反复失败。
 
-```text
-shadowrocket://install?module=<模块URL>
-```
-
-这样比直接在 README 里点击 `shadowrocket://` 更稳定。
-
-## 安装 Shadowrocket 增强模块
+## 2. 安装 Shadowrocket 增强模块
 
 模块地址：
 
@@ -30,18 +34,12 @@ https://raw.githubusercontent.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/modules
 shadowrocket://install?module=https%3A%2F%2Fraw.githubusercontent.com%2FGrandpaNiuu%2FScript-Hub-Grandpaniu%2Fmain%2Fmodules%2Fscript-hub-grandpaniu.sgmodule
 ```
 
-## 使用增强入口
+## 3. 使用增强入口
 
-模块安装后访问：
+安装模块后，在 Shadowrocket 环境中访问：
 
 ```text
 https://grandpaniu.script-hub.local/install?url=<模块或插件URL>
-```
-
-返回 HTML 页面：
-
-```text
-https://grandpaniu.script-hub.local/install?url=https%3A%2F%2Fexample.com%2Fdemo.plugin
 ```
 
 返回 JSON：
@@ -56,7 +54,7 @@ https://grandpaniu.script-hub.local/install?url=https%3A%2F%2Fexample.com%2Fdemo
 https://grandpaniu.script-hub.local/install?url=https%3A%2F%2Fexample.com%2Fdemo.plugin&format=url
 ```
 
-## CLI
+## 4. CLI
 
 转换一个外部模块 URL：
 
@@ -76,15 +74,6 @@ node src/cli.js enhance https://example.com/raw \
 ```bash
 node src/cli.js examples \
   --source-url https://example.com/modules/ \
-  --recursive \
-  --format url
-```
-
-也可以使用 `{path}` 模板控制远程路径：
-
-```bash
-node src/cli.js examples \
-  --source-url "https://example.com/raw/{path}" \
   --recursive \
   --format url
 ```
