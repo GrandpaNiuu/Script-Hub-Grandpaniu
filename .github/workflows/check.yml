@@ -34,12 +34,14 @@ jobs:
 
       - name: Validate catalog JSON
         run: |
-          node -e "const fs=require('fs'); const data=JSON.parse(fs.readFileSync('docs/data/modules.json','utf8')); if(!Array.isArray(data.modules)||data.modules.length===0) process.exit(1); for (const item of data.modules) { if(!item.id || !item.name || !item.url) process.exit(1); if(item.id==='grandpaniu-enhance' || item.name==='Script Hub Grandpaniu 增强模块') process.exit(1); new URL(item.url); }"
+          node -e "const fs=require('fs'); const data=JSON.parse(fs.readFileSync('docs/data/modules.json','utf8')); const allowed=new Set(['surge-module','qx-rewrite','loon-plugin','rule-set','all-module']); if(!data.convertTypes || !Array.isArray(data.modules) || data.modules.length===0) process.exit(1); for (const item of data.modules) { if(!item.id || !item.name || !item.url || !item.convertType || !item.lastChecked || typeof item.verified !== 'boolean') process.exit(1); if(!allowed.has(item.convertType)) process.exit(1); if(item.id==='grandpaniu-enhance' || item.name==='Script Hub Grandpaniu 增强模块') process.exit(1); new URL(item.url); }"
 
       - name: Verify site entry text
         run: |
           grep -q "docs/index.html" index.html
-          grep -q "可转换模块库" docs/index.html
+          grep -q "已验证可转换模块库" docs/index.html
+          grep -q "convertType" docs/index.html
+          grep -q "全部转换类型" docs/index.html
           grep -q "转换导入" docs/index.html
           ! grep -q "快速安装" docs/index.html
           ! grep -q "Script Hub Grandpaniu 增强模块" docs/index.html
@@ -55,7 +57,7 @@ jobs:
           {
             echo "## Check completed"
             echo ""
-            echo "Required files, catalog JSON, and convertible catalog checks passed."
+            echo "Required files, catalog JSON, convertType metadata, and site entry checks passed."
             echo ""
             echo "This workflow intentionally does not run npm test, because npm test is for local development and can include brittle assertions."
             echo ""
