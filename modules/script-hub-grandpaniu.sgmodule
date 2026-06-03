@@ -4,8 +4,8 @@
 #!homepage=https://github.com/GrandpaNiuu/Script-Hub-Grandpaniu
 
 [General]
-# 让 script.hub 虚拟域名走 HTTP 引擎，Script-Hub 才能接管转换请求。
-force-http-engine-hosts = %APPEND% script.hub, *.script.hub
+# 让 script.hub 与 Grandpa Niu 本地增强虚拟域名走 HTTP 引擎，转换请求才能被脚本接管。
+force-http-engine-hosts = %APPEND% script.hub, *.script.hub, grandpaniu.script-hub.local
 
 [Header Rewrite]
 # 防止插件中心接口缓存，确保正文替换可以命中最新内容。
@@ -43,4 +43,4 @@ Script Hub: 脚本转换 = type=http-request, pattern=^https?:\/\/script\.hub\/c
 Grandpaniu: 链接分析 = type=http-request, pattern=^https?:\/\/grandpaniu\.script-hub\.local\/install, requires-body=0, script-path=https://raw.githubusercontent.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/scripts/script-hub-grandpaniu-enhance.js, timeout=30
 
 [MITM]
-hostname = script.hub, *.script.hub, hub.kelee.one, pluginhub.kelee.one, kelee.one, grandpaniu.script-hub.local
+hostname = %APPEND% script.hub, *.script.hub, hub.kelee.one, pluginhub.kelee.one, kelee.one, grandpaniu.script-hub.local
