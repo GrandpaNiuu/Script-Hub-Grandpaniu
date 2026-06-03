@@ -10,7 +10,7 @@ README 的主按钮直接使用 Shadowrocket 安装入口：
 shadowrocket://install?module=https%3A%2F%2Fraw.githubusercontent.com%2FGrandpaNiuu%2FScript-Hub-Grandpaniu%2Fmain%2Fmodules%2Fscript-hub-grandpaniu.sgmodule
 ```
 
-网站由 GitHub Actions 发布到 GitHub Pages。
+正式站点使用 GitHub Pages；如果 Pages 尚未启用，也可以先使用备用镜像。
 
 正式入口：
 
@@ -24,7 +24,15 @@ Grandpa Niu 专属导入页：
 https://grandpaniuu.github.io/Script-Hub-Grandpaniu/grandpa-niu.html
 ```
 
-如果 Pages 仍显示 404，请到仓库 `Settings -> Pages` 确认 Source 已选择 `GitHub Actions`，然后重新运行 `Deploy Pages`。
+备用镜像入口：
+
+```text
+https://raw.githack.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/docs/index.html
+```
+
+RawGithack 首次打开会出现确认页，点击 `Open the page` 后进入工具页，页面顶部有“一键安装到 Shadowrocket”按钮。
+
+如果 Pages 仍显示 404，请到仓库 `Settings -> Pages` 确认 Source 已选择 `GitHub Actions`，然后手动运行 `Deploy Pages`。
 
 ## 2. 安装 Shadowrocket 增强模块
 

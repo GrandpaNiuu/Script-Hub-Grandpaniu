@@ -19,6 +19,8 @@
     input{min-height:44px;font-family:inherit;font-size:15px}
     textarea{min-height:220px;resize:vertical}
     button,.btn{min-height:42px;border:0;border-radius:8px;padding:0 14px;background:var(--green);color:#052e16;font-weight:800;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;cursor:pointer}
+    .hero-actions{display:grid;grid-template-columns:minmax(220px,320px) minmax(220px,1fr);gap:10px;margin:18px 0 0}
+    .hero-actions .btn{min-height:48px}
     .btn.secondary,button.secondary{background:#1f2937;color:#dbeafe;border:1px solid var(--line)}
     .btn.warn{background:#f59e0b;color:#1f1300}
     .tabs{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 18px}
@@ -37,7 +39,7 @@
     .summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin:12px 0}
     .pill{border:1px solid var(--line);border-radius:8px;background:#0f172a;padding:10px}
     .pill strong{display:block;font-size:20px;margin-top:4px}
-    @media (max-width:700px){.toolbar{grid-template-columns:1fr}.actions{grid-template-columns:1fr}h1{font-size:24px}}
+    @media (max-width:700px){.toolbar,.hero-actions{grid-template-columns:1fr}.actions{grid-template-columns:1fr}h1{font-size:24px}}
   </style>
 </head>
 <body>
@@ -45,6 +47,10 @@
     <div class="inner">
       <h1>Script Hub Grandpaniu</h1>
       <p>模块导入、模块分析、Shadowrocket 转换工具。</p>
+      <div class="hero-actions">
+        <a class="btn" id="install-main" href="#">一键安装到 Shadowrocket</a>
+        <a class="btn secondary" href="https://raw.githubusercontent.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/modules/script-hub-grandpaniu.sgmodule">查看模块原始文件</a>
+      </div>
     </div>
   </header>
   <main>
@@ -71,7 +77,7 @@
         <button id="custom-install">生成并安装</button>
         <button id="custom-copy" class="secondary">复制安装链接</button>
       </div>
-      <p class="notice">支持 `.sgmodule`、`.module`、`.plugin`、`.conf` 等公开 URL。按钮会先打开 HTTPS 跳转页，再唤起 Shadowrocket。</p>
+      <p class="notice">支持 `.sgmodule`、`.module`、`.plugin`、`.conf` 等公开 URL。按钮会生成 Shadowrocket 安装链接并尝试唤起小火箭。</p>
       <pre id="url-output"></pre>
     </section>
 
@@ -194,13 +200,14 @@
       return output;
     }
 
-    document.getElementById("install-self").href = redirectUrl(selfModuleUrl);
+    document.getElementById("install-main").href = shadowrocketInstallUrl(selfModuleUrl);
+    document.getElementById("install-self").href = shadowrocketInstallUrl(selfModuleUrl);
     document.getElementById("search").addEventListener("input", renderCatalog);
     document.getElementById("refresh").addEventListener("click", loadCatalog);
     document.getElementById("custom-url").addEventListener("input", updateCustomUrl);
     document.getElementById("custom-install").addEventListener("click", () => {
       const url = document.getElementById("custom-url").value.trim();
-      if (url) location.href = redirectUrl(url);
+      if (url) location.href = shadowrocketInstallUrl(url);
     });
     document.getElementById("custom-copy").addEventListener("click", async () => {
       const text = updateCustomUrl();

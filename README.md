@@ -23,7 +23,7 @@ https://raw.githubusercontent.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/modules
 
 ## 网站
 
-网站文件在 `docs/`，仓库会通过 GitHub Actions 发布到 GitHub Pages。
+网站文件在 `docs/`。正式站点使用 GitHub Pages；如果 Pages 尚未启用，也可以先用备用镜像打开。
 
 正式网站入口：
 
@@ -36,6 +36,14 @@ Grandpa Niu 专属导入页：
 ```text
 https://grandpaniuu.github.io/Script-Hub-Grandpaniu/grandpa-niu.html
 ```
+
+备用镜像入口：
+
+```text
+https://raw.githack.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/docs/index.html
+```
+
+说明：RawGithack 首次打开会出现确认页，点击 `Open the page` 后进入工具页，页面顶部有“一键安装到 Shadowrocket”按钮。
 
 网站提供：
 
