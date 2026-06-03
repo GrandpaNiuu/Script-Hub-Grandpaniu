@@ -1,4 +1,6 @@
-# Script Hub Rocket Adapter
+# Script-Hub-Grandpaniu
+
+Script Hub Rocket Adapter
 
 Prototype module for detecting tool modules/plugins and converting them into a
 configurable rocket-install request.
