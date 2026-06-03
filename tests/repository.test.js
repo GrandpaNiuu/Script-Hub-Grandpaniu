@@ -13,6 +13,7 @@ const textFiles = [
   "docs/index.html",
   "docs/redirect.html",
   "docs/grandpa-niu.html",
+  "docs/data/modules.json",
   "modules/script-hub-grandpaniu.sgmodule",
   "scripts/script-hub-grandpaniu-enhance.js"
 ];
@@ -65,20 +66,39 @@ test("README 面向小白提供安装入口和工具网站入口", async () => {
   assert.equal(toolSiteMatches.length, 1, "README 不应重复出现工具网站入口");
 });
 
-test("网站首页提供完整工具能力", async () => {
+test("模块库使用精选公开模块源", async () => {
+  const catalog = JSON.parse(await readFile("docs/data/modules.json", "utf8"));
+  const ids = catalog.modules.map(item => item.id);
+  assert.equal(catalog.notice.includes("精选公开模块源"), true);
+  assert.equal(ids.includes("script-hub-shadowrocket"), true);
+  assert.equal(ids.includes("sub-store"), true);
+  assert.equal(ids.includes("blackmatrix7-allinone"), true);
+  assert.equal(ids.includes("skk-mitm-hostnames"), false);
+});
+
+test("网站首页提供完整工具能力和精选模块兜底", async () => {
   const index = await readFile("docs/index.html", "utf8");
   assert.equal(index.includes("id=\"install-main\""), true);
   assert.equal(index.includes("一键安装到 Shadowrocket"), true);
   assert.equal(index.includes("快速安装"), true);
-  assert.equal(index.includes("模块库"), true);
+  assert.equal(index.includes("精选模块库"), true);
   assert.equal(index.includes("URL 检测转换"), true);
   assert.equal(index.includes("内容分析"), true);
   assert.equal(index.includes("FALLBACK_MODULES"), true);
-  assert.equal(index.includes("外部模块库加载失败，已使用内置兜底列表"), true);
+  assert.equal(index.includes("外部模块库加载失败，已使用内置精选兜底列表"), true);
+  assert.equal(index.includes("script-hub-shadowrocket"), true);
+  assert.equal(index.includes("sub-store"), true);
+  assert.equal(index.includes("skk-mitm-hostnames"), false);
   assert.equal(index.includes("detectUrlType"), true);
   assert.equal(index.includes("scriptHubConvertUrl"), true);
   assert.equal(index.includes("复制转换入口"), true);
-  assert.equal(index.includes("分类"), true);
+});
+
+test("安装网页会自动尝试打开 Shadowrocket", async () => {
+  const page = await readFile("docs/grandpa-niu.html", "utf8");
+  assert.equal(page.includes("window.addEventListener(\"load\""), true);
+  assert.equal(page.includes("setTimeout(openShadowrocket, 300)"), true);
+  assert.equal(page.includes("确认导入弹窗无法被网页绕过"), true);
 });
 
 function escapeRegExp(value) {
