@@ -1,0 +1,42 @@
+{
+  "updatedAt": "2026-06-04",
+  "notice": "仅收录公开 URL，不复制模块内容。第三方模块可用性、安全性和合法性请自行判断。",
+  "modules": [
+    {
+      "id": "grandpaniu-enhance",
+      "name": "Script Hub Grandpaniu 增强模块",
+      "category": "本仓库",
+      "type": "sgmodule",
+      "description": "识别外部模块/插件 URL，并生成 Shadowrocket 安装入口。",
+      "url": "https://raw.githubusercontent.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/modules/script-hub-grandpaniu.sgmodule",
+      "source": "GrandpaNiuu/Script-Hub-Grandpaniu"
+    },
+    {
+      "id": "boxjs",
+      "name": "BoxJs 数据管理",
+      "category": "工具增强",
+      "type": "sgmodule",
+      "description": "脚本数据管理面板，常用于配合重写脚本管理配置。",
+      "url": "https://raw.githubusercontent.com/chavyleung/scripts/master/box/rewrite/boxjs.rewrite.surge.sgmodule",
+      "source": "chavyleung/scripts"
+    },
+    {
+      "id": "blackmatrix7-block-httpdns",
+      "name": "Block HTTPDNS",
+      "category": "系统辅助",
+      "type": "sgmodule",
+      "description": "阻止部分 App HTTPDNS 的 Shadowrocket 模块。",
+      "url": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rewrite/Shadowrocket/BlockHTTPDNS/BlockHTTPDNS.sgmodule",
+      "source": "blackmatrix7/ios_rule_script"
+    },
+    {
+      "id": "maasea-youtube-enhance",
+      "name": "YouTube Enhance",
+      "category": "媒体增强",
+      "type": "sgmodule",
+      "description": "公开 YouTube 增强模块，使用前请自行确认适用范围。",
+      "url": "https://raw.githubusercontent.com/Maasea/sgmodule/master/YouTube.Enhance.sgmodule",
+      "source": "Maasea/sgmodule"
+    }
+  ]
+}

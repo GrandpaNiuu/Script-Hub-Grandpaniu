@@ -1,5 +1,21 @@
 # 使用说明
 
+## 在线安装页面
+
+推荐优先使用网页：
+
+```text
+https://grandpaniu.github.io/Script-Hub-Grandpaniu/
+```
+
+网页会从 `docs/data/modules.json` 读取模块列表，并通过 `docs/redirect.html` 跳转到：
+
+```text
+shadowrocket://install?module=<模块URL>
+```
+
+这样比直接在 README 里点击 `shadowrocket://` 更稳定。
+
 ## 安装 Shadowrocket 增强模块
 
 模块地址：

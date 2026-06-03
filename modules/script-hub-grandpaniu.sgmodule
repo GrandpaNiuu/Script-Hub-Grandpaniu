@@ -4,7 +4,7 @@
 #!homepage=https://github.com/GrandpaNiuu/Script-Hub-Grandpaniu
 
 [Script]
-Grandpaniu增强 = type=http-request, pattern=^https:\/\/grandpaniu\.script-hub\.local\/install, script-path=https://raw.githubusercontent.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/scripts/script-hub-grandpaniu-enhance.js, timeout=10, requires-body=false
+Grandpaniu_Enhance = type=http-request,pattern=^https?:\/\/grandpaniu\.script-hub\.local\/install,requires-body=0,script-path=https://raw.githubusercontent.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/scripts/script-hub-grandpaniu-enhance.js,timeout=10
 
 [MITM]
 hostname = grandpaniu.script-hub.local

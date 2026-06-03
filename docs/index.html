@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Script Hub Grandpaniu</title>
+  <style>
+    :root{color-scheme:dark;--bg:#0b1120;--panel:#111827;--muted:#94a3b8;--text:#e5e7eb;--line:#243044;--green:#22c55e;--blue:#38bdf8}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text)}
+    header{padding:28px 20px;border-bottom:1px solid var(--line);background:#0f172a}
+    main{max-width:1080px;margin:0 auto;padding:24px 20px 48px}
+    .head-inner{max-width:1080px;margin:0 auto}
+    h1{margin:0 0 8px;font-size:28px}
+    h2{font-size:20px;margin:28px 0 12px}
+    p{line-height:1.7;color:#cbd5e1}
+    .toolbar{display:grid;grid-template-columns:1fr auto;gap:10px;margin:18px 0}
+    input{width:100%;min-height:44px;border:1px solid var(--line);border-radius:10px;background:#0f172a;color:var(--text);padding:0 12px;font-size:16px}
+    button,.btn{min-height:44px;border:0;border-radius:10px;padding:0 14px;background:var(--green);color:#052e16;font-weight:800;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;cursor:pointer}
+    .btn.secondary{background:#1f2937;color:#dbeafe;border:1px solid var(--line)}
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
+    .card{border:1px solid var(--line);border-radius:8px;background:var(--panel);padding:14px}
+    .card h3{margin:0 0 8px;font-size:16px}
+    .meta{font-size:13px;color:var(--muted);margin-bottom:10px}
+    .actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+    code{color:#93c5fd;word-break:break-all}
+    .notice{border:1px solid #334155;border-radius:8px;background:#0f172a;padding:12px}
+    @media (max-width:640px){.toolbar{grid-template-columns:1fr}.actions{grid-template-columns:1fr}h1{font-size:24px}}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="head-inner">
+      <h1>Script Hub Grandpaniu</h1>
+      <p>收集公开模块 URL，并提供一键跳转到 Shadowrocket 自动安装的按钮。</p>
+    </div>
+  </header>
+  <main>
+    <section>
+      <h2>自定义模块一键安装</h2>
+      <div class="toolbar">
+        <input id="custom-url" placeholder="粘贴 .sgmodule / .module / .plugin / .conf URL">
+        <button id="custom-install">生成并安装</button>
+      </div>
+      <p class="notice">提示：GitHub README 不能稳定打开 <code>shadowrocket://</code>，本页会先跳到普通 HTTPS redirect 页面，再唤起 Shadowrocket。</p>
+    </section>
+
+    <section>
+      <h2>可安装模块列表</h2>
+      <div class="toolbar">
+        <input id="search" placeholder="搜索名称、分类、来源">
+        <button id="refresh">刷新列表</button>
+      </div>
+      <div id="modules" class="grid"></div>
+    </section>
+  </main>
+
+  <script>
+    const list = document.getElementById("modules");
+    const search = document.getElementById("search");
+    const customUrl = document.getElementById("custom-url");
+    const pageBase = location.href.replace(/\/(?:index\.html)?(?:[?#].*)?$/, "/");
+    let modules = [];
+
+    function installUrl(url) {
+      return "shadowrocket://install?module=" + encodeURIComponent(url);
+    }
+
+    function redirectUrl(url) {
+      return pageBase + "redirect.html?url=" + encodeURIComponent(installUrl(url));
+    }
+
+    function render() {
+      const keyword = search.value.trim().toLowerCase();
+      const filtered = modules.filter(item => {
+        const text = [item.name,item.category,item.source,item.description,item.url].join(" ").toLowerCase();
+        return !keyword || text.includes(keyword);
+      });
+      list.innerHTML = filtered.map(item => `
+        <article class="card">
+          <h3>${escapeHtml(item.name)}</h3>
+          <div class="meta">${escapeHtml(item.category)} · ${escapeHtml(item.type)} · ${escapeHtml(item.source)}</div>
+          <p>${escapeHtml(item.description || "")}</p>
+          <code>${escapeHtml(item.url)}</code>
+          <div class="actions">
+            <a class="btn" href="${redirectUrl(item.url)}">一键安装</a>
+            <a class="btn secondary" href="${escapeHtml(item.url)}">查看原始文件</a>
+          </div>
+        </article>
+      `).join("") || "<p>没有匹配的模块。</p>";
+    }
+
+    function escapeHtml(value) {
+      return String(value).replace(/[&<>"']/g, char => ({
+        "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"
+      }[char]));
+    }
+
+    async function load() {
+      const response = await fetch("data/modules.json", { cache: "no-store" });
+      const data = await response.json();
+      modules = data.modules || [];
+      render();
+    }
+
+    document.getElementById("custom-install").addEventListener("click", () => {
+      const url = customUrl.value.trim();
+      if (!url) return;
+      location.href = redirectUrl(url);
+    });
+    document.getElementById("refresh").addEventListener("click", load);
+    search.addEventListener("input", render);
+    load().catch(error => {
+      list.innerHTML = `<p>模块列表加载失败：${escapeHtml(error.message)}</p>`;
+    });
+  </script>
+</body>
+</html>

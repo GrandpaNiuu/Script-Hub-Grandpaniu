@@ -20,6 +20,22 @@ https://github.com/Script-Hub-Org/Script-Hub/issues/56
 - 提供可安装的 Shadowrocket 模块文件
 - 提供 Node.js CLI 和库 API，方便继续接入 Script Hub 或其他前端
 
+## 在线安装页面
+
+启用 GitHub Pages 后，访问：
+
+```text
+https://grandpaniu.github.io/Script-Hub-Grandpaniu/
+```
+
+页面里可以：
+
+- 粘贴任意公开模块 URL，一键跳转到 Shadowrocket 安装。
+- 搜索已经收集的公开模块。
+- 点击“一键安装”自动唤起 Shadowrocket。
+
+如果 Pages 尚未启用，请在仓库 Settings → Pages 中选择 GitHub Actions 部署。
+
 ## 安装增强模块
 
 Shadowrocket 中可使用这个模块地址：
@@ -34,7 +50,7 @@ https://raw.githubusercontent.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/modules
 shadowrocket://install?module=https%3A%2F%2Fraw.githubusercontent.com%2FGrandpaNiuu%2FScript-Hub-Grandpaniu%2Fmain%2Fmodules%2Fscript-hub-grandpaniu.sgmodule
 ```
 
-模块安装后，可访问：
+模块安装后，也可在 Shadowrocket 环境中访问：
 
 ```text
 https://grandpaniu.script-hub.local/install?url=<需要转换的模块URL>
@@ -99,6 +115,9 @@ console.log(payload.installUrl);
 
 - `modules/script-hub-grandpaniu.sgmodule`：Shadowrocket 增强模块
 - `scripts/script-hub-grandpaniu-enhance.js`：模块运行时脚本
+- `docs/index.html`：可公开访问的一键安装网站
+- `docs/redirect.html`：HTTPS 到 `shadowrocket://` 的跳转桥
+- `docs/data/modules.json`：公开模块 URL 列表
 - `src/recognizer.js`：外部模块/插件识别器
 - `src/converter.js`：Shadowrocket 安装入口转换器
 - `docs/usage.md`：中文使用说明
