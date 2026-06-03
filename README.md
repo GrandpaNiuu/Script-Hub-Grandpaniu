@@ -36,19 +36,6 @@ https://grandpaniuu.github.io/Script-Hub-Grandpaniu/
 
 ```text
 https://raw.githubusercontent.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/modules/script-hub-grandpaniu.sgmodule
-```
-
-Shadowrocket 安装入口：
-
-```text
-shadowrocket://install?module=https%3A%2F%2Fraw.githubusercontent.com%2FGrandpaNiuu%2FScript-Hub-Grandpaniu%2Fmain%2Fmodules%2Fscript-hub-grandpaniu.sgmodule
-```
-
-安装模块后，也可以在 Shadowrocket 环境中访问：
-
-```text
-https://grandpaniu.script-hub.local/install?url=<需要转换的模块URL>
-```
 
 ## 当前能力
 
