@@ -4,16 +4,25 @@
 
 ## 立即安装
 
+### 方法一：一键安装到 Shadowrocket（推荐）
+
+[一键安装到 Shadowrocket](shadowrocket://install?module=https%3A%2F%2Fraw.githubusercontent.com%2FGrandpaNiuu%2FScript-Hub-Grandpaniu%2Fmain%2Fmodules%2Fscript-hub-grandpaniu.sgmodule)
+
+优先点这个。如果手机已经安装 Shadowrocket，会直接弹出模块安装提示。
+
+### 方法二：打开自动安装页
+
+[打开安装网页](https://raw.githack.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/docs/grandpa-niu.html)
+
+打开页面后会自动尝试拉起 Shadowrocket。注意：iOS 和 Shadowrocket 的确认导入弹窗无法被网页跳过，需要你手动确认一次。
+
 ## 工具网站入口
 
 [打开完整工具网站](https://raw.githack.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/docs/index.html)
 
-这个页面包含模块库、URL 导入、内容分析与转换。模块库已经内置兜底列表，就算外部 JSON 加载失败，也不会变成空白页。
+这个页面包含精选模块库、URL 检测转换、内容分析与转换。模块库已经内置精选兜底列表，即使外部 JSON 加载失败，也不会变成空白页。
 
-如果 GitHub Pages 已经启用，也可以访问：
-
-https://grandpaniuu.github.io/Script-Hub-Grandpaniu/
-
+> GitHub Pages 地址只有在仓库 Pages 已启用并成功部署后才能访问。未启用前请优先使用上面的 RawGithack 工具网站入口。
 
 ## 安装后怎么用
 
@@ -39,11 +48,19 @@ https://grandpaniuu.github.io/Script-Hub-Grandpaniu/
 
 ### 打开网页后看到 RawGithack 提示怎么办？
 
-点 `Open the page` 继续打开页面，然后点页面里的“一键导入 Shadowrocket”。
+点 `Open the page` 继续打开页面。页面会自动尝试拉起 Shadowrocket；如果没有反应，再点页面里的“再次打开 Shadowrocket”。
+
+### GitHub Pages 地址显示 404 怎么办？
+
+说明仓库还没有启用 GitHub Pages，或者 Pages 没有部署成功。这不影响 RawGithack 工具网站入口和 Shadowrocket 安装入口。
 
 ### 工具网站里模块库空白怎么办？
 
-刷新页面。新版页面已经内置模块库兜底数据，即使 `docs/data/modules.json` 加载失败，也会显示基础模块列表。
+刷新页面。新版页面已经内置精选模块库兜底数据，即使 `docs/data/modules.json` 加载失败，也会显示基础模块列表。
+
+### 模块库为什么不是“全网所有模块”？
+
+全网公开模块数量大、来源复杂，很多模块带 MITM、重写、脚本注入。全部收录不安全，也不利于小白判断。当前只收录来源明确、维护者清楚、适合 Shadowrocket 或 Script Hub 转换的公开模块源。
 
 ### 安装后没有效果怎么办？
 
