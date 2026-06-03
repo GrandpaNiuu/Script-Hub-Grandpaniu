@@ -1,12 +1,21 @@
 {
   "updatedAt": "2026-06-04",
   "notice": "精选公开模块源，只收录来源明确、维护者清楚、适合 Shadowrocket 或可经 Script Hub 转换的公开 URL；不收录来路不明、破解类、灰产类模块。第三方模块请自行判断安全性和合法性。",
+  "riskLevels": {
+    "low": "低风险：通常是安装入口、转换入口或基础工具。",
+    "medium": "中风险：可能包含重写、脚本或 MITM，需要自行检查。",
+    "high": "高风险：包含较多重写、脚本、MITM 或会明显改变 App 行为。"
+  },
   "modules": [
     {
       "id": "grandpaniu-enhance",
       "name": "Script Hub Grandpaniu 增强模块",
       "category": "本仓库",
       "type": "sgmodule",
+      "riskLevel": "low",
+      "riskNote": "本项目主模块，只提供 Script-Hub 增强入口和导入转换入口。",
+      "requiresMitm": true,
+      "containsScript": true,
       "description": "本项目主模块：识别外部模块/插件 URL，并生成 Shadowrocket 安装入口。",
       "url": "https://raw.githubusercontent.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/modules/script-hub-grandpaniu.sgmodule",
       "source": "GrandpaNiuu/Script-Hub-Grandpaniu"
@@ -16,6 +25,10 @@
       "name": "Script-Hub 官方 Shadowrocket 模块",
       "category": "转换工具",
       "type": "module",
+      "riskLevel": "low",
+      "riskNote": "Script-Hub 官方公开模块，主要用于转换入口。",
+      "requiresMitm": true,
+      "containsScript": true,
       "description": "Script-Hub 官方 Shadowrocket 模块，用于重写、规则集和脚本转换。",
       "url": "https://raw.githubusercontent.com/Script-Hub-Org/Script-Hub/main/modules/script-hub.rocket.module",
       "source": "Script-Hub-Org/Script-Hub"
@@ -25,6 +38,10 @@
       "name": "Script-Hub 官方 Surge 模块",
       "category": "转换工具",
       "type": "sgmodule",
+      "riskLevel": "low",
+      "riskNote": "Script-Hub 官方公开 Surge 模块，主要用于转换入口。",
+      "requiresMitm": true,
+      "containsScript": true,
       "description": "Script-Hub 官方 Surge 模块；Shadowrocket 可直接尝试导入或通过转换入口处理。",
       "url": "https://raw.githubusercontent.com/Script-Hub-Org/Script-Hub/main/modules/script-hub.surge.sgmodule",
       "source": "Script-Hub-Org/Script-Hub"
@@ -34,6 +51,10 @@
       "name": "Sub-Store 订阅管理模块",
       "category": "订阅管理",
       "type": "sgmodule",
+      "riskLevel": "medium",
+      "riskNote": "订阅管理工具，通常包含脚本服务入口；只从官方仓库导入。",
+      "requiresMitm": false,
+      "containsScript": true,
       "description": "Sub-Store 官方 Surge 模块，用于高级订阅管理。",
       "url": "https://raw.githubusercontent.com/sub-store-org/Sub-Store/master/config/Surge.sgmodule",
       "source": "sub-store-org/Sub-Store"
@@ -43,6 +64,10 @@
       "name": "BoxJs 数据管理",
       "category": "脚本管理",
       "type": "sgmodule",
+      "riskLevel": "medium",
+      "riskNote": "脚本数据管理工具，会配合其他脚本保存配置和会话。",
+      "requiresMitm": false,
+      "containsScript": true,
       "description": "Chavy 的 BoxJs 模块，用于脚本数据、会话和配置管理。",
       "url": "https://raw.githubusercontent.com/chavyleung/scripts/master/box/rewrite/boxjs.rewrite.surge.sgmodule",
       "source": "chavyleung/scripts"
@@ -52,6 +77,10 @@
       "name": "blackmatrix7 AllInOne",
       "category": "规则与重写",
       "type": "sgmodule",
+      "riskLevel": "high",
+      "riskNote": "AllInOne 类型模块通常包含规则、重写、脚本和 MITM，导入前应查看原始内容。",
+      "requiresMitm": true,
+      "containsScript": true,
       "description": "blackmatrix7 的公开 Shadowrocket AllInOne 模块，包含规则、重写、脚本和 MITM。",
       "url": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rewrite/Shadowrocket/AllInOne/AllInOne.sgmodule",
       "source": "blackmatrix7/ios_rule_script"
@@ -61,6 +90,10 @@
       "name": "blackmatrix7 Advertising",
       "category": "规则与去广告",
       "type": "sgmodule",
+      "riskLevel": "medium",
+      "riskNote": "去广告重写可能影响 App 功能；建议单独测试后再长期启用。",
+      "requiresMitm": true,
+      "containsScript": false,
       "description": "blackmatrix7 公开广告重写模块。第三方去广告规则可能影响 App 功能，请自行测试。",
       "url": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rewrite/Surge/Advertising/Advertising.sgmodule",
       "source": "blackmatrix7/ios_rule_script"
@@ -70,6 +103,10 @@
       "name": "Maasea YouTube Enhance",
       "category": "媒体增强",
       "type": "sgmodule",
+      "riskLevel": "high",
+      "riskNote": "媒体增强通常包含重写、脚本和 MITM，可能受 App 更新影响。",
+      "requiresMitm": true,
+      "containsScript": true,
       "description": "Maasea 的 YouTube 增强模块。作者说明主要基于 Surge 测试。",
       "url": "https://raw.githubusercontent.com/Maasea/sgmodule/master/YouTube.Enhance.sgmodule",
       "source": "Maasea/sgmodule"
@@ -79,6 +116,10 @@
       "name": "Maasea YouTube Lite",
       "category": "媒体增强",
       "type": "sgmodule",
+      "riskLevel": "medium",
+      "riskNote": "轻量媒体增强模块，仍可能包含重写或 MITM。",
+      "requiresMitm": true,
+      "containsScript": true,
       "description": "Maasea 的 YouTube Lite 模块，适合更轻量的 YouTube 增强需求。",
       "url": "https://raw.githubusercontent.com/Maasea/sgmodule/master/YouTube.Lite.sgmodule",
       "source": "Maasea/sgmodule"
@@ -88,6 +129,10 @@
       "name": "Maasea Bilibili Helper",
       "category": "媒体增强",
       "type": "sgmodule",
+      "riskLevel": "high",
+      "riskNote": "App 增强模块可能包含脚本和 MITM，兼容性不稳定。",
+      "requiresMitm": true,
+      "containsScript": true,
       "description": "Maasea 的 Bilibili Helper 模块。第三方模块请自行测试兼容性。",
       "url": "https://raw.githubusercontent.com/Maasea/sgmodule/master/Bilibili.Helper.sgmodule",
       "source": "Maasea/sgmodule"
@@ -97,6 +142,10 @@
       "name": "Maasea URLRewrite",
       "category": "Rewrite",
       "type": "sgmodule",
+      "riskLevel": "medium",
+      "riskNote": "URL Rewrite 会改写网络请求，导入前应查看规则范围。",
+      "requiresMitm": true,
+      "containsScript": false,
       "description": "Maasea 的 URL Rewrite 模块。",
       "url": "https://raw.githubusercontent.com/Maasea/sgmodule/master/URLRewrite.sgmodule",
       "source": "Maasea/sgmodule"
@@ -106,6 +155,10 @@
       "name": "VirgilClyne General Settings Enhanced",
       "category": "系统增强",
       "type": "sgmodule",
+      "riskLevel": "medium",
+      "riskNote": "系统服务增强模块，可能改写部分系统服务请求。",
+      "requiresMitm": true,
+      "containsScript": true,
       "description": "VirgilClyne GetSomeFries 公开 General Settings Enhanced 模块。",
       "url": "https://raw.githubusercontent.com/VirgilClyne/GetSomeFries/main/sgmodule/General.sgmodule",
       "source": "VirgilClyne/GetSomeFries"
@@ -115,6 +168,10 @@
       "name": "iRingo Location Services",
       "category": "Apple 服务",
       "type": "sgmodule",
+      "riskLevel": "high",
+      "riskNote": "Apple 服务增强模块通常依赖 MITM 和脚本，导入前必须理解作用范围。",
+      "requiresMitm": true,
+      "containsScript": true,
       "description": "iRingo Location Services 模块，用于 Apple 定位服务相关增强。",
       "url": "https://raw.githubusercontent.com/VirgilClyne/iRingo/main/sgmodule/Location.sgmodule",
       "source": "VirgilClyne/iRingo"
