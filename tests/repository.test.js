@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { access, readFile } from "node:fs/promises";
+import { readFile } from "node:fs/promises";
 
 const textFiles = [
   "README.md",
@@ -28,19 +28,17 @@ test("仓库文档没有乱码、冲突标记或截断链接", async () => {
   }
 });
 
-test("仓库不再包含会失败的 Pages Actions 部署 workflow", async () => {
-  try {
-    await access(".github/workflows/pages.yml");
-    assert.fail("pages.yml 不应存在，当前仓库权限会导致 Pages Actions 部署失败");
-  } catch (error) {
-    assert.equal(error.code, "ENOENT");
-  }
+test("仓库包含 GitHub Pages Actions 部署 workflow", async () => {
+  const workflow = await readFile(".github/workflows/pages.yml", "utf8");
+  assert.equal(workflow.includes("pages: write"), true);
+  assert.equal(workflow.includes("id-token: write"), true);
+  assert.equal(workflow.includes("actions/deploy-pages"), true);
 });
 
-test("README 使用可立即访问的站点入口和正确的 GitHub Pages 地址", async () => {
+test("README 使用直接安装入口和正确的 GitHub Pages 地址", async () => {
   const readme = await readFile("README.md", "utf8");
-  assert.equal(readme.includes("https://raw.githack.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/docs/index.html"), true);
-  assert.equal(readme.includes("https://raw.githack.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/docs/grandpa-niu.html"), true);
+  assert.equal(readme.includes("shadowrocket://install?module=https%3A%2F%2Fraw.githubusercontent.com%2FGrandpaNiuu%2FScript-Hub-Grandpaniu%2Fmain%2Fmodules%2Fscript-hub-grandpaniu.sgmodule"), true);
+  assert.equal(readme.includes("raw.githack.com"), false);
   assert.equal(readme.includes("https://grandpaniuu.github.io/Script-Hub-Grandpaniu/"), true);
   assert.equal(readme.includes("https://grandpaniu.github.io/Script-Hub-Grandpaniu/"), false);
 });

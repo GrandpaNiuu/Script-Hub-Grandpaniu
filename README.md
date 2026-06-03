@@ -7,18 +7,12 @@ https://github.com/Script-Hub-Org/Script-Hub/issues/56
 
 ## 一键导入
 
-[![导入增强模块](https://img.shields.io/badge/Grandpa%20Niu-一键导入%20Shadowrocket-22c55e?style=for-the-badge)](https://raw.githack.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/docs/grandpa-niu.html)
+[![导入增强模块](https://img.shields.io/badge/Grandpa%20Niu-直接安装到%20Shadowrocket-22c55e?style=for-the-badge)](shadowrocket://install?module=https%3A%2F%2Fraw.githubusercontent.com%2FGrandpaNiuu%2FScript-Hub-Grandpaniu%2Fmain%2Fmodules%2Fscript-hub-grandpaniu.sgmodule)
 
-可立即访问的网站入口：
-
-```text
-https://raw.githack.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/docs/index.html
-```
-
-Grandpa Niu 专属导入页：
+如果 GitHub 页面不允许直接打开 `shadowrocket://`，请复制下面的安装入口到 Safari 或 Shadowrocket 中打开：
 
 ```text
-https://raw.githack.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/docs/grandpa-niu.html
+shadowrocket://install?module=https%3A%2F%2Fraw.githubusercontent.com%2FGrandpaNiuu%2FScript-Hub-Grandpaniu%2Fmain%2Fmodules%2Fscript-hub-grandpaniu.sgmodule
 ```
 
 模块原始地址：
@@ -27,22 +21,20 @@ https://raw.githack.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/docs/grandpa-niu.
 https://raw.githubusercontent.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/modules/script-hub-grandpaniu.sgmodule
 ```
 
-Shadowrocket 安装入口：
-
-```text
-shadowrocket://install?module=https%3A%2F%2Fraw.githubusercontent.com%2FGrandpaNiuu%2FScript-Hub-Grandpaniu%2Fmain%2Fmodules%2Fscript-hub-grandpaniu.sgmodule
-```
-
 ## 网站
 
-网站文件在 `docs/`，当前 README 的按钮使用 RawGithack 作为立即可用入口，避免 GitHub Pages 未启用时出现 404。
+网站文件在 `docs/`，仓库会通过 GitHub Actions 发布到 GitHub Pages。
 
-如果要使用 GitHub Pages 正式域名，请在 GitHub Pages 中选择 `Deploy from a branch`，分支选 `main`，目录选 `/docs`。
-
-启用后访问：
+正式网站入口：
 
 ```text
 https://grandpaniuu.github.io/Script-Hub-Grandpaniu/
+```
+
+Grandpa Niu 专属导入页：
+
+```text
+https://grandpaniuu.github.io/Script-Hub-Grandpaniu/grandpa-niu.html
 ```
 
 网站提供：

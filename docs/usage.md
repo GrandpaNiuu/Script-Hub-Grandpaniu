@@ -4,27 +4,15 @@
 
 本仓库的网站文件在 `docs/` 目录。
 
-README 的主按钮使用下面这个立即可访问的入口，不依赖 GitHub Pages 是否已经启用：
+README 的主按钮直接使用 Shadowrocket 安装入口：
 
 ```text
-https://raw.githack.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/docs/index.html
+shadowrocket://install?module=https%3A%2F%2Fraw.githubusercontent.com%2FGrandpaNiuu%2FScript-Hub-Grandpaniu%2Fmain%2Fmodules%2Fscript-hub-grandpaniu.sgmodule
 ```
 
-Grandpa Niu 专属导入页：
+网站由 GitHub Actions 发布到 GitHub Pages。
 
-```text
-https://raw.githack.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/docs/grandpa-niu.html
-```
-
-如果希望使用 `grandpaniuu.github.io` 正式域名，请在 GitHub 仓库中手动启用 Pages：
-
-1. 打开 `Settings -> Pages`。
-2. `Build and deployment` 选择 `Deploy from a branch`。
-3. Branch 选择 `main`。
-4. Folder 选择 `/docs`。
-5. 保存。
-
-启用后访问：
+正式入口：
 
 ```text
 https://grandpaniuu.github.io/Script-Hub-Grandpaniu/
@@ -36,7 +24,7 @@ Grandpa Niu 专属导入页：
 https://grandpaniuu.github.io/Script-Hub-Grandpaniu/grandpa-niu.html
 ```
 
-不再使用 GitHub Actions 部署 Pages。原因是当前仓库 Actions 无法创建 Pages 站点，会出现 `Resource not accessible`，保留该 workflow 只会反复失败。
+如果 Pages 仍显示 404，请到仓库 `Settings -> Pages` 确认 Source 已选择 `GitHub Actions`，然后重新运行 `Deploy Pages`。
 
 ## 2. 安装 Shadowrocket 增强模块
 
