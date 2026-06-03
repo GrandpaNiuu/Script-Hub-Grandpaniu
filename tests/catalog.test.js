@@ -14,7 +14,7 @@ test("模块目录使用可安装的公开 URL", async () => {
     assert.equal(typeof item.id, "string");
     assert.equal(typeof item.name, "string");
     assert.equal(typeof item.url, "string");
-    assert.match(item.url, /^https:\/\/raw\.githubusercontent\.com\//);
+    assert.match(item.url, /^https:\/\//);
     assert.ok(!ids.has(item.id), `重复模块 ID: ${item.id}`);
     ids.add(item.id);
     new URL(item.url);

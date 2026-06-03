@@ -5,3 +5,8 @@ export {
   toShadowrocketInstallPayload
 } from "./converter.js";
 export { recognizeExternalModule } from "./recognizer.js";
+export {
+  CORE_SECTIONS,
+  buildShadowrocketModule,
+  parseModuleContent
+} from "./module-parser.js";

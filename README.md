@@ -1,38 +1,15 @@
 # Script-Hub-Grandpaniu
 
-中文化的 Script Hub 增强模块项目。
+中文化的 Script Hub 增强模块项目，用来把其他工具的模块、插件或 manifest 转成 Shadowrocket（小火箭）可导入的安装入口。
 
-项目目标：识别其他工具的模块、插件或 manifest，并转换成 Shadowrocket（小火箭）可导入的安装入口。
-
-上游授权记录：  
+已获得 Script Hub 上游维护者允许继续开发：  
 https://github.com/Script-Hub-Org/Script-Hub/issues/56
 
-## 一键安装网站
+## 一键导入
 
-仓库提供静态网站文件，位置在 `docs/`。
+[![导入增强模块](https://img.shields.io/badge/Grandpa%20Niu-一键导入%20Shadowrocket-22c55e?style=for-the-badge)](https://grandpaniuu.github.io/Script-Hub-Grandpaniu/grandpa-niu.html)
 
-启用方式：
-
-1. 进入仓库 `Settings -> Pages`。
-2. `Build and deployment` 选择 `Deploy from a branch`。
-3. Branch 选择 `main`，目录选择 `/docs`。
-4. 保存后访问：
-
-```text
-https://grandpaniuu.github.io/Script-Hub-Grandpaniu/
-```
-
-说明：本仓库不再使用 GitHub Actions 部署 Pages，因为当前仓库权限会导致 `Resource not accessible`，继续保留会反复红叉。
-
-网站功能：
-
-- 粘贴公开模块 URL，一键跳转到 Shadowrocket 安装。
-- 搜索已收集的公开模块。
-- 使用 HTTPS 跳转页桥接到 `shadowrocket://install?...`。
-
-## 安装增强模块
-
-模块地址：
+模块原始地址：
 
 ```text
 https://raw.githubusercontent.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/modules/script-hub-grandpaniu.sgmodule
@@ -44,35 +21,67 @@ Shadowrocket 安装入口：
 shadowrocket://install?module=https%3A%2F%2Fraw.githubusercontent.com%2FGrandpaNiuu%2FScript-Hub-Grandpaniu%2Fmain%2Fmodules%2Fscript-hub-grandpaniu.sgmodule
 ```
 
-安装模块后，也可以在 Shadowrocket 环境中访问：
+## 网站
+
+网站文件在 `docs/`，建议在 GitHub Pages 中选择 `Deploy from a branch`，分支选 `main`，目录选 `/docs`。
+
+启用后访问：
 
 ```text
-https://grandpaniu.script-hub.local/install?url=<需要转换的模块URL>
+https://grandpaniuu.github.io/Script-Hub-Grandpaniu/
 ```
 
-## 当前能力
+网站提供：
 
-- 识别 Surge / Shadowrocket `.sgmodule`
-- 识别 Loon `.plugin`
-- 识别 Stash `.stoverride`
-- 识别 Quantumult X `.conf` / rewrite 内容
-- 识别 Codex plugin manifest、Skill、MCP 配置和通用 JSON manifest
-- 生成 `shadowrocket://install?module=<模块URL>`
-- 提供可安装的 Shadowrocket 模块文件
-- 提供 Node.js CLI 和库 API
+- 模块库：展示当前可导入的公开模块。
+- URL 导入：粘贴任意 `.sgmodule`、`.module`、`.plugin`、`.conf` 链接，一键跳转到 Shadowrocket。
+- 内容分析：粘贴模块内容，分析 `General`、`Header Rewrite`、`URL Rewrite`、`Body Rewrite`、`Script`、`MITM` 等段落。
+- 转换输出：生成 Shadowrocket 模块文本，方便复制或保存。
+- Grandpa Niu 专属链接：`docs/grandpa-niu.html`。
 
-## CLI 使用
+说明：仓库不再使用 GitHub Actions 部署 Pages，因为当前仓库权限会导致 `Resource not accessible`。保留失败 workflow 只会反复红叉。
 
-把任意外部模块 URL 转成小火箭安装入口：
+## 当前支持的模块结构
+
+转换器会识别和保留这些关键段：
+
+- `General`
+- `Header Rewrite`
+- `URL Rewrite`
+- `Body Rewrite`
+- `Script`
+- `MITM`
+- `Rule`
+- `Host`
+- `Map Local`
+
+## Script-Hub 官方脚本接入
+
+增强模块引用 Script-Hub 官方脚本地址，不内嵌官方源码：
+
+- `script-hub.js`
+- `Rewrite-Parser.js`
+- `rule-parser.js`
+- `script-converter.js`
+
+模块还加入了 Kelee / PluginHub 页面中的常见导入链接改写：
+
+- Quantumult X rewrite 链接 -> Shadowrocket 模块
+- Surge `.sgmodule` / `.module` 链接 -> Shadowrocket 模块
+- Loon `.plugin` / `.lpx` 链接 -> Shadowrocket 模块
+
+同时加入：
+
+```text
+force-http-engine-hosts = %APPEND% script.hub, *.script.hub
+```
+
+## CLI
+
+把外部模块 URL 转成小火箭安装入口：
 
 ```bash
 node src/cli.js enhance https://example.com/demo.sgmodule
-```
-
-输出：
-
-```text
-shadowrocket://install?module=https%3A%2F%2Fexample.com%2Fdemo.sgmodule
 ```
 
 递归扫描本地示例并输出安装 URL：
@@ -91,27 +100,19 @@ npm test
 
 ## 项目结构
 
-- `docs/index.html`：一键安装网站
-- `docs/redirect.html`：HTTPS 到 `shadowrocket://` 的跳转页
+- `docs/index.html`：模块导入与转换网站
+- `docs/redirect.html`：HTTPS 到 `shadowrocket://` 的跳转桥
 - `docs/data/modules.json`：公开模块 URL 列表
 - `modules/script-hub-grandpaniu.sgmodule`：Shadowrocket 增强模块
-- `scripts/script-hub-grandpaniu-enhance.js`：模块运行时脚本
-- `src/recognizer.js`：外部模块/插件识别器
-- `src/converter.js`：Shadowrocket 安装入口转换器
+- `scripts/script-hub-grandpaniu-enhance.js`：增强模块运行脚本
+- `src/module-parser.js`：模块段落解析与转换
+- `src/recognizer.js`：外部模块/插件识别
+- `src/converter.js`：Shadowrocket 安装入口生成
 - `tests/`：自动化测试
 
-## 模块列表
+## 维护规则
 
-模块列表只收录公开 URL，不复制第三方模块内容。第三方模块的可用性、安全性和合法性请自行判断。
-
-维护模块列表：
-
-```text
-docs/data/modules.json
-```
-
-## 授权和边界
-
-本项目是独立兼容性工具，不代表 Script Hub 官方立场。
-
-当前公开授权表示允许继续开发本项目。它不应被表述为官方背书、商标授权、排他许可，或复制 Script Hub 私有/非公开资产的许可，除非上游维护者另行明确授权。
+- 只收录公开 URL，不复制第三方模块内容。
+- 第三方模块可用性、安全性和合法性请自行判断。
+- 不声称本项目是 Script Hub 官方项目。
+- 授权和边界记录见 `docs/authorization.md`。

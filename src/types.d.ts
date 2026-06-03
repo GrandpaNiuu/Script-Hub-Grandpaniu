@@ -37,6 +37,12 @@ export interface RecognizeInput {
   content?: string;
 }
 
+export interface ParsedModuleContent {
+  metadata: Record<string, string>;
+  sections: Record<string, string[]>;
+  summary: Record<string, number>;
+}
+
 export function detectModule(targetPath: string): Promise<DetectedModule>;
 export function discoverModules(
   targetPath: string,
@@ -55,3 +61,9 @@ export function formatPayload(
   format?: "json" | "url" | "params"
 ): string;
 export function recognizeExternalModule(input: RecognizeInput): DetectedModule;
+export const CORE_SECTIONS: string[];
+export function parseModuleContent(content: string): ParsedModuleContent;
+export function buildShadowrocketModule(
+  parsed: ParsedModuleContent,
+  options?: { name?: string; description?: string; author?: string }
+): string;

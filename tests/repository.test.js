@@ -9,15 +9,21 @@ const textFiles = [
   "docs/architecture.md",
   "docs/authorization.md",
   "docs/roadmap.md",
-  "docs/statement.zh-CN.md"
+  "docs/statement.zh-CN.md",
+  "docs/index.html",
+  "docs/redirect.html",
+  "docs/grandpa-niu.html",
+  "modules/script-hub-grandpaniu.sgmodule",
+  "scripts/script-hub-grandpaniu-enhance.js"
 ];
+const conflictMarker = "<" + "<<<<<<";
 
 test("仓库文档没有乱码、冲突标记或截断链接", async () => {
   for (const file of textFiles) {
     const content = await readFile(file, "utf8");
-    assert.equal(content.includes("<<<<<<<"), false, `${file} 存在冲突标记`);
-    assert.equal(content.includes("�"), false, `${file} 存在替换字符`);
-    assert.equal(/[鏄潡鍦]/.test(content), false, `${file} 疑似中文乱码`);
+    assert.equal(content.includes(conflictMarker), false, `${file} 存在冲突标记`);
+    assert.equal(content.includes("\uFFFD"), false, `${file} 存在替换字符`);
+    assert.equal(/[\u93C4\uE21C\u6F61\u9366\u6D93]/.test(content), false, `${file} 疑似中文乱码`);
     assert.equal(/script-hub-grandpaniu\.\s*$/m.test(content), false, `${file} 存在截断模块链接`);
   }
 });

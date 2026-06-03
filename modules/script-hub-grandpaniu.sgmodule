@@ -1,10 +1,46 @@
 #!name=Script Hub Grandpaniu
-#!desc=识别其他工具的模块、插件 URL，并自动生成 Shadowrocket 安装入口。
+#!desc=基于 Script-Hub 官方脚本地址的 Shadowrocket 增强模块；识别 QX、Surge、Loon 等链接并转换为 Shadowrocket 模块安装入口。
 #!author=GrandpaNiu
 #!homepage=https://github.com/GrandpaNiuu/Script-Hub-Grandpaniu
 
+[General]
+# 让 script.hub 虚拟域名走 HTTP 引擎，Script-Hub 才能接管转换请求。
+force-http-engine-hosts = %APPEND% script.hub, *.script.hub
+
+[Header Rewrite]
+# 防止插件中心接口缓存，确保正文替换可以命中最新内容。
+http-request ^https?:\/\/(?:hub|pluginhub)\.kelee\.one\/.* header-del if-none-match
+http-request ^https?:\/\/(?:hub|pluginhub)\.kelee\.one\/.* header-del if-modified-since
+
+[URL Rewrite]
+# Quantumult X 重写链接 -> Shadowrocket 模块
+# 示例：quantumult-x:///add-resource?remote-resource=https://example.com/xxx.conf&resource-type=rewrite
+http-response ^https?:\/\/(?:hub|pluginhub)\.kelee\.one\/.* quantumult-x:\/\/\/add-resource\?remote-resource=(https?:\/\/[^"'\\s<>]+?)&resource-type=rewrite shadowrocket://install?module=http://script.hub/file/_start_/$1/_end_/auto-qx.sgmodule%3Ftype%3Dqx-rewrite%26target%3Dshadowrocket-module%26del%3Dtrue%26jqEnabled%3Dtrue
+
+# Surge 模块链接 -> Shadowrocket 模块
+# 示例：surge:///install-module?url=https://example.com/xxx.sgmodule
+http-response ^https?:\/\/(?:hub|pluginhub)\.kelee\.one\/.* surge:\/\/\/install-module\?url=(https?:\/\/[^"'\\s<>]+?\.(?:sgmodule|module)) shadowrocket://install?module=http://script.hub/file/_start_/$1/_end_/auto-surge.sgmodule%3Ftype%3Dsurge-module%26target%3Dshadowrocket-module%26del%3Dtrue%26jqEnabled%3Dtrue
+
+# Loon 插件链接 -> Shadowrocket 模块
+# 示例：loon://import?plugin=https://example.com/xxx.plugin
+http-response ^https?:\/\/(?:hub|pluginhub)\.kelee\.one\/.* loon:\/\/import\?plugin=(https?:\/\/[^"'\\s&<>]+?\.(?:plugin|lpx)) shadowrocket://install?module=http://script.hub/file/_start_/$1/_end_/auto-loon.sgmodule%3Ftype%3Dloon-plugin%26target%3Dshadowrocket-module%26del%3Dtrue%26jqEnabled%3Dtrue
+
+# Kelee Loon 插件中心 lpx 链接 -> Shadowrocket 模块
+http-response ^https?:\/\/(?:hub|pluginhub)\.kelee\.one\/.* (https?:\/\/kelee\.one\/Tool\/Loon\/Lpx\/([^"'\\s&<>]+?)\.lpx) shadowrocket://install?module=http://script.hub/file/_start_/$1/_end_/$2.sgmodule%3Ftype%3Dloon-plugin%26target%3Dshadowrocket-module%26del%3Dtrue%26jqEnabled%3Dtrue
+
+[Body Rewrite]
+# 保留响应体改写段，网站转换器会完整识别并保留 Body Rewrite 内容。
+# 实际第三方模块中的 body rewrite 规则应通过 Script-Hub 转换链进入 Shadowrocket 模块。
+
 [Script]
-Grandpaniu_Enhance = type=http-request,pattern=^https?:\/\/grandpaniu\.script-hub\.local\/install,requires-body=0,script-path=https://raw.githubusercontent.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/scripts/script-hub-grandpaniu-enhance.js,timeout=10
+# 以下 4 行来自 Script-Hub 官方 Shadowrocket 模块思路；本模块只引用官方脚本地址，不内嵌源码。
+Script Hub: 前端 = type=http-request, pattern=^https?:\/\/script\.hub\/($|edit\/|reload), script-path=https://raw.githubusercontent.com/Script-Hub-Org/Script-Hub/main/script-hub.js, timeout=300
+Script Hub: 重写转换 = type=http-request, pattern=^https?:\/\/script\.hub\/file\/_start_\/.+type=(?:qx-rewrite|surge-module|loon-plugin|all-module), script-path=https://raw.githubusercontent.com/Script-Hub-Org/Script-Hub/main/Rewrite-Parser.js, timeout=300
+Script Hub: 规则集转换 = type=http-request, pattern=^https?:\/\/script\.hub\/file\/_start_\/.+type=rule-set, script-path=https://raw.githubusercontent.com/Script-Hub-Org/Script-Hub/main/rule-parser.js, timeout=300
+Script Hub: 脚本转换 = type=http-request, pattern=^https?:\/\/script\.hub\/convert\/, script-path=https://raw.githubusercontent.com/Script-Hub-Org/Script-Hub/main/script-converter.js, timeout=300
+
+# Grandpa Niu 本地增强入口
+Grandpaniu: 链接分析 = type=http-request, pattern=^https?:\/\/grandpaniu\.script-hub\.local\/install, requires-body=0, script-path=https://raw.githubusercontent.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/scripts/script-hub-grandpaniu-enhance.js, timeout=30
 
 [MITM]
-hostname = grandpaniu.script-hub.local
+hostname = script.hub, *.script.hub, hub.kelee.one, pluginhub.kelee.one, kelee.one, grandpaniu.script-hub.local

@@ -18,6 +18,12 @@
 https://grandpaniuu.github.io/Script-Hub-Grandpaniu/
 ```
 
+Grandpa Niu 专属导入页：
+
+```text
+https://grandpaniuu.github.io/Script-Hub-Grandpaniu/grandpa-niu.html
+```
+
 不再使用 GitHub Actions 部署 Pages。原因是当前仓库 Actions 无法创建 Pages 站点，会出现 `Resource not accessible`，保留该 workflow 只会反复失败。
 
 ## 2. 安装 Shadowrocket 增强模块

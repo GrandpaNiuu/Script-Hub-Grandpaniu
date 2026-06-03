@@ -5,113 +5,214 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Script Hub Grandpaniu</title>
   <style>
-    :root{color-scheme:dark;--bg:#0b1120;--panel:#111827;--muted:#94a3b8;--text:#e5e7eb;--line:#243044;--green:#22c55e;--blue:#38bdf8}
+    :root{color-scheme:dark;--bg:#0b1120;--panel:#111827;--muted:#94a3b8;--text:#e5e7eb;--line:#243044;--green:#22c55e;--blue:#38bdf8;--red:#fb7185}
     *{box-sizing:border-box}
     body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text)}
-    header{padding:28px 20px;border-bottom:1px solid var(--line);background:#0f172a}
-    main{max-width:1080px;margin:0 auto;padding:24px 20px 48px}
-    .head-inner{max-width:1080px;margin:0 auto}
-    h1{margin:0 0 8px;font-size:28px}
-    h2{font-size:20px;margin:28px 0 12px}
+    header{background:#0f172a;border-bottom:1px solid var(--line);padding:28px 20px}
+    main,.inner{max-width:1120px;margin:0 auto}
+    main{padding:24px 20px 48px}
+    h1{font-size:28px;margin:0 0 8px}
+    h2{font-size:20px;margin:26px 0 12px}
+    h3{font-size:16px;margin:0 0 8px}
     p{line-height:1.7;color:#cbd5e1}
-    .toolbar{display:grid;grid-template-columns:1fr auto;gap:10px;margin:18px 0}
-    input{width:100%;min-height:44px;border:1px solid var(--line);border-radius:10px;background:#0f172a;color:var(--text);padding:0 12px;font-size:16px}
-    button,.btn{min-height:44px;border:0;border-radius:10px;padding:0 14px;background:var(--green);color:#052e16;font-weight:800;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;cursor:pointer}
-    .btn.secondary{background:#1f2937;color:#dbeafe;border:1px solid var(--line)}
-    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
+    textarea,input{width:100%;border:1px solid var(--line);border-radius:8px;background:#0f172a;color:var(--text);font:14px ui-monospace,SFMono-Regular,Consolas,monospace;padding:12px}
+    input{min-height:44px;font-family:inherit;font-size:15px}
+    textarea{min-height:220px;resize:vertical}
+    button,.btn{min-height:42px;border:0;border-radius:8px;padding:0 14px;background:var(--green);color:#052e16;font-weight:800;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;cursor:pointer}
+    .btn.secondary,button.secondary{background:#1f2937;color:#dbeafe;border:1px solid var(--line)}
+    .btn.warn{background:#f59e0b;color:#1f1300}
+    .tabs{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 18px}
+    .tab{background:#111827;color:#cbd5e1;border:1px solid var(--line)}
+    .tab.active{background:var(--blue);color:#082f49}
+    .panel{display:none}
+    .panel.active{display:block}
+    .toolbar{display:grid;grid-template-columns:1fr auto auto;gap:10px;margin:14px 0}
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:12px}
     .card{border:1px solid var(--line);border-radius:8px;background:var(--panel);padding:14px}
-    .card h3{margin:0 0 8px;font-size:16px}
     .meta{font-size:13px;color:var(--muted);margin-bottom:10px}
     .actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
-    code{color:#93c5fd;word-break:break-all}
     .notice{border:1px solid #334155;border-radius:8px;background:#0f172a;padding:12px}
-    @media (max-width:640px){.toolbar{grid-template-columns:1fr}.actions{grid-template-columns:1fr}h1{font-size:24px}}
+    code,pre{color:#93c5fd;word-break:break-all}
+    pre{white-space:pre-wrap;border:1px solid var(--line);border-radius:8px;background:#0f172a;padding:12px;max-height:360px;overflow:auto}
+    .summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin:12px 0}
+    .pill{border:1px solid var(--line);border-radius:8px;background:#0f172a;padding:10px}
+    .pill strong{display:block;font-size:20px;margin-top:4px}
+    @media (max-width:700px){.toolbar{grid-template-columns:1fr}.actions{grid-template-columns:1fr}h1{font-size:24px}}
   </style>
 </head>
 <body>
   <header>
-    <div class="head-inner">
+    <div class="inner">
       <h1>Script Hub Grandpaniu</h1>
-      <p>收集公开模块 URL，并提供一键跳转到 Shadowrocket 自动安装的按钮。</p>
+      <p>模块导入、模块分析、Shadowrocket 转换工具。</p>
     </div>
   </header>
   <main>
-    <section>
-      <h2>自定义模块一键安装</h2>
-      <div class="toolbar">
-        <input id="custom-url" placeholder="粘贴 .sgmodule / .module / .plugin / .conf URL">
-        <button id="custom-install">生成并安装</button>
-      </div>
-      <p class="notice">提示：GitHub README 不能稳定打开 <code>shadowrocket://</code>，本页会先跳到普通 HTTPS redirect 页面，再唤起 Shadowrocket。</p>
-    </section>
+    <nav class="tabs">
+      <button class="tab active" data-tab="catalog">模块库</button>
+      <button class="tab" data-tab="url">URL 导入</button>
+      <button class="tab" data-tab="convert">内容分析与转换</button>
+    </nav>
 
-    <section>
-      <h2>可安装模块列表</h2>
+    <section id="catalog" class="panel active">
+      <h2>可导入模块</h2>
       <div class="toolbar">
-        <input id="search" placeholder="搜索名称、分类、来源">
-        <button id="refresh">刷新列表</button>
+        <input id="search" placeholder="搜索名称、分类、来源、URL">
+        <button id="refresh" class="secondary">刷新</button>
+        <a class="btn warn" id="install-self" href="#">导入本增强模块</a>
       </div>
       <div id="modules" class="grid"></div>
+    </section>
+
+    <section id="url" class="panel">
+      <h2>粘贴 URL 一键导入</h2>
+      <div class="toolbar">
+        <input id="custom-url" placeholder="https://example.com/demo.sgmodule">
+        <button id="custom-install">生成并安装</button>
+        <button id="custom-copy" class="secondary">复制安装链接</button>
+      </div>
+      <p class="notice">支持 `.sgmodule`、`.module`、`.plugin`、`.conf` 等公开 URL。按钮会先打开 HTTPS 跳转页，再唤起 Shadowrocket。</p>
+      <pre id="url-output"></pre>
+    </section>
+
+    <section id="convert" class="panel">
+      <h2>内容分析与转换</h2>
+      <p>粘贴模块内容后，会分析并保留 General、Header Rewrite、URL Rewrite、Body Rewrite、Script、MITM 等段。</p>
+      <textarea id="module-content" placeholder="#!name=Demo&#10;[General]&#10;...&#10;[Header Rewrite]&#10;...&#10;[Body Rewrite]&#10;...&#10;[Script]&#10;...&#10;[MITM]&#10;hostname = example.com"></textarea>
+      <div class="toolbar">
+        <input id="module-name" placeholder="输出模块名称，默认读取 #!name">
+        <button id="analyze">分析并转换</button>
+        <button id="copy-output" class="secondary">复制输出</button>
+      </div>
+      <div id="summary" class="summary"></div>
+      <h3>转换后的 Shadowrocket 模块</h3>
+      <pre id="converted"></pre>
     </section>
   </main>
 
   <script>
-    const list = document.getElementById("modules");
-    const search = document.getElementById("search");
-    const customUrl = document.getElementById("custom-url");
+    const CORE_SECTIONS = ["General","Header Rewrite","URL Rewrite","Body Rewrite","Script","MITM"];
+    const aliases = new Map([
+      ["general","General"],["header rewrite","Header Rewrite"],["header-rewrite","Header Rewrite"],
+      ["rewrite","URL Rewrite"],["url rewrite","URL Rewrite"],["url-rewrite","URL Rewrite"],
+      ["body rewrite","Body Rewrite"],["body-rewrite","Body Rewrite"],["script","Script"],
+      ["mitm","MITM"],["rule","Rule"],["host","Host"],["map local","Map Local"],["map-local","Map Local"]
+    ]);
     const pageBase = location.href.replace(/\/(?:index\.html)?(?:[?#].*)?$/, "/");
+    const selfModuleUrl = "https://raw.githubusercontent.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/modules/script-hub-grandpaniu.sgmodule";
     let modules = [];
 
-    function installUrl(url) {
+    function shadowrocketInstallUrl(url) {
       return "shadowrocket://install?module=" + encodeURIComponent(url);
     }
-
     function redirectUrl(url) {
-      return pageBase + "redirect.html?url=" + encodeURIComponent(installUrl(url));
+      return pageBase + "redirect.html?url=" + encodeURIComponent(shadowrocketInstallUrl(url));
     }
+    function escapeHtml(value) {
+      return String(value).replace(/[&<>"']/g, char => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[char]));
+    }
+    function setTab(name) {
+      document.querySelectorAll(".tab").forEach(btn => btn.classList.toggle("active", btn.dataset.tab === name));
+      document.querySelectorAll(".panel").forEach(panel => panel.classList.toggle("active", panel.id === name));
+    }
+    document.querySelectorAll(".tab").forEach(btn => btn.addEventListener("click", () => setTab(btn.dataset.tab)));
 
-    function render() {
-      const keyword = search.value.trim().toLowerCase();
-      const filtered = modules.filter(item => {
-        const text = [item.name,item.category,item.source,item.description,item.url].join(" ").toLowerCase();
-        return !keyword || text.includes(keyword);
-      });
-      list.innerHTML = filtered.map(item => `
+    async function loadCatalog() {
+      const response = await fetch("data/modules.json", { cache: "no-store" });
+      const data = await response.json();
+      modules = data.modules || [];
+      renderCatalog();
+    }
+    function renderCatalog() {
+      const keyword = document.getElementById("search").value.trim().toLowerCase();
+      const filtered = modules.filter(item => [item.name,item.category,item.source,item.description,item.url].join(" ").toLowerCase().includes(keyword));
+      document.getElementById("modules").innerHTML = filtered.map(item => `
         <article class="card">
           <h3>${escapeHtml(item.name)}</h3>
           <div class="meta">${escapeHtml(item.category)} · ${escapeHtml(item.type)} · ${escapeHtml(item.source)}</div>
           <p>${escapeHtml(item.description || "")}</p>
           <code>${escapeHtml(item.url)}</code>
           <div class="actions">
-            <a class="btn" href="${redirectUrl(item.url)}">一键安装</a>
+            <a class="btn" href="${redirectUrl(item.url)}">一键导入</a>
             <a class="btn secondary" href="${escapeHtml(item.url)}">查看原始文件</a>
           </div>
         </article>
       `).join("") || "<p>没有匹配的模块。</p>";
     }
 
-    function escapeHtml(value) {
-      return String(value).replace(/[&<>"']/g, char => ({
-        "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"
-      }[char]));
+    function parseModuleContent(content) {
+      const metadata = {};
+      const sections = {};
+      let currentSection;
+      for (const rawLine of String(content || "").replace(/\r\n/g, "\n").split("\n")) {
+        const line = rawLine.trimEnd();
+        const trimmed = line.trim();
+        if (!trimmed) continue;
+        const meta = /^#!\s*([^=]+?)\s*=\s*(.*)$/.exec(trimmed);
+        if (meta) {
+          metadata[meta[1].trim().toLowerCase()] = meta[2].trim();
+          continue;
+        }
+        const section = /^\[([^\]]+)\]$/.exec(trimmed);
+        if (section) {
+          currentSection = aliases.get(section[1].trim().toLowerCase()) || section[1].trim();
+          sections[currentSection] ||= [];
+          continue;
+        }
+        if (currentSection) sections[currentSection].push(line);
+      }
+      const summary = {};
+      for (const name of CORE_SECTIONS) summary[name] = sections[name]?.length || 0;
+      for (const [name, rows] of Object.entries(sections)) summary[name] ??= rows.length;
+      return { metadata, sections, summary };
+    }
+    function buildModule(parsed, nameOverride) {
+      const name = nameOverride || parsed.metadata.name || "Script Hub Converted Module";
+      const desc = parsed.metadata.desc || "Converted by Script Hub Grandpaniu";
+      const lines = [`#!name=${name}`, `#!desc=${desc}`, "#!author=GrandpaNiu", ""];
+      const ordered = [...CORE_SECTIONS, ...Object.keys(parsed.sections).filter(name => !CORE_SECTIONS.includes(name))];
+      for (const section of ordered) {
+        const rows = parsed.sections[section] || [];
+        if (!rows.length) continue;
+        lines.push(`[${section}]`, ...rows, "");
+      }
+      return lines.join("\n").trimEnd() + "\n";
     }
 
-    async function load() {
-      const response = await fetch("data/modules.json", { cache: "no-store" });
-      const data = await response.json();
-      modules = data.modules || [];
-      render();
+    function analyze() {
+      const parsed = parseModuleContent(document.getElementById("module-content").value);
+      const output = buildModule(parsed, document.getElementById("module-name").value.trim());
+      document.getElementById("converted").textContent = output;
+      document.getElementById("summary").innerHTML = Object.entries(parsed.summary).map(([name,count]) => `
+        <div class="pill">${escapeHtml(name)}<strong>${count}</strong></div>
+      `).join("");
+    }
+    function updateCustomUrl() {
+      const url = document.getElementById("custom-url").value.trim();
+      const output = url ? shadowrocketInstallUrl(url) : "";
+      document.getElementById("url-output").textContent = output;
+      return output;
     }
 
+    document.getElementById("install-self").href = redirectUrl(selfModuleUrl);
+    document.getElementById("search").addEventListener("input", renderCatalog);
+    document.getElementById("refresh").addEventListener("click", loadCatalog);
+    document.getElementById("custom-url").addEventListener("input", updateCustomUrl);
     document.getElementById("custom-install").addEventListener("click", () => {
-      const url = customUrl.value.trim();
-      if (!url) return;
-      location.href = redirectUrl(url);
+      const url = document.getElementById("custom-url").value.trim();
+      if (url) location.href = redirectUrl(url);
     });
-    document.getElementById("refresh").addEventListener("click", load);
-    search.addEventListener("input", render);
-    load().catch(error => {
-      list.innerHTML = `<p>模块列表加载失败：${escapeHtml(error.message)}</p>`;
+    document.getElementById("custom-copy").addEventListener("click", async () => {
+      const text = updateCustomUrl();
+      if (text) await navigator.clipboard.writeText(text);
+    });
+    document.getElementById("analyze").addEventListener("click", analyze);
+    document.getElementById("copy-output").addEventListener("click", async () => {
+      const text = document.getElementById("converted").textContent;
+      if (text) await navigator.clipboard.writeText(text);
+    });
+    loadCatalog().catch(error => {
+      document.getElementById("modules").innerHTML = `<p>模块列表加载失败：${escapeHtml(error.message)}</p>`;
     });
   </script>
 </body>

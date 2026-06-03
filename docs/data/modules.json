@@ -37,6 +37,69 @@
       "description": "公开 YouTube 增强模块，使用前请自行确认适用范围。",
       "url": "https://raw.githubusercontent.com/Maasea/sgmodule/master/YouTube.Enhance.sgmodule",
       "source": "Maasea/sgmodule"
+    },
+    {
+      "id": "skk-mitm-hostnames",
+      "name": "Sukka MITM Hostnames",
+      "category": "MITM",
+      "type": "sgmodule",
+      "description": "Sukka 规则集公开 MITM hostnames 模块。",
+      "url": "https://ruleset.skk.moe/Modules/sukka_mitm_hostnames.sgmodule",
+      "source": "Sukka Ruleset"
+    },
+    {
+      "id": "skk-mitm-all-hostnames",
+      "name": "Sukka MITM All Hostnames",
+      "category": "MITM",
+      "type": "sgmodule",
+      "description": "Sukka 规则集公开完整 MITM hostnames 模块。",
+      "url": "https://ruleset.skk.moe/Modules/sukka_mitm_all_hostnames.sgmodule",
+      "source": "Sukka Ruleset"
+    },
+    {
+      "id": "skk-enhance-adblock",
+      "name": "Sukka Enhance AdBlock",
+      "category": "规则与去广告",
+      "type": "sgmodule",
+      "description": "Sukka 规则集公开增强去广告模块。",
+      "url": "https://ruleset.skk.moe/Modules/sukka_enhance_adblock.sgmodule",
+      "source": "Sukka Ruleset"
+    },
+    {
+      "id": "skk-url-redirect",
+      "name": "Sukka URL Redirect",
+      "category": "Rewrite",
+      "type": "sgmodule",
+      "description": "Sukka 规则集公开 URL Redirect 模块。",
+      "url": "https://ruleset.skk.moe/Modules/sukka_url_redirect.sgmodule",
+      "source": "Sukka Ruleset"
+    },
+    {
+      "id": "skk-url-rewrite",
+      "name": "Sukka URL Rewrite",
+      "category": "Rewrite",
+      "type": "sgmodule",
+      "description": "Sukka 规则集公开 URL Rewrite 模块。",
+      "url": "https://ruleset.skk.moe/Modules/sukka_url_rewrite.sgmodule",
+      "source": "Sukka Ruleset"
+    },
+    {
+      "id": "skk-local-dns-mapping",
+      "name": "Sukka Local DNS Mapping",
+      "category": "General",
+      "type": "sgmodule",
+      "description": "Sukka 规则集公开本地 DNS 映射模块。",
+      "url": "https://ruleset.skk.moe/Modules/sukka_local_dns_mapping.sgmodule",
+      "source": "Sukka Ruleset"
+    },
+    {
+      "id": "skk-disable-netease-music-update",
+      "name": "Sukka Disable Netease Music Update",
+      "category": "应用辅助",
+      "type": "sgmodule",
+      "description": "Sukka 规则集公开网易云音乐更新检查处理模块。",
+      "url": "https://ruleset.skk.moe/Modules/sukka_disable_netease_music_v2_update_check.sgmodule",
+      "source": "Sukka Ruleset"
     }
   ]
 }
