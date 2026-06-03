@@ -1,8 +1,6 @@
 # Script Hub Authorization Record
 
-Requester:GrandpaNiu
-
-To be filled by the maintainer or publisher.
+Requester: GrandpaNiu
 
 Project: Script Hub Rocket Adapter
 
@@ -28,19 +26,28 @@ Boundaries:
 
 Authorization status:
 
-Pending. Permission request submitted to upstream Script Hub maintainers:
+Authorized for continued development. Permission request and maintainer response:
 
 https://github.com/Script-Hub-Org/Script-Hub/issues/56
 
+Direct response:
+
+https://github.com/Script-Hub-Org/Script-Hub/issues/56#issuecomment-4615584271
+
 Authorized by:
 
-Not yet granted.
+xream, contributor/maintainer in the Script-Hub-Org/Script-Hub repository.
 
 Date:
 
-Request submitted on 2026-06-04.
+Request submitted on 2026-06-04. Authorization response received on 2026-06-04.
 
 Notes:
 
-When permission is granted, replace the pending fields above with the grant
-details and keep the original written approval in project records.
+The public response says: "Please feel free to continue development."
+
+This record documents permission to continue development of the independent
+compatibility adapter. It should not be represented as an exclusive license,
+official endorsement, trademark grant, or permission to copy private/non-public
+Script Hub assets unless the upstream maintainers grant those permissions
+separately.

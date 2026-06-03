@@ -33,15 +33,16 @@ node src/cli.js ./path/to/plugin \
 
 ## Script Hub Authorization Notice
 
-If this adapter is built into Script Hub or distributed as an official Script Hub
-module, the maintainer should obtain permission from the relevant Script Hub
-rights holder first. If formal permission is not yet available, the project must
-at minimum carry a clear declaration that it is an independent compatibility
-prototype and does not bundle Script Hub code or assets.
+The upstream Script Hub maintainer has publicly allowed continued development in
+the permission request issue:
+
+https://github.com/Script-Hub-Org/Script-Hub/issues/56
 
 - `NOTICE.md`
 - `docs/authorization.md`
 - `docs/statement.zh-CN.md`
 
-Until authorization is recorded, the adapter should be presented as an
-independent compatibility tool, not an official Script Hub module.
+This project remains an independent compatibility tool. The authorization record
+does not grant official endorsement, trademark rights, or permission to copy
+private/non-public Script Hub assets unless those permissions are granted
+separately.

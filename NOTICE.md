@@ -4,17 +4,15 @@ This repository is an independent adapter prototype.
 
 It does not embed, redistribute, or modify Script Hub source code, private APIs,
 bundled scripts, paid content, or third-party module assets. Integration with
-Script Hub should be enabled only after the relevant maintainer or rights holder
-grants permission, or where the upstream license clearly allows it.
+Script Hub should stay within the scope of the public authorization recorded in
+`docs/authorization.md`, or within the scope clearly allowed by the upstream
+license.
 
-Before publishing a release that claims built-in Script Hub support, keep a
-written authorization record in `docs/authorization.md` and update this notice
-with:
+Authorization status:
 
-- the authorizing person or organization
-- the authorized scope
-- the authorization date
-- any attribution text required by the authorizer
+- Permission request: https://github.com/Script-Hub-Org/Script-Hub/issues/56
+- Maintainer response: https://github.com/Script-Hub-Org/Script-Hub/issues/56#issuecomment-4615584271
+- Recorded in: `docs/authorization.md`
 
-If authorization is not granted, this project should remain a standalone adapter
-that accepts user-provided manifests and URLs.
+This project remains an independent compatibility adapter unless the upstream
+maintainers separately approve official or built-in Script Hub status.
