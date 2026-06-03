@@ -1,105 +1,123 @@
 {
   "updatedAt": "2026-06-04",
-  "notice": "仅收录公开 URL，不复制模块内容。第三方模块可用性、安全性和合法性请自行判断。",
+  "notice": "精选公开模块源，只收录来源明确、维护者清楚、适合 Shadowrocket 或可经 Script Hub 转换的公开 URL；不收录来路不明、破解类、灰产类模块。第三方模块请自行判断安全性和合法性。",
   "modules": [
     {
       "id": "grandpaniu-enhance",
       "name": "Script Hub Grandpaniu 增强模块",
       "category": "本仓库",
       "type": "sgmodule",
-      "description": "识别外部模块/插件 URL，并生成 Shadowrocket 安装入口。",
+      "description": "本项目主模块：识别外部模块/插件 URL，并生成 Shadowrocket 安装入口。",
       "url": "https://raw.githubusercontent.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/modules/script-hub-grandpaniu.sgmodule",
       "source": "GrandpaNiuu/Script-Hub-Grandpaniu"
     },
     {
+      "id": "script-hub-shadowrocket",
+      "name": "Script-Hub 官方 Shadowrocket 模块",
+      "category": "转换工具",
+      "type": "module",
+      "description": "Script-Hub 官方 Shadowrocket 模块，用于重写、规则集和脚本转换。",
+      "url": "https://raw.githubusercontent.com/Script-Hub-Org/Script-Hub/main/modules/script-hub.rocket.module",
+      "source": "Script-Hub-Org/Script-Hub"
+    },
+    {
+      "id": "script-hub-surge",
+      "name": "Script-Hub 官方 Surge 模块",
+      "category": "转换工具",
+      "type": "sgmodule",
+      "description": "Script-Hub 官方 Surge 模块；Shadowrocket 可直接尝试导入或通过转换入口处理。",
+      "url": "https://raw.githubusercontent.com/Script-Hub-Org/Script-Hub/main/modules/script-hub.surge.sgmodule",
+      "source": "Script-Hub-Org/Script-Hub"
+    },
+    {
+      "id": "sub-store",
+      "name": "Sub-Store 订阅管理模块",
+      "category": "订阅管理",
+      "type": "sgmodule",
+      "description": "Sub-Store 官方 Surge 模块，用于高级订阅管理。",
+      "url": "https://raw.githubusercontent.com/sub-store-org/Sub-Store/master/config/Surge.sgmodule",
+      "source": "sub-store-org/Sub-Store"
+    },
+    {
       "id": "boxjs",
       "name": "BoxJs 数据管理",
-      "category": "工具增强",
+      "category": "脚本管理",
       "type": "sgmodule",
-      "description": "脚本数据管理面板，常用于配合重写脚本管理配置。",
+      "description": "Chavy 的 BoxJs 模块，用于脚本数据、会话和配置管理。",
       "url": "https://raw.githubusercontent.com/chavyleung/scripts/master/box/rewrite/boxjs.rewrite.surge.sgmodule",
       "source": "chavyleung/scripts"
     },
     {
-      "id": "blackmatrix7-block-httpdns",
-      "name": "Block HTTPDNS",
-      "category": "系统辅助",
+      "id": "blackmatrix7-allinone",
+      "name": "blackmatrix7 AllInOne",
+      "category": "规则与重写",
       "type": "sgmodule",
-      "description": "阻止部分 App HTTPDNS 的 Shadowrocket 模块。",
-      "url": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rewrite/Shadowrocket/BlockHTTPDNS/BlockHTTPDNS.sgmodule",
+      "description": "blackmatrix7 的公开 Shadowrocket AllInOne 模块，包含规则、重写、脚本和 MITM。",
+      "url": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rewrite/Shadowrocket/AllInOne/AllInOne.sgmodule",
+      "source": "blackmatrix7/ios_rule_script"
+    },
+    {
+      "id": "blackmatrix7-advertising",
+      "name": "blackmatrix7 Advertising",
+      "category": "规则与去广告",
+      "type": "sgmodule",
+      "description": "blackmatrix7 公开广告重写模块。第三方去广告规则可能影响 App 功能，请自行测试。",
+      "url": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rewrite/Surge/Advertising/Advertising.sgmodule",
       "source": "blackmatrix7/ios_rule_script"
     },
     {
       "id": "maasea-youtube-enhance",
-      "name": "YouTube Enhance",
+      "name": "Maasea YouTube Enhance",
       "category": "媒体增强",
       "type": "sgmodule",
-      "description": "公开 YouTube 增强模块，使用前请自行确认适用范围。",
+      "description": "Maasea 的 YouTube 增强模块。作者说明主要基于 Surge 测试。",
       "url": "https://raw.githubusercontent.com/Maasea/sgmodule/master/YouTube.Enhance.sgmodule",
       "source": "Maasea/sgmodule"
     },
     {
-      "id": "skk-mitm-hostnames",
-      "name": "Sukka MITM Hostnames",
-      "category": "MITM",
+      "id": "maasea-youtube-lite",
+      "name": "Maasea YouTube Lite",
+      "category": "媒体增强",
       "type": "sgmodule",
-      "description": "Sukka 规则集公开 MITM hostnames 模块。",
-      "url": "https://ruleset.skk.moe/Modules/sukka_mitm_hostnames.sgmodule",
-      "source": "Sukka Ruleset"
+      "description": "Maasea 的 YouTube Lite 模块，适合更轻量的 YouTube 增强需求。",
+      "url": "https://raw.githubusercontent.com/Maasea/sgmodule/master/YouTube.Lite.sgmodule",
+      "source": "Maasea/sgmodule"
     },
     {
-      "id": "skk-mitm-all-hostnames",
-      "name": "Sukka MITM All Hostnames",
-      "category": "MITM",
+      "id": "maasea-bilibili-helper",
+      "name": "Maasea Bilibili Helper",
+      "category": "媒体增强",
       "type": "sgmodule",
-      "description": "Sukka 规则集公开完整 MITM hostnames 模块。",
-      "url": "https://ruleset.skk.moe/Modules/sukka_mitm_all_hostnames.sgmodule",
-      "source": "Sukka Ruleset"
+      "description": "Maasea 的 Bilibili Helper 模块。第三方模块请自行测试兼容性。",
+      "url": "https://raw.githubusercontent.com/Maasea/sgmodule/master/Bilibili.Helper.sgmodule",
+      "source": "Maasea/sgmodule"
     },
     {
-      "id": "skk-enhance-adblock",
-      "name": "Sukka Enhance AdBlock",
-      "category": "规则与去广告",
-      "type": "sgmodule",
-      "description": "Sukka 规则集公开增强去广告模块。",
-      "url": "https://ruleset.skk.moe/Modules/sukka_enhance_adblock.sgmodule",
-      "source": "Sukka Ruleset"
-    },
-    {
-      "id": "skk-url-redirect",
-      "name": "Sukka URL Redirect",
+      "id": "maasea-urlrewrite",
+      "name": "Maasea URLRewrite",
       "category": "Rewrite",
       "type": "sgmodule",
-      "description": "Sukka 规则集公开 URL Redirect 模块。",
-      "url": "https://ruleset.skk.moe/Modules/sukka_url_redirect.sgmodule",
-      "source": "Sukka Ruleset"
+      "description": "Maasea 的 URL Rewrite 模块。",
+      "url": "https://raw.githubusercontent.com/Maasea/sgmodule/master/URLRewrite.sgmodule",
+      "source": "Maasea/sgmodule"
     },
     {
-      "id": "skk-url-rewrite",
-      "name": "Sukka URL Rewrite",
-      "category": "Rewrite",
+      "id": "virgilclyne-general",
+      "name": "VirgilClyne General Settings Enhanced",
+      "category": "系统增强",
       "type": "sgmodule",
-      "description": "Sukka 规则集公开 URL Rewrite 模块。",
-      "url": "https://ruleset.skk.moe/Modules/sukka_url_rewrite.sgmodule",
-      "source": "Sukka Ruleset"
+      "description": "VirgilClyne GetSomeFries 公开 General Settings Enhanced 模块。",
+      "url": "https://raw.githubusercontent.com/VirgilClyne/GetSomeFries/main/sgmodule/General.sgmodule",
+      "source": "VirgilClyne/GetSomeFries"
     },
     {
-      "id": "skk-local-dns-mapping",
-      "name": "Sukka Local DNS Mapping",
-      "category": "General",
+      "id": "iringo-location",
+      "name": "iRingo Location Services",
+      "category": "Apple 服务",
       "type": "sgmodule",
-      "description": "Sukka 规则集公开本地 DNS 映射模块。",
-      "url": "https://ruleset.skk.moe/Modules/sukka_local_dns_mapping.sgmodule",
-      "source": "Sukka Ruleset"
-    },
-    {
-      "id": "skk-disable-netease-music-update",
-      "name": "Sukka Disable Netease Music Update",
-      "category": "应用辅助",
-      "type": "sgmodule",
-      "description": "Sukka 规则集公开网易云音乐更新检查处理模块。",
-      "url": "https://ruleset.skk.moe/Modules/sukka_disable_netease_music_v2_update_check.sgmodule",
-      "source": "Sukka Ruleset"
+      "description": "iRingo Location Services 模块，用于 Apple 定位服务相关增强。",
+      "url": "https://raw.githubusercontent.com/VirgilClyne/iRingo/main/sgmodule/Location.sgmodule",
+      "source": "VirgilClyne/iRingo"
     }
   ]
 }
