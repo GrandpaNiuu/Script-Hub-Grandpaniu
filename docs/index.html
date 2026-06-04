@@ -3,94 +3,126 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Script Hub Grandpaniu 模块</title>
+  <title>Script Hub Grandpaniu 工具站</title>
   <style>
-    :root{color-scheme:light;--bg:#f7f8fb;--text:#101113;--muted:#6b7280;--line:#e5e7eb;--card:#fff;--blue:#4f7cff;--green:#35a853;--red:#ef4444;--orange:#f59e0b;--shadow:0 10px 22px rgba(15,23,42,.14)}
+    :root{color-scheme:dark;--bg:#07111f;--panel:#0f172a;--card:#111827;--line:#263348;--text:#e5e7eb;--muted:#94a3b8;--green:#22c55e;--blue:#38bdf8;--yellow:#f59e0b;--red:#fb7185}
     *{box-sizing:border-box}
-    body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh}
-    main{max-width:860px;margin:0 auto;padding:56px 28px 88px}
-    .top{display:flex;flex-direction:column;align-items:center;text-align:center;margin-bottom:28px}
-    .logo-line{width:54px;height:10px;border-radius:99px;background:linear-gradient(90deg,#5b8cff,#7c5cff);margin-bottom:16px}
-    h1{font-size:42px;line-height:1.1;margin:0;font-weight:900;letter-spacing:.02em}
-    .version{margin-top:10px;color:#6b7280;font-size:13px;font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
-    .install-box{margin:26px auto 22px;max-width:720px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:var(--shadow)}
-    .install-box h2{font-size:18px;margin:0 0 8px}.install-box p{margin:0 0 12px;color:#4b5563;line-height:1.65;font-size:14px}
-    .actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}.btn{min-height:46px;border-radius:12px;border:0;background:#22c55e;color:#052e16;font-weight:900;font-size:15px;display:flex;align-items:center;justify-content:center;text-decoration:none;cursor:pointer}.btn.secondary{background:#eef2ff;color:#1e3a8a;border:1px solid #bfdbfe}.btn.dark{background:#111827;color:#fff}
-    .search-wrap{position:relative;margin:28px 0 34px}.search-wrap:before{content:"";position:absolute;inset:-2px;border-radius:12px;background:linear-gradient(90deg,#ef4444,#f59e0b,#22c55e,#3b82f6);z-index:0}.search-wrap input{position:relative;z-index:1;width:100%;height:58px;border:0;border-radius:10px;background:#fff;color:#111827;padding:0 18px;font-size:22px;outline:none}.search-wrap input::placeholder{color:#b5b5b5}
-    .section-title{display:flex;align-items:center;justify-content:space-between;margin:0 0 16px;color:#374151;font-size:14px}.section-title strong{font-size:18px;color:#111827}.section-title span{color:#6b7280}
-    .module-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px 18px}.module-button{min-height:96px;background:#fff;border:1px solid #e5e7eb;border-top:3px solid var(--blue);border-radius:10px;box-shadow:var(--shadow);padding:10px;display:flex;align-items:center;justify-content:center;text-align:center;color:#111827;font-size:20px;font-weight:600;line-height:1.28;text-decoration:none;cursor:pointer;transition:transform .12s ease,box-shadow .12s ease}.module-button:active{transform:scale(.98)}.module-button.risk-low{border-top-color:var(--green)}.module-button.risk-medium{border-top-color:var(--orange)}.module-button.risk-high{border-top-color:var(--red)}
-    .empty{display:none;margin:30px 0;padding:20px;border-radius:12px;background:#fff;border:1px solid var(--line);color:#6b7280;text-align:center}.notice{margin:28px 0 0;padding:16px;border-radius:14px;background:#fff;border:1px solid var(--line);box-shadow:var(--shadow);color:#4b5563;line-height:1.7;font-size:14px}.notice code{color:#2563eb;word-break:break-all}.toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:#111827;color:#fff;border-radius:999px;padding:10px 16px;font-weight:800;display:none;box-shadow:var(--shadow);z-index:20}
-    .modal{position:fixed;inset:0;background:rgba(15,23,42,.45);display:none;align-items:center;justify-content:center;padding:18px;z-index:30}.modal-card{width:min(520px,96vw);background:#fff;border-radius:18px;padding:20px;box-shadow:0 20px 60px rgba(0,0,0,.25)}.modal-card h3{margin:0 0 8px;font-size:22px}.modal-card p{color:#4b5563;line-height:1.65}.modal-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}.small{font-size:13px;color:#6b7280;margin-top:12px;word-break:break-all}
-    @media(max-width:720px){main{padding:46px 30px 90px}h1{font-size:38px}.module-grid{gap:24px 14px}.module-button{min-height:86px;font-size:18px}.actions,.modal-actions{grid-template-columns:1fr}.search-wrap input{height:56px;font-size:20px}}
-    @media(max-width:420px){main{padding-left:22px;padding-right:22px}.module-grid{grid-template-columns:repeat(3,1fr);gap:22px 10px}.module-button{min-height:78px;font-size:16px;padding:8px}.install-box{padding:14px}}
+    body{margin:0;background:radial-gradient(circle at top,#172033 0,#07111f 46%,#050912 100%);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+    a{color:#93c5fd;text-decoration:none}p{line-height:1.7;color:#cbd5e1}
+    header{padding:30px 18px;border-bottom:1px solid var(--line);background:rgba(15,23,42,.9)}main,.inner{max-width:1050px;margin:0 auto}main{padding:22px 18px 50px}
+    h1{font-size:30px;margin:0 0 8px}h2{font-size:20px;margin:0 0 12px}h3{font-size:16px;margin:12px 0 8px}
+    .version{display:inline-block;margin-top:10px;padding:6px 10px;border:1px solid #14532d;border-radius:999px;color:#86efac;background:#052e16;font:12px ui-monospace,SFMono-Regular,Consolas,monospace}
+    .tabs{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 18px}.tab{border:1px solid var(--line);background:#111827;color:#dbeafe;border-radius:10px;min-height:42px;padding:0 14px;font-weight:800;cursor:pointer}.tab.active{background:var(--blue);color:#082f49}
+    .panel{display:none}.panel.active{display:block}.box{background:rgba(17,24,39,.92);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:14px}
+    textarea,input,select{width:100%;border:1px solid var(--line);background:#020617;color:#e5e7eb;border-radius:12px;padding:12px;font:14px ui-monospace,SFMono-Regular,Consolas,monospace}textarea{min-height:190px;resize:vertical}input,select{min-height:44px;font-family:inherit;font-size:15px}
+    button,.btn{border:0;border-radius:10px;min-height:42px;padding:0 14px;background:var(--green);color:#052e16;font-weight:900;display:inline-flex;align-items:center;justify-content:center;cursor:pointer}.secondary{background:#1f2937!important;color:#dbeafe!important;border:1px solid var(--line)!important}.warn{background:var(--yellow)!important;color:#1f1300!important}.danger{background:#3f1d2a!important;color:#fecdd3!important;border:1px solid #7f1d1d!important}
+    .toolbar{display:grid;grid-template-columns:1fr auto auto auto;gap:10px;margin:12px 0}.actions{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-top:10px}
+    .notice{border:1px solid #334155;background:#0f172a;border-radius:12px;padding:12px;margin:12px 0;color:#cbd5e1}.good{border-color:#14532d;background:#052e16}.bad{border-color:#7f1d1d;background:#2a1118}
+    .top-actions{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:8px;margin-top:14px}.item{border:1px solid var(--line);border-radius:12px;background:#0f172a;padding:12px;margin:10px 0}
+    code,pre{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;color:#93c5fd;word-break:break-all}pre{white-space:pre-wrap;background:#020617;border:1px solid var(--line);border-radius:12px;padding:12px;max-height:360px;overflow:auto}.pill{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:5px 9px;margin:3px 4px 3px 0;color:#cbd5e1}.toast{position:fixed;right:18px;bottom:18px;background:#16a34a;color:#052e16;font-weight:900;border-radius:10px;padding:10px 14px;display:none;z-index:20}
+    @media(max-width:860px){.toolbar{grid-template-columns:1fr}.actions,.top-actions{grid-template-columns:1fr}h1{font-size:24px}}
   </style>
 </head>
 <body>
-<main>
-  <section class="top">
-    <div class="logo-line"></div>
-    <h1>模块</h1>
-    <div class="version">页面版本：module-grid-v2-20260604</div>
-  </section>
-
-  <section class="install-box">
-    <h2>先安装 Grandpaniu V2 转换器</h2>
-    <p>下面的模块按钮都通过你的本地转换器打开。未安装或未启用 V2 模块时，模块按钮无法正常分析和转换。</p>
-    <div class="actions">
-      <a class="btn" href="shadowrocket://install?module=https%3A%2F%2Fraw.githubusercontent.com%2FGrandpaNiuu%2FScript-Hub-Grandpaniu%2Fmain%2Fmodules%2Fscript-hub-grandpaniu-v2.sgmodule">安装转换器</a>
+<header>
+  <div class="inner">
+    <h1>Script Hub Grandpaniu 工具站</h1>
+    <p>保留核心工具：单链接转换、批量识别、内容分析。模块安装和转换仍然走 Grandpaniu V2 本地入口。</p>
+    <div class="version">页面版本：tools-only-v2-20260604</div>
+    <div class="top-actions">
+      <a class="btn" href="shadowrocket://install?module=https%3A%2F%2Fraw.githubusercontent.com%2FGrandpaNiuu%2FScript-Hub-Grandpaniu%2Fmain%2Fmodules%2Fscript-hub-grandpaniu-v2.sgmodule">安装 Grandpaniu V2</a>
       <a class="btn secondary" href="http://grandpaniu.script.hub/health">检测是否生效</a>
+      <button class="secondary" onclick="copyText('shadowrocket://install?module=https%3A%2F%2Fraw.githubusercontent.com%2FGrandpaNiuu%2FScript-Hub-Grandpaniu%2Fmain%2Fmodules%2Fscript-hub-grandpaniu-v2.sgmodule')">复制安装链接</button>
+    </div>
+  </div>
+</header>
+<main>
+  <nav class="tabs">
+    <button class="tab active" data-tab="single">单链接转换</button>
+    <button class="tab" data-tab="batch">批量识别</button>
+    <button class="tab" data-tab="content">内容分析</button>
+  </nav>
+
+  <section id="single" class="panel active">
+    <div class="box">
+      <h2>单链接转换</h2>
+      <p>粘贴一个模块链接，自动识别类型。推荐点“分析/转换”，先进入 Grandpaniu 本地页面看风险，再导入 Shadowrocket。</p>
+      <div class="toolbar">
+        <input id="one-url" placeholder="https://example.com/demo.sgmodule / demo.plugin / demo.conf">
+        <select id="one-type">
+          <option value="auto">自动识别</option>
+          <option value="surge-module">Surge / Shadowrocket 模块</option>
+          <option value="qx-rewrite">Quantumult X Rewrite</option>
+          <option value="loon-plugin">Loon 插件</option>
+          <option value="rule-set">规则集</option>
+          <option value="all-module">通用转换</option>
+        </select>
+        <button id="one-build">生成</button>
+        <button id="one-clear" class="danger">清空</button>
+      </div>
+      <div id="one-status" class="notice">等待输入模块链接。</div>
+      <div class="actions">
+        <a id="one-analysis" class="btn" href="#">分析/转换</a>
+        <a id="one-direct" class="btn warn" href="#">直接导入</a>
+        <a id="one-convert" class="btn secondary" href="#">Script-Hub 转换导入</a>
+        <button id="one-copy-analysis" class="secondary">复制分析入口</button>
+      </div>
+      <h3>分析入口</h3><pre id="one-analysis-out"></pre>
+      <h3>Script-Hub 转换导入</h3><pre id="one-convert-out"></pre>
     </div>
   </section>
 
-  <div class="search-wrap">
-    <input id="search" placeholder="搜索 Search..." autocomplete="off">
-  </div>
+  <section id="batch" class="panel">
+    <div class="box">
+      <h2>批量识别</h2>
+      <p>把网页源码、README、聊天记录或一堆链接粘贴进来。工具会扫描可转换链接并生成按钮。</p>
+      <textarea id="batch-text" placeholder="粘贴包含模块链接的文本，例如 https://xxx.sgmodule / loon://import?plugin=... / quantumult-x:///add-resource?... "></textarea>
+      <div class="actions"><button id="batch-scan">扫描链接</button><button id="batch-clear" class="danger">清空</button></div>
+      <div id="batch-status" class="notice">等待扫描。</div>
+      <div id="batch-results"></div>
+    </div>
+  </section>
 
-  <div class="section-title"><strong>模块列表</strong><span id="count">加载中</span></div>
-  <div id="modules" class="module-grid"></div>
-  <div id="empty" class="empty">没有找到匹配模块</div>
+  <section id="content" class="panel">
+    <div class="box">
+      <h2>内容分析</h2>
+      <p>粘贴模块内容后，会统计 General、Header Rewrite、URL Rewrite、Body Rewrite、Script、MITM 等段落。这个功能只做本地文本整理，不会自动上传内容。</p>
+      <textarea id="module-content" placeholder="#!name=Demo&#10;[General]&#10;...&#10;[Script]&#10;...&#10;[MITM]&#10;hostname = example.com"></textarea>
+      <div class="toolbar"><input id="module-name" placeholder="输出模块名称，默认读取 #!name"><button id="analyze">分析</button><button id="copy-output" class="secondary">复制输出</button><button id="clear-content" class="danger">清空</button></div>
+      <div id="summary" class="notice">等待分析。</div>
+      <h3>整理后的模块内容</h3><pre id="converted"></pre>
+    </div>
+  </section>
 
   <div class="notice">
-    使用逻辑：点击任意模块 → 进入 <code>grandpaniu.script.hub</code> 本地分析页 → 查看风险 → 通过 Script-Hub 转换后导入 Shadowrocket。<br>
-    必须在 Shadowrocket 中启用 <strong>Script Hub Grandpaniu V2</strong>，并开启 MITM / HTTPS 解密。
+    使用前请确认已安装并启用 <strong>Script Hub Grandpaniu V2</strong>。本地检测地址：<code>http://grandpaniu.script.hub/health</code>
   </div>
 </main>
-
-<div id="modal" class="modal">
-  <div class="modal-card">
-    <h3 id="modal-title">模块</h3>
-    <p id="modal-desc"></p>
-    <div class="modal-actions">
-      <a id="modal-open" class="btn" href="#">用转换器打开</a>
-      <button id="modal-copy" class="btn secondary">复制模块链接</button>
-    </div>
-    <button id="modal-close" class="btn dark" style="width:100%;margin-top:10px">关闭</button>
-    <div id="modal-url" class="small"></div>
-  </div>
-</div>
 <div id="toast" class="toast">已复制</div>
-
 <script>
 const LOCAL_HOST='http://grandpaniu.script.hub';
-const FALLBACK_MODULES=[
-  {id:'script-hub-shadowrocket',name:'Script-Hub',category:'转换工具',convertType:'surge-module',riskLevel:'low',description:'Script-Hub 官方 Shadowrocket 模块。',url:'https://raw.githubusercontent.com/Script-Hub-Org/Script-Hub/main/modules/script-hub.rocket.module'},
-  {id:'sub-store-surge',name:'Sub-Store',category:'订阅管理',convertType:'surge-module',riskLevel:'medium',description:'Sub-Store 官方 Surge 模块。',url:'https://raw.githubusercontent.com/sub-store-org/Sub-Store/master/config/Surge.sgmodule'},
-  {id:'boxjs',name:'BoxJs',category:'脚本管理',convertType:'surge-module',riskLevel:'medium',description:'脚本数据与配置管理模块。',url:'https://raw.githubusercontent.com/chavyleung/scripts/master/box/rewrite/boxjs.rewrite.surge.sgmodule'}
-];
-let allModules=[];
-let currentModule=null;
-const $=id=>document.getElementById(id);
-function normalizeName(name){return String(name||'模块').replace(/^Script-Hub 官方\s*/,'').replace(/\s*模块$/,'').replace(/\s*Surge$/,'').replace(/\s*Shadowrocket$/,'').trim()||'模块'}
-function analysisUrl(m){return `${LOCAL_HOST}/install?url=${encodeURIComponent(m.url)}&convertType=${encodeURIComponent(m.convertType||inferType(m.url))}`}
-function inferType(url){const l=String(url||'').toLowerCase();if(/\.(plugin|lpx)(?:$|[?#])/.test(l))return'loon-plugin';if(/\.conf(?:$|[?#])/.test(l))return'qx-rewrite';if(/\.list(?:$|[?#])/.test(l)||l.includes('rule-set')||l.includes('ruleset'))return'rule-set';return'surge-module'}
-function escapeHtml(v){return String(v??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
-function render(){const q=$('search').value.trim().toLowerCase();const list=allModules.filter(m=>[m.name,m.category,m.description,m.source,m.url].join(' ').toLowerCase().includes(q));$('count').textContent=`${list.length} 个`;$('empty').style.display=list.length?'none':'block';$('modules').innerHTML=list.map((m,i)=>`<button class="module-button risk-${escapeHtml(m.riskLevel||'low')}" data-id="${escapeHtml(m.id||String(i))}">${escapeHtml(normalizeName(m.name))}</button>`).join('');document.querySelectorAll('.module-button').forEach((btn,idx)=>btn.onclick=()=>openModal(list[idx]));}
-function openModal(m){currentModule=m;$('modal-title').textContent=normalizeName(m.name);$('modal-desc').textContent=(m.description||'点击后将通过 Grandpaniu V2 转换器分析并生成 Shadowrocket 导入入口。');$('modal-open').href=analysisUrl(m);$('modal-url').textContent=m.url;$('modal').style.display='flex';}
-function closeModal(){$('modal').style.display='none'}
-async function copyText(t){try{await navigator.clipboard.writeText(t);showToast('已复制')}catch{prompt('复制下面内容',t)}}
-function showToast(t){$('toast').textContent=t;$('toast').style.display='block';clearTimeout(showToast.t);showToast.t=setTimeout(()=>$('toast').style.display='none',1300)}
-async function load(){allModules=FALLBACK_MODULES;render();try{const r=await fetch('data/modules.json?v=module-grid-v2-20260604',{cache:'no-store'});if(!r.ok)throw new Error('HTTP '+r.status);const data=await r.json();if(Array.isArray(data.modules)&&data.modules.length){allModules=data.modules.filter(m=>m.url&&m.name&&m.id!=='grandpaniu-enhance'&&!/Grandpaniu/i.test(m.name));render();}}catch(e){console.log(e)}}
-$('search').addEventListener('input',render);$('modal-close').onclick=closeModal;$('modal').addEventListener('click',e=>{if(e.target.id==='modal')closeModal()});$('modal-copy').onclick=()=>currentModule&&copyText(currentModule.url);load();
+const CORE_SECTIONS=['General','Header Rewrite','URL Rewrite','Body Rewrite','Script','MITM'];
+function $(id){return document.getElementById(id)}
+function setTab(name){document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active',b.dataset.tab===name));document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active',p.id===name))}
+document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>setTab(b.dataset.tab));
+function esc(v){return String(v??'').replace(/[&<>\"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[c]))}
+function escAttr(v){return esc(v).replace(/'/g,'&#039;').replace(/`/g,'&#096;')}
+function toast(t='已复制'){const el=$('toast');el.textContent=t;el.style.display='block';clearTimeout(toast.t);toast.t=setTimeout(()=>el.style.display='none',1400)}
+async function copyText(t){if(!t)return;try{await navigator.clipboard.writeText(t);toast('已复制')}catch{prompt('复制下面内容',t)}}
+function cleanUrl(v){let s=String(v||'').trim().replace(/^['\"]|['\"]$/g,'').replace(/&amp;/g,'&').replace(/[),.;，。；]+$/g,'');try{s=decodeURIComponent(s)}catch{}return /^https?:\/\//i.test(s)?s:''}
+function inferType(url){const l=String(url||'').toLowerCase();if(/\.(plugin|lpx)(?:$|[?#])/.test(l))return'loon-plugin';if(/\.conf(?:$|[?#])/.test(l))return'qx-rewrite';if(/\.list(?:$|[?#])/.test(l)||l.includes('rule-set')||l.includes('ruleset'))return'rule-set';if(/\.(sgmodule|module)(?:$|[?#])/.test(l))return'surge-module';return'all-module'}
+function typeLabel(t){return {'surge-module':'Surge 模块','qx-rewrite':'QX Rewrite','loon-plugin':'Loon 插件','rule-set':'规则集','all-module':'通用转换'}[t]||t||'未标注'}
+function fileName(url){try{return decodeURIComponent(new URL(url).pathname.split('/').filter(Boolean).pop()||url)}catch{return url}}
+function directUrl(url){return `shadowrocket://install?module=${encodeURIComponent(url)}`}
+function convertUrl(url,type){const t=type||inferType(url);const name=t==='qx-rewrite'?'auto-qx.sgmodule':t==='loon-plugin'?'auto-loon.sgmodule':t==='rule-set'?'auto-rule.sgmodule':'auto-surge.sgmodule';const sh=`http://script.hub/file/_start_/${url}/_end_/${name}?type=${t}&target=shadowrocket-module&del=true&jqEnabled=true`;return `shadowrocket://install?module=${encodeURIComponent(sh)}`}
+function analysisUrl(url,type){return `${LOCAL_HOST}/install?url=${encodeURIComponent(url)}&convertType=${encodeURIComponent(type||inferType(url))}`}
+function status(el,ok,msg){el.className='notice '+(ok?'good':'bad');el.textContent=msg}
+function buildOne(){const url=cleanUrl($('one-url').value);if(!url){status($('one-status'),false,'请输入 http/https 开头的模块链接。');return}const t=$('one-type').value==='auto'?inferType(url):$('one-type').value;const a=analysisUrl(url,t),d=directUrl(url),c=convertUrl(url,t);$('one-analysis').href=a;$('one-direct').href=d;$('one-convert').href=c;$('one-analysis-out').textContent=a;$('one-convert-out').textContent=c;status($('one-status'),true,`已识别：${typeLabel(t)} · ${fileName(url)}`)}
+function scanText(text){const items=[],seen=new Set();function add(u,t){const url=cleanUrl(u);if(!url||seen.has(url))return;seen.add(url);items.push({url,type:t||inferType(url)})}let m;const normal=/https?:\/\/[^\s\"'<>\\]+?\.(?:sgmodule|module|plugin|lpx|conf|list)(?:\?[^\s\"'<>\\]*)?/gi;while((m=normal.exec(text)))add(m[0]);const surge=/surge:\/\/\/install-module\?url=([^\s\"'<>]+)/gi;while((m=surge.exec(text)))add(m[1],'surge-module');const loon=/loon:\/\/import\?plugin=([^\s\"'<>]+)/gi;while((m=loon.exec(text)))add(m[1],'loon-plugin');const qx=/quantumult-x:\/\/\/add-resource\?[^\s\"'<>]*remote-resource=([^&\s\"'<>]+)/gi;while((m=qx.exec(text)))add(m[1],'qx-rewrite');return items}
+function renderBatch(){const items=scanText($('batch-text').value).slice(0,80);status($('batch-status'),!!items.length,items.length?`识别到 ${items.length} 个链接。`:'没有识别到可转换模块链接。');$('batch-results').innerHTML=items.map((it,i)=>`<div class="item"><h3>${i+1}. ${esc(fileName(it.url))}</h3><p><span class="pill">${esc(typeLabel(it.type))}</span></p><code>${esc(it.url)}</code><div class="actions"><a class="btn" href="${analysisUrl(it.url,it.type)}">分析/转换</a><a class="btn warn" href="${directUrl(it.url)}">直接导入</a><a class="btn secondary" href="${convertUrl(it.url,it.type)}">转换导入</a><button class="secondary" onclick="copyText('${escAttr(analysisUrl(it.url,it.type))}')">复制分析入口</button></div></div>`).join('')}
+function parseModuleContent(content){const metadata={},sections={};let current;for(const raw of String(content||'').replace(/\r\n/g,'\n').split('\n')){const line=raw.trimEnd(),trim=line.trim();if(!trim)continue;const meta=/^#!\s*([^=]+?)\s*=\s*(.*)$/.exec(trim);if(meta){metadata[meta[1].trim().toLowerCase()]=meta[2].trim();continue}const sec=/^\[([^\]]+)\]$/.exec(trim);if(sec){current=sec[1].trim();sections[current]||=[];continue}if(current)sections[current].push(line)}return{metadata,sections}}
+function analyzeContent(){const parsed=parseModuleContent($('module-content').value);const counts=CORE_SECTIONS.map(s=>`${s}：${(parsed.sections[s]||[]).length}`).join(' ｜ ');$('summary').textContent=counts;const name=$('module-name').value.trim()||parsed.metadata.name||'Converted Module';const out=[`#!name=${name}`,'#!desc=Converted by Script Hub Grandpaniu','#!author=GrandpaNiu',''];for(const sec of Object.keys(parsed.sections)){out.push(`[${sec}]`,...parsed.sections[sec],'')}$('converted').textContent=out.join('\n').trim()+"\n"}
+$('one-build').onclick=buildOne;$('one-url').oninput=buildOne;$('one-type').onchange=buildOne;$('one-clear').onclick=()=>{$('one-url').value='';$('one-analysis-out').textContent='';$('one-convert-out').textContent='';status($('one-status'),false,'已清空。')};$('one-copy-analysis').onclick=()=>copyText($('one-analysis-out').textContent);$('batch-scan').onclick=renderBatch;$('batch-clear').onclick=()=>{$('batch-text').value='';$('batch-results').innerHTML='';status($('batch-status'),false,'已清空。')};$('analyze').onclick=analyzeContent;$('copy-output').onclick=()=>copyText($('converted').textContent);$('clear-content').onclick=()=>{$('module-content').value='';$('converted').textContent='';$('summary').textContent='等待分析。'};
 </script>
 </body>
 </html>
