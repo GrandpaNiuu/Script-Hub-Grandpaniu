@@ -5,7 +5,8 @@
 
 [General]
 # 让 script.hub 与 Grandpa Niu 本地增强虚拟域名走 HTTP 引擎，转换请求才能被脚本接管。
-force-http-engine-hosts = %APPEND% script.hub, *.script.hub, grandpaniu.script-hub.local
+# grandpaniu.script.hub 是推荐测试入口；grandpaniu.script-hub.local 是兼容旧入口。
+force-http-engine-hosts = %APPEND% script.hub, *.script.hub, grandpaniu.script.hub, grandpaniu.script-hub.local
 
 [Header Rewrite]
 # 防止插件中心接口缓存，确保正文替换可以命中最新内容。
@@ -43,9 +44,9 @@ Script Hub: 脚本转换 = type=http-request, pattern=^https?:\/\/script\.hub\/c
 # /install：短链接分析，适合 ?url=xxx&convertType=surge-module
 # /analyze：完整内容分析，读取请求 body，适合长模块内容
 # /health：检查本地增强脚本是否正常响应
-Grandpaniu: 链接分析 = type=http-request, pattern=^https?:\/\/grandpaniu\.script-hub\.local\/install(?:\?|$), requires-body=0, script-path=https://raw.githubusercontent.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/scripts/script-hub-grandpaniu-enhance.js, timeout=60
-Grandpaniu: 内容分析 = type=http-request, pattern=^https?:\/\/grandpaniu\.script-hub\.local\/analyze(?:\?|$), requires-body=1, script-path=https://raw.githubusercontent.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/scripts/script-hub-grandpaniu-enhance.js, timeout=60
-Grandpaniu: 健康检查 = type=http-request, pattern=^https?:\/\/grandpaniu\.script-hub\.local\/health(?:\?|$), requires-body=0, script-path=https://raw.githubusercontent.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/scripts/script-hub-grandpaniu-enhance.js, timeout=30
+Grandpaniu: 链接分析 = type=http-request, pattern=^https?:\/\/(?:grandpaniu\.script\.hub|grandpaniu\.script-hub\.local)\/install(?:[\/?#]|$), requires-body=0, script-path=https://raw.githubusercontent.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/scripts/script-hub-grandpaniu-enhance.js, timeout=60
+Grandpaniu: 内容分析 = type=http-request, pattern=^https?:\/\/(?:grandpaniu\.script\.hub|grandpaniu\.script-hub\.local)\/analyze(?:[\/?#]|$), requires-body=1, script-path=https://raw.githubusercontent.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/scripts/script-hub-grandpaniu-enhance.js, timeout=60
+Grandpaniu: 健康检查 = type=http-request, pattern=^https?:\/\/(?:grandpaniu\.script\.hub|grandpaniu\.script-hub\.local)\/health(?:[\/?#]|$), requires-body=0, script-path=https://raw.githubusercontent.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/scripts/script-hub-grandpaniu-enhance.js, timeout=30
 
 [MITM]
-hostname = %APPEND% script.hub, *.script.hub, hub.kelee.one, pluginhub.kelee.one, kelee.one, grandpaniu.script-hub.local
+hostname = %APPEND% script.hub, *.script.hub, hub.kelee.one, pluginhub.kelee.one, kelee.one, grandpaniu.script.hub, grandpaniu.script-hub.local
