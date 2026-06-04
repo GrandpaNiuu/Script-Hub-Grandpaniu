@@ -1,34 +1,50 @@
 #!name=Script Hub Grandpaniu V2
-#!desc=基于 Script-Hub 官方脚本地址的 Shadowrocket 增强模块；V2 使用版本化本地增强脚本，避免旧脚本缓存。
+#!desc=基于 Script-Hub 官方脚本地址的 Shadowrocket 增强模块；内置本地分析、Script-Hub 转换入口和指定网页模块链接识别能力。
 #!author=GrandpaNiu
 #!homepage=https://github.com/GrandpaNiuu/Script-Hub-Grandpaniu
 
 [General]
-force-http-engine-hosts = %APPEND% script.hub, *.script.hub, grandpaniu.script.hub, grandpaniu.script-hub.local
+# script.hub / grandpaniu.script.hub：本地转换入口
+# github.com / gist.github.com / raw.githubusercontent.com：网页中识别模块链接
+# hub.kelee.one / pluginhub.kelee.one / kelee.one：插件中心链接增强
+force-http-engine-hosts = %APPEND% script.hub, *.script.hub, grandpaniu.script.hub, grandpaniu.script-hub.local, github.com, gist.github.com, raw.githubusercontent.com, hub.kelee.one, pluginhub.kelee.one, kelee.one
 
 [Header Rewrite]
+# 防止插件中心接口缓存，确保正文替换可以命中最新内容。
 http-request ^https?:\/\/(?:hub|pluginhub)\.kelee\.one\/.* header-del if-none-match
 http-request ^https?:\/\/(?:hub|pluginhub)\.kelee\.one\/.* header-del if-modified-since
 
 [URL Rewrite]
+# Quantumult X 重写链接 -> Shadowrocket 模块
 http-response ^https?:\/\/(?:hub|pluginhub)\.kelee\.one\/.* quantumult-x:\/\/\/add-resource\?remote-resource=(https?:\/\/[^"'\\s<>]+?)&resource-type=rewrite shadowrocket://install?module=http://script.hub/file/_start_/$1/_end_/auto-qx.sgmodule%3Ftype%3Dqx-rewrite%26target%3Dshadowrocket-module%26del%3Dtrue%26jqEnabled%3Dtrue
+
+# Surge 模块链接 -> Shadowrocket 模块
 http-response ^https?:\/\/(?:hub|pluginhub)\.kelee\.one\/.* surge:\/\/\/install-module\?url=(https?:\/\/[^"'\\s<>]+?\.(?:sgmodule|module)) shadowrocket://install?module=http://script.hub/file/_start_/$1/_end_/auto-surge.sgmodule%3Ftype%3Dsurge-module%26target%3Dshadowrocket-module%26del%3Dtrue%26jqEnabled%3Dtrue
+
+# Loon 插件链接 -> Shadowrocket 模块
 http-response ^https?:\/\/(?:hub|pluginhub)\.kelee\.one\/.* loon:\/\/import\?plugin=(https?:\/\/[^"'\\s&<>]+?\.(?:plugin|lpx)) shadowrocket://install?module=http://script.hub/file/_start_/$1/_end_/auto-loon.sgmodule%3Ftype%3Dloon-plugin%26target%3Dshadowrocket-module%26del%3Dtrue%26jqEnabled%3Dtrue
+
+# Loon 插件中心 lpx 链接 -> Shadowrocket 模块
 http-response ^https?:\/\/(?:hub|pluginhub)\.kelee\.one\/.* (https?:\/\/kelee\.one\/Tool\/Loon\/Lpx\/[^"'\\s&<>]+?\.lpx) shadowrocket://install?module=http://script.hub/file/_start_/$1/_end_/auto-loon.sgmodule%3Ftype%3Dloon-plugin%26target%3Dshadowrocket-module%26del%3Dtrue%26jqEnabled%3Dtrue
 
 [Body Rewrite]
 # 保留 Body Rewrite 段，第三方模块中的 Body Rewrite 规则通过 Script-Hub 转换链处理。
 
 [Script]
+# Script-Hub 官方转换链，本模块只引用官方脚本地址，不内嵌源码。
 Script Hub: 前端 = type=http-request, pattern=^https?:\/\/script\.hub\/($|edit\/|reload), script-path=https://raw.githubusercontent.com/Script-Hub-Org/Script-Hub/main/script-hub.js, timeout=300
 Script Hub: 重写转换 = type=http-request, pattern=^https?:\/\/script\.hub\/file\/_start_\/.+type=(?:qx-rewrite|surge-module|loon-plugin|all-module), script-path=https://raw.githubusercontent.com/Script-Hub-Org/Script-Hub/main/Rewrite-Parser.js, timeout=300
 Script Hub: 规则集转换 = type=http-request, pattern=^https?:\/\/script\.hub\/file\/_start_\/.+type=rule-set, script-path=https://raw.githubusercontent.com/Script-Hub-Org/Script-Hub/main/rule-parser.js, timeout=300
 Script Hub: 脚本转换 = type=http-request, pattern=^https?:\/\/script\.hub\/convert\/, script-path=https://raw.githubusercontent.com/Script-Hub-Org/Script-Hub/main/script-converter.js, timeout=300
 
+# Grandpaniu 本地入口
 Grandpaniu V2: 首页说明 = type=http-request, pattern=^https?:\/\/(?:grandpaniu\.script\.hub|grandpaniu\.script-hub\.local)\/?(?:\?|$), requires-body=0, script-path=https://raw.githubusercontent.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/scripts/script-hub-grandpaniu-enhance-20260604.js, timeout=30
 Grandpaniu V2: 链接分析 = type=http-request, pattern=^https?:\/\/(?:grandpaniu\.script\.hub|grandpaniu\.script-hub\.local)\/install(?:[\/?#]|$), requires-body=0, script-path=https://raw.githubusercontent.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/scripts/script-hub-grandpaniu-enhance-20260604.js, timeout=60
 Grandpaniu V2: 内容分析 = type=http-request, pattern=^https?:\/\/(?:grandpaniu\.script\.hub|grandpaniu\.script-hub\.local)\/analyze(?:[\/?#]|$), requires-body=1, script-path=https://raw.githubusercontent.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/scripts/script-hub-grandpaniu-enhance-20260604.js, timeout=60
 Grandpaniu V2: 健康检查 = type=http-request, pattern=^https?:\/\/(?:grandpaniu\.script\.hub|grandpaniu\.script-hub\.local)\/health(?:[\/?#]|$), requires-body=0, script-path=https://raw.githubusercontent.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/scripts/script-hub-grandpaniu-enhance-20260604.js, timeout=30
 
+# 指定网页模块链接识别：在页面右下角显示 Grandpaniu 模块助手。
+Grandpaniu V2: 网页模块链接识别 = type=http-response, pattern=^https?:\/\/(?:github\.com|gist\.github\.com|raw\.githubusercontent\.com|hub\.kelee\.one|pluginhub\.kelee\.one|kelee\.one)\/.*, requires-body=1, max-size=2097152, script-path=https://raw.githubusercontent.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/scripts/web-link-enhance-20260604.js, timeout=60
+
 [MITM]
-hostname = %APPEND% script.hub, *.script.hub, hub.kelee.one, pluginhub.kelee.one, kelee.one, grandpaniu.script.hub, grandpaniu.script-hub.local
+hostname = %APPEND% script.hub, *.script.hub, hub.kelee.one, pluginhub.kelee.one, kelee.one, grandpaniu.script.hub, grandpaniu.script-hub.local, github.com, gist.github.com, raw.githubusercontent.com
