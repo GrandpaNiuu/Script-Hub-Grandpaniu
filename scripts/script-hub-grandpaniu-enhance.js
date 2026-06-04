@@ -8,18 +8,23 @@ function main() {
   const body = typeof $request !== "undefined" ? String($request.body || "") : "";
   const urlInfo = parseUrl(requestUrl);
   const params = urlInfo.params;
-  const route = urlInfo.pathname.replace(/\/+$/, "") || "/install";
+  const rawRoute = urlInfo.pathname.replace(/\/+$/, "");
+  const route = rawRoute || "/health";
   const format = normalizeFormat(params.format || "html");
 
   if (route === "/health") {
-    return output(format, 200, {
+    const payload = {
       ok: true,
       name: "Script Hub Grandpaniu Enhance",
-      version: "2026-06-04.2",
-      routes: ["/install", "/analyze", "/health"],
+      version: "2026-06-04.3",
+      message: "本地增强脚本已正常响应。打开 /install?url=模块链接 可分析和转换模块。",
+      routes: ["/", "/install", "/analyze", "/health"],
+      recommendedHost: "grandpaniu.script.hub",
+      legacyHost: "grandpaniu.script-hub.local",
       formats: ["html", "json", "url", "convert-url"],
       convertTypes: [...ALLOWED_CONVERT_TYPES]
-    }, renderHealthHtml());
+    };
+    return output(format, 200, payload, renderHealthHtml(payload));
   }
 
   const sourceUrl = normalizeUrl(params.url || params.module || params.remote || "");
@@ -33,8 +38,9 @@ function main() {
       error: "missing_input",
       message: "缺少 url/module 参数或请求正文。/install 适合 ?url=xxx；/analyze 适合 POST body。",
       examples: {
-        install: "https://grandpaniu.script-hub.local/install?url=https://example.com/demo.sgmodule&convertType=surge-module",
-        analyze: "POST https://grandpaniu.script-hub.local/analyze?convertType=surge-module"
+        health: "http://grandpaniu.script.hub/health",
+        install: "http://grandpaniu.script.hub/install?url=https://example.com/demo.sgmodule&convertType=surge-module",
+        analyze: "POST http://grandpaniu.script.hub/analyze?convertType=surge-module"
       }
     };
     return output(format, 400, payload, renderErrorHtml(payload));
@@ -70,10 +76,10 @@ function main() {
 
 function parseUrl(requestUrl) {
   try {
-    const url = new URL(requestUrl || "https://grandpaniu.script-hub.local/install");
-    return { pathname: url.pathname || "/install", params: Object.fromEntries(url.searchParams.entries()) };
+    const url = new URL(requestUrl || "http://grandpaniu.script.hub/health");
+    return { pathname: url.pathname || "/health", params: Object.fromEntries(url.searchParams.entries()) };
   } catch {
-    return { pathname: "/install", params: {} };
+    return { pathname: "/health", params: {} };
   }
 }
 
@@ -278,12 +284,13 @@ function renderHtml(payload) {
 <div class="card"><h2>导入方式</h2>${installUrl ? `<a href="${escapeHtml(installUrl)}">直接导入 Shadowrocket</a>` : ""}${convertUrl ? `<a class="secondary" href="${escapeHtml(convertUrl)}">通过 Script Hub 转换后导入</a>` : ""}<p>建议：外部 QX / Loon / Surge 模块优先使用“通过 Script Hub 转换后导入”。</p></div>`);
 }
 
-function renderHealthHtml() {
-  return pageShell("Script Hub Grandpaniu 健康检查", `<div class="card"><h2>状态正常</h2><p>本地增强脚本已响应。</p><p>支持入口：/install、/analyze、/health</p><p>支持输出：html、json、url、convert-url</p></div>`);
+function renderHealthHtml(payload = {}) {
+  const convertTypes = Array.isArray(payload.convertTypes) ? payload.convertTypes.join("、") : "surge-module、qx-rewrite、loon-plugin、rule-set、all-module";
+  return pageShell("Script Hub Grandpaniu 健康检查", `<div class="card"><h2>状态正常</h2><p>本地增强脚本已响应。</p><p>推荐入口：<code>http://grandpaniu.script.hub</code></p><p>健康检查：<code>http://grandpaniu.script.hub/health</code></p><p>链接分析示例：</p><code>http://grandpaniu.script.hub/install?url=https://example.com/demo.sgmodule&convertType=surge-module</code><p>支持入口：/、/install、/analyze、/health</p><p>支持输出：html、json、url、convert-url</p><p>支持转换类型：${escapeHtml(convertTypes)}</p></div>`);
 }
 
 function renderErrorHtml(payload) {
-  return pageShell("Script Hub Grandpaniu 错误", `<div class="card"><h2>输入缺失</h2><p>${escapeHtml(payload.message)}</p><h3>示例</h3><code>${escapeHtml(payload.examples.install)}</code><br><br><code>${escapeHtml(payload.examples.analyze)}</code></div>`);
+  return pageShell("Script Hub Grandpaniu 错误", `<div class="card"><h2>输入缺失</h2><p>${escapeHtml(payload.message)}</p><h3>示例</h3><code>${escapeHtml(payload.examples.health || "http://grandpaniu.script.hub/health")}</code><br><br><code>${escapeHtml(payload.examples.install)}</code><br><br><code>${escapeHtml(payload.examples.analyze)}</code></div>`);
 }
 
 function pageShell(title, body) {
