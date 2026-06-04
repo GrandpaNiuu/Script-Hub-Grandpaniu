@@ -17,35 +17,28 @@
 <body>
   <main>
     <h1>正在打开 Shadowrocket</h1>
-    <p>页面会自动尝试拉起 Shadowrocket 导入 Script Hub Grandpaniu 增强模块。</p>
-    <p><a id="install" href="shadowrocket://install?module=https%3A%2F%2Fraw.githubusercontent.com%2FGrandpaNiuu%2FScript-Hub-Grandpaniu%2Fmain%2Fmodules%2Fscript-hub-grandpaniu.sgmodule">再次打开 Shadowrocket</a></p>
+    <p>页面会自动尝试拉起 Shadowrocket 导入 Script Hub Grandpaniu V2 主模块。</p>
+    <p><a id="install" href="shadowrocket://install?module=https%3A%2F%2Fraw.githubusercontent.com%2FGrandpaNiuu%2FScript-Hub-Grandpaniu%2Fmain%2Fmodules%2Fscript-hub-grandpaniu-v2.sgmodule">再次打开 Shadowrocket</a></p>
     <p><button class="secondary" id="copy">复制安装链接</button><a class="secondary" href="index.html">返回完整工具网站</a></p>
     <div class="notice">
       <strong>说明：</strong><br>
-      自动跳转只能帮你拉起 Shadowrocket。iOS 和 Shadowrocket 的确认导入弹窗无法被网页绕过，需要你手动确认一次。
+      自动跳转只能帮你拉起 Shadowrocket。iOS 和 Shadowrocket 的确认导入弹窗无法被网页绕过，需要你手动确认一次。<br><br>
+      安装后打开 <code style="display:inline;padding:0;background:transparent;border:0">http://grandpaniu.script.hub</code> 检查是否生效。
     </div>
     <code id="url"></code>
   </main>
   <script>
-    const installUrl = "shadowrocket://install?module=https%3A%2F%2Fraw.githubusercontent.com%2FGrandpaNiuu%2FScript-Hub-Grandpaniu%2Fmain%2Fmodules%2Fscript-hub-grandpaniu.sgmodule";
+    const installUrl = "shadowrocket://install?module=https%3A%2F%2Fraw.githubusercontent.com%2FGrandpaNiuu%2FScript-Hub-Grandpaniu%2Fmain%2Fmodules%2Fscript-hub-grandpaniu-v2.sgmodule";
     const urlEl = document.getElementById("url");
     const installEl = document.getElementById("install");
     urlEl.textContent = installUrl;
     installEl.href = installUrl;
-    function openShadowrocket() {
-      location.href = installUrl;
-    }
+    function openShadowrocket() { location.href = installUrl; }
     document.getElementById("copy").addEventListener("click", async () => {
-      try {
-        await navigator.clipboard.writeText(installUrl);
-        document.getElementById("copy").textContent = "已复制";
-      } catch {
-        prompt("复制下面链接", installUrl);
-      }
+      try { await navigator.clipboard.writeText(installUrl); document.getElementById("copy").textContent = "已复制"; }
+      catch { prompt("复制下面链接", installUrl); }
     });
-    window.addEventListener("load", () => {
-      setTimeout(openShadowrocket, 300);
-    });
+    window.addEventListener("load", () => { setTimeout(openShadowrocket, 300); });
   </script>
 </body>
 </html>
