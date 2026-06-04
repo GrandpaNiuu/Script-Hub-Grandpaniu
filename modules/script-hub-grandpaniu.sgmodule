@@ -41,9 +41,10 @@ Script Hub: 规则集转换 = type=http-request, pattern=^https?:\/\/script\.hub
 Script Hub: 脚本转换 = type=http-request, pattern=^https?:\/\/script\.hub\/convert\/, script-path=https://raw.githubusercontent.com/Script-Hub-Org/Script-Hub/main/script-converter.js, timeout=300
 
 # Grandpa Niu 本地增强入口
+# / 或 /health：健康检查与使用说明
 # /install：短链接分析，适合 ?url=xxx&convertType=surge-module
 # /analyze：完整内容分析，读取请求 body，适合长模块内容
-# /health：检查本地增强脚本是否正常响应
+Grandpaniu: 首页说明 = type=http-request, pattern=^https?:\/\/(?:grandpaniu\.script\.hub|grandpaniu\.script-hub\.local)\/?(?:\?|$), requires-body=0, script-path=https://raw.githubusercontent.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/scripts/script-hub-grandpaniu-enhance.js, timeout=30
 Grandpaniu: 链接分析 = type=http-request, pattern=^https?:\/\/(?:grandpaniu\.script\.hub|grandpaniu\.script-hub\.local)\/install(?:[\/?#]|$), requires-body=0, script-path=https://raw.githubusercontent.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/scripts/script-hub-grandpaniu-enhance.js, timeout=60
 Grandpaniu: 内容分析 = type=http-request, pattern=^https?:\/\/(?:grandpaniu\.script\.hub|grandpaniu\.script-hub\.local)\/analyze(?:[\/?#]|$), requires-body=1, script-path=https://raw.githubusercontent.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/scripts/script-hub-grandpaniu-enhance.js, timeout=60
 Grandpaniu: 健康检查 = type=http-request, pattern=^https?:\/\/(?:grandpaniu\.script\.hub|grandpaniu\.script-hub\.local)\/health(?:[\/?#]|$), requires-body=0, script-path=https://raw.githubusercontent.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/scripts/script-hub-grandpaniu-enhance.js, timeout=30
