@@ -23,8 +23,8 @@ const textFiles = [
 
 const conflictMarker = "<" + "<<<<<<";
 const mainInstallUrl = "shadowrocket://install?module=https%3A%2F%2Fraw.githubusercontent.com%2FGrandpaNiuu%2FScript-Hub-Grandpaniu%2Fmain%2Fmodules%2Fscript-hub-grandpaniu-v2.sgmodule";
-const webInstallUrl = "https://raw.githack.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/docs/grandpa-niu.html";
-const toolSiteUrl = "https://raw.githack.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/docs/index.html";
+const webInstallUrl = "https://grandpaniuu.github.io/Script-Hub-Grandpaniu/docs/grandpa-niu.html";
+const toolSiteUrl = "https://grandpaniuu.github.io/Script-Hub-Grandpaniu/docs/index.html";
 
 test("仓库关键文本文件没有冲突标记或截断链接", async () => {
   for (const file of textFiles) {
@@ -58,10 +58,11 @@ test("根目录 index.html 会跳转到 docs 工具网站", async () => {
 
 test("README 面向小白提供安装入口和工具网站入口", async () => {
   const readme = await readFile("README.md", "utf8");
-  assert.equal(readme.includes("[打开安装网页](" + webInstallUrl + ")"), true);
+  assert.equal(readme.includes("[打开主模块安装页](" + webInstallUrl + ")"), true);
   assert.equal(readme.includes(mainInstallUrl), true);
-  assert.equal(readme.includes("[打开完整工具网站](" + toolSiteUrl + ")"), true);
+  assert.equal(readme.includes("[打开 Grandpaniu 工具站](" + toolSiteUrl + ")"), true);
   assert.equal(readme.includes("网页跳转"), true);
+  assert.equal(readme.includes("工具网站和主模块有什么区别"), true);
 
   const mainInstallMatches = readme.match(new RegExp(escapeRegExp(mainInstallUrl), "g")) ?? [];
   const webInstallMatches = readme.match(new RegExp(escapeRegExp(webInstallUrl), "g")) ?? [];
@@ -92,13 +93,18 @@ test("模块库使用精选公开模块源并包含风险元数据", async () =>
 test("网站首页提供完整工具能力、精选模块兜底和风险展示", async () => {
   const index = await readFile("docs/index.html", "utf8");
   assert.equal(index.includes(mainInstallUrl), true);
+  assert.equal(index.includes("模块库"), true);
   assert.equal(index.includes("单链接转换"), true);
   assert.equal(index.includes("批量识别"), true);
   assert.equal(index.includes("内容分析"), true);
+  assert.equal(index.includes("工具网站"), true);
+  assert.equal(index.includes("loadCatalog"), true);
   assert.equal(index.includes("scanText"), true);
   assert.equal(index.includes("inferType"), true);
   assert.equal(index.includes("function convertUrl"), true);
-  assert.equal(index.includes("复制分析入口"), true);
+  assert.equal(index.includes("转换后导入"), true);
+  assert.equal(index.includes("extractScriptHubSource"), true);
+  assert.equal(index.includes("REDIRECT_PARAM_KEYS"), true);
 });
 
 test("安装网页会自动尝试打开 Shadowrocket", async () => {

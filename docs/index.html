@@ -5,124 +5,682 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Script Hub Grandpaniu 工具站</title>
   <style>
-    :root{color-scheme:dark;--bg:#07111f;--panel:#0f172a;--card:#111827;--line:#263348;--text:#e5e7eb;--muted:#94a3b8;--green:#22c55e;--blue:#38bdf8;--yellow:#f59e0b;--red:#fb7185}
-    *{box-sizing:border-box}
-    body{margin:0;background:radial-gradient(circle at top,#172033 0,#07111f 46%,#050912 100%);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-    a{color:#93c5fd;text-decoration:none}p{line-height:1.7;color:#cbd5e1}
-    header{padding:30px 18px;border-bottom:1px solid var(--line);background:rgba(15,23,42,.9)}main,.inner{max-width:1050px;margin:0 auto}main{padding:22px 18px 50px}
-    h1{font-size:30px;margin:0 0 8px}h2{font-size:20px;margin:0 0 12px}h3{font-size:16px;margin:12px 0 8px}
-    .version{display:inline-block;margin-top:10px;padding:6px 10px;border:1px solid #14532d;border-radius:999px;color:#86efac;background:#052e16;font:12px ui-monospace,SFMono-Regular,Consolas,monospace}
-    .tabs{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 18px}.tab{border:1px solid var(--line);background:#111827;color:#dbeafe;border-radius:10px;min-height:42px;padding:0 14px;font-weight:800;cursor:pointer}.tab.active{background:var(--blue);color:#082f49}
-    .panel{display:none}.panel.active{display:block}.box{background:rgba(17,24,39,.92);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:14px}
-    textarea,input,select{width:100%;border:1px solid var(--line);background:#020617;color:#e5e7eb;border-radius:12px;padding:12px;font:14px ui-monospace,SFMono-Regular,Consolas,monospace}textarea{min-height:190px;resize:vertical}input,select{min-height:44px;font-family:inherit;font-size:15px}
-    button,.btn{border:0;border-radius:10px;min-height:42px;padding:0 14px;background:var(--green);color:#052e16;font-weight:900;display:inline-flex;align-items:center;justify-content:center;cursor:pointer}.secondary{background:#1f2937!important;color:#dbeafe!important;border:1px solid var(--line)!important}.warn{background:var(--yellow)!important;color:#1f1300!important}.danger{background:#3f1d2a!important;color:#fecdd3!important;border:1px solid #7f1d1d!important}
-    .toolbar{display:grid;grid-template-columns:1fr auto auto auto;gap:10px;margin:12px 0}.actions{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-top:10px}
-    .notice{border:1px solid #334155;background:#0f172a;border-radius:12px;padding:12px;margin:12px 0;color:#cbd5e1}.good{border-color:#14532d;background:#052e16}.bad{border-color:#7f1d1d;background:#2a1118}
-    .top-actions{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:8px;margin-top:14px}.item{border:1px solid var(--line);border-radius:12px;background:#0f172a;padding:12px;margin:10px 0}
-    code,pre{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;color:#93c5fd;word-break:break-all}pre{white-space:pre-wrap;background:#020617;border:1px solid var(--line);border-radius:12px;padding:12px;max-height:360px;overflow:auto}.pill{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:5px 9px;margin:3px 4px 3px 0;color:#cbd5e1}.toast{position:fixed;right:18px;bottom:18px;background:#16a34a;color:#052e16;font-weight:900;border-radius:10px;padding:10px 14px;display:none;z-index:20}
-    @media(max-width:860px){.toolbar{grid-template-columns:1fr}.actions,.top-actions{grid-template-columns:1fr}h1{font-size:24px}}
+    :root {
+      color-scheme: light;
+      --bg: #f6f7fb;
+      --surface: #ffffff;
+      --surface-2: #f0f4f8;
+      --ink: #18212f;
+      --muted: #667085;
+      --line: #d7dee8;
+      --brand: #2563eb;
+      --brand-ink: #ffffff;
+      --green: #16a34a;
+      --green-soft: #dcfce7;
+      --amber: #b45309;
+      --amber-soft: #fef3c7;
+      --red: #be123c;
+      --red-soft: #ffe4e6;
+      --violet: #6d28d9;
+      --code: #0f172a;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      letter-spacing: 0;
+    }
+    a { color: var(--brand); text-decoration: none; }
+    p { color: var(--muted); line-height: 1.7; margin: 8px 0; }
+    header {
+      background: #111827;
+      color: #f9fafb;
+      border-bottom: 1px solid #0b1220;
+    }
+    .wrap { max-width: 1120px; margin: 0 auto; padding: 0 16px; }
+    .mast { display: grid; grid-template-columns: 1.2fr .8fr; gap: 18px; padding: 22px 0; align-items: center; }
+    h1 { font-size: 26px; line-height: 1.25; margin: 0 0 8px; }
+    h2 { font-size: 20px; margin: 0 0 12px; }
+    h3 { font-size: 16px; margin: 0 0 8px; }
+    header p { color: #cbd5e1; }
+    .version {
+      display: inline-flex;
+      align-items: center;
+      min-height: 28px;
+      padding: 0 10px;
+      border-radius: 8px;
+      background: #1f2937;
+      border: 1px solid #374151;
+      color: #bfdbfe;
+      font: 12px ui-monospace, SFMono-Regular, Consolas, monospace;
+    }
+    .quick {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    button, .btn {
+      min-height: 42px;
+      border: 1px solid transparent;
+      border-radius: 8px;
+      padding: 0 14px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      color: var(--brand-ink);
+      background: var(--brand);
+      font: 800 14px/1.1 -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      cursor: pointer;
+      text-align: center;
+      white-space: normal;
+    }
+    .btn.secondary, button.secondary { color: #1f2937; background: #ffffff; border-color: var(--line); }
+    .btn.green, button.green { background: var(--green); }
+    .btn.amber, button.amber { color: #351800; background: #fbbf24; }
+    .btn.danger, button.danger { background: #fff1f2; color: var(--red); border-color: #fecdd3; }
+    main { padding: 18px 0 42px; }
+    .grid { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 14px; align-items: start; }
+    .surface {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px;
+      margin-bottom: 14px;
+      box-shadow: 0 1px 2px rgba(15, 23, 42, .05);
+    }
+    .install-strip {
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      gap: 8px;
+      align-items: center;
+      background: #ecfdf5;
+      border-color: #bbf7d0;
+    }
+    .install-strip strong { color: #14532d; }
+    .tabs {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+    .tab {
+      color: #344054;
+      background: #ffffff;
+      border-color: var(--line);
+      min-height: 38px;
+      padding: 0 12px;
+      font-weight: 800;
+    }
+    .tab.active { color: #ffffff; background: var(--brand); border-color: var(--brand); }
+    .panel { display: none; }
+    .panel.active { display: block; }
+    .form-row { display: grid; grid-template-columns: minmax(0, 1fr) 220px auto; gap: 8px; align-items: center; }
+    .form-row.compact { grid-template-columns: minmax(0, 1fr) auto; }
+    input, select, textarea {
+      width: 100%;
+      min-height: 42px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 10px 12px;
+      background: #ffffff;
+      color: var(--ink);
+      font: 14px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    }
+    textarea {
+      min-height: 180px;
+      resize: vertical;
+      font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+    }
+    pre, code {
+      font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+      color: var(--code);
+      word-break: break-all;
+    }
+    pre {
+      min-height: 42px;
+      max-height: 320px;
+      overflow: auto;
+      white-space: pre-wrap;
+      background: #f8fafc;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 10px;
+    }
+    .note {
+      border: 1px solid var(--line);
+      background: var(--surface-2);
+      border-radius: 8px;
+      padding: 10px 12px;
+      color: #344054;
+      line-height: 1.65;
+      margin: 10px 0;
+    }
+    .note.good { background: var(--green-soft); border-color: #86efac; color: #14532d; }
+    .note.warn { background: var(--amber-soft); border-color: #fcd34d; color: #713f12; }
+    .note.bad { background: var(--red-soft); border-color: #fecdd3; color: #881337; }
+    .actions { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; margin-top: 10px; }
+    .module-list { display: grid; gap: 10px; }
+    .module-row {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #ffffff;
+      padding: 12px;
+    }
+    .module-head {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 8px;
+      align-items: start;
+    }
+    .module-title { font-weight: 900; color: #111827; }
+    .module-source { font-size: 13px; color: var(--muted); margin-top: 4px; }
+    .badges { display: flex; gap: 6px; flex-wrap: wrap; margin: 8px 0; }
+    .badge {
+      display: inline-flex;
+      min-height: 26px;
+      align-items: center;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      padding: 0 8px;
+      font-size: 12px;
+      font-weight: 800;
+      color: #344054;
+      background: #f8fafc;
+    }
+    .risk-low { background: var(--green-soft); color: #14532d; border-color: #86efac; }
+    .risk-medium { background: var(--amber-soft); color: #713f12; border-color: #fcd34d; }
+    .risk-high { background: var(--red-soft); color: #881337; border-color: #fecdd3; }
+    .side-list { display: grid; gap: 8px; }
+    .step {
+      border-left: 3px solid var(--brand);
+      background: #ffffff;
+      border-radius: 8px;
+      padding: 10px 12px;
+    }
+    .step strong { display: block; margin-bottom: 4px; }
+    .toast {
+      position: fixed;
+      right: 16px;
+      bottom: 16px;
+      z-index: 40;
+      display: none;
+      background: #111827;
+      color: #ffffff;
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-weight: 800;
+      box-shadow: 0 10px 24px rgba(15, 23, 42, .18);
+    }
+    @media (max-width: 900px) {
+      .mast, .grid, .install-strip, .form-row { grid-template-columns: 1fr; }
+      .quick { grid-template-columns: 1fr; }
+      h1 { font-size: 22px; }
+    }
   </style>
 </head>
 <body>
-<header>
-  <div class="inner">
-    <h1>Script Hub Grandpaniu 工具站</h1>
-    <p>保留核心工具：单链接转换、批量识别、内容分析。模块安装和转换仍然走 Grandpaniu V2 本地入口。</p>
-    <div class="version">页面版本：tools-only-v2-20260604</div>
-    <div class="top-actions">
-      <a class="btn" href="shadowrocket://install?module=https%3A%2F%2Fraw.githubusercontent.com%2FGrandpaNiuu%2FScript-Hub-Grandpaniu%2Fmain%2Fmodules%2Fscript-hub-grandpaniu-v2.sgmodule">安装 Grandpaniu V2</a>
-      <a class="btn secondary" href="http://grandpaniu.script.hub/health">检测是否生效</a>
-      <button class="secondary" onclick="copyText('shadowrocket://install?module=https%3A%2F%2Fraw.githubusercontent.com%2FGrandpaNiuu%2FScript-Hub-Grandpaniu%2Fmain%2Fmodules%2Fscript-hub-grandpaniu-v2.sgmodule')">复制安装链接</button>
-    </div>
-  </div>
-</header>
-<main>
-  <nav class="tabs">
-    <button class="tab active" data-tab="single">单链接转换</button>
-    <button class="tab" data-tab="batch">批量识别</button>
-    <button class="tab" data-tab="content">内容分析</button>
-  </nav>
-
-  <section id="single" class="panel active">
-    <div class="box">
-      <h2>单链接转换</h2>
-      <p>粘贴一个模块链接，自动识别类型。推荐点“分析/转换”，先进入 Grandpaniu 本地页面看风险，再导入 Shadowrocket。</p>
-      <div class="toolbar">
-        <input id="one-url" placeholder="https://example.com/demo.sgmodule / demo.plugin / demo.conf">
-        <select id="one-type">
-          <option value="auto">自动识别</option>
-          <option value="surge-module">Surge / Shadowrocket 模块</option>
-          <option value="qx-rewrite">Quantumult X Rewrite</option>
-          <option value="loon-plugin">Loon 插件</option>
-          <option value="rule-set">规则集</option>
-          <option value="all-module">通用转换</option>
-        </select>
-        <button id="one-build">生成</button>
-        <button id="one-clear" class="danger">清空</button>
+  <header>
+    <div class="wrap mast">
+      <div>
+        <h1>Script Hub Grandpaniu 工具站</h1>
+        <p>先安装主模块，再用这个页面选择模块、粘贴链接或批量扫描，生成可拉起 Shadowrocket 的安装入口。</p>
+        <span class="version">页面版本：toolsite-v3-20260610</span>
       </div>
-      <div id="one-status" class="notice">等待输入模块链接。</div>
-      <div class="actions">
-        <a id="one-analysis" class="btn" href="#">分析/转换</a>
-        <a id="one-direct" class="btn warn" href="#">直接导入</a>
-        <a id="one-convert" class="btn secondary" href="#">Script-Hub 转换导入</a>
-        <button id="one-copy-analysis" class="secondary">复制分析入口</button>
+      <div class="quick">
+        <a class="btn green" id="top-install" href="#">安装主模块</a>
+        <a class="btn secondary" href="http://grandpaniu.script.hub/health">检测模块</a>
+        <button class="secondary" id="copy-main">复制主模块链接</button>
+        <a class="btn secondary" href="grandpa-niu.html">打开安装页</a>
       </div>
-      <h3>分析入口</h3><pre id="one-analysis-out"></pre>
-      <h3>Script-Hub 转换导入</h3><pre id="one-convert-out"></pre>
     </div>
-  </section>
+  </header>
 
-  <section id="batch" class="panel">
-    <div class="box">
-      <h2>批量识别</h2>
-      <p>把网页源码、README、聊天记录或一堆链接粘贴进来。工具会扫描可转换链接并生成按钮。</p>
-      <textarea id="batch-text" placeholder="粘贴包含模块链接的文本，例如 https://xxx.sgmodule / loon://import?plugin=... / quantumult-x:///add-resource?... "></textarea>
-      <div class="actions"><button id="batch-scan">扫描链接</button><button id="batch-clear" class="danger">清空</button></div>
-      <div id="batch-status" class="notice">等待扫描。</div>
-      <div id="batch-results"></div>
+  <main class="wrap">
+    <section class="surface install-strip">
+      <div>
+        <strong>新手顺序：</strong>
+        先点“安装主模块”，回到 Shadowrocket 启用它；再回到这里选择模块或粘贴链接转换。
+      </div>
+      <a class="btn green" id="strip-install" href="#">一键打开 Shadowrocket</a>
+      <button class="secondary" data-copy-main>复制备用链接</button>
+    </section>
+
+    <div class="grid">
+      <div>
+        <nav class="tabs" aria-label="工具切换">
+          <button class="tab active" data-tab="catalog">模块库</button>
+          <button class="tab" data-tab="single">单链接转换</button>
+          <button class="tab" data-tab="batch">批量识别</button>
+          <button class="tab" data-tab="content">内容分析</button>
+          <button class="tab" data-tab="help">说明</button>
+        </nav>
+
+        <section id="catalog" class="panel active">
+          <div class="surface">
+            <h2>模块库</h2>
+            <div class="form-row">
+              <input id="catalog-search" placeholder="搜索名称、作者、分类或链接">
+              <select id="catalog-risk">
+                <option value="">全部风险</option>
+                <option value="low">低风险</option>
+                <option value="medium">中风险</option>
+                <option value="high">高风险</option>
+              </select>
+              <button id="catalog-refresh" class="secondary">刷新</button>
+            </div>
+            <div id="catalog-status" class="note">正在加载公开模块库。</div>
+            <div id="catalog-list" class="module-list"></div>
+          </div>
+        </section>
+
+        <section id="single" class="panel">
+          <div class="surface">
+            <h2>单链接转换</h2>
+            <div class="form-row">
+              <input id="one-url" placeholder="粘贴 .sgmodule / .plugin / .conf / .list / 跳转链接">
+              <select id="one-type">
+                <option value="auto">自动识别</option>
+                <option value="surge-module">Surge / Shadowrocket 模块</option>
+                <option value="qx-rewrite">Quantumult X Rewrite</option>
+                <option value="loon-plugin">Loon 插件</option>
+                <option value="rule-set">规则集</option>
+                <option value="all-module">通用转换</option>
+              </select>
+              <button id="one-build">生成</button>
+            </div>
+            <div id="one-status" class="note">等待输入链接。</div>
+            <div class="actions">
+              <a id="one-analysis" class="btn" href="#">打开分析页</a>
+              <a id="one-convert" class="btn green" href="#">转换后导入</a>
+              <a id="one-direct" class="btn amber" href="#">原链接导入</a>
+              <button id="one-copy-convert" class="secondary">复制转换入口</button>
+            </div>
+            <h3>转换后导入入口</h3>
+            <pre id="one-convert-out"></pre>
+            <h3>本地分析入口</h3>
+            <pre id="one-analysis-out"></pre>
+          </div>
+        </section>
+
+        <section id="batch" class="panel">
+          <div class="surface">
+            <h2>批量识别</h2>
+            <textarea id="batch-text" placeholder="粘贴网页源码、README、聊天记录、跳转链接、loon://、surge://、quantumult-x:// 或 shadowrocket:// 链接"></textarea>
+            <div class="actions">
+              <button id="batch-scan">扫描链接</button>
+              <button id="batch-demo" class="secondary">填入示例</button>
+              <button id="batch-clear" class="danger">清空</button>
+            </div>
+            <div id="batch-status" class="note">等待扫描。</div>
+            <div id="batch-results" class="module-list"></div>
+          </div>
+        </section>
+
+        <section id="content" class="panel">
+          <div class="surface">
+            <h2>内容分析</h2>
+            <textarea id="module-content" placeholder="#!name=Demo&#10;[General]&#10;...&#10;[Header Rewrite]&#10;...&#10;[URL Rewrite]&#10;...&#10;[Body Rewrite]&#10;...&#10;[Script]&#10;...&#10;[MITM]&#10;hostname = example.com"></textarea>
+            <div class="form-row">
+              <input id="module-name" placeholder="输出模块名称，留空则读取 #!name">
+              <button id="analyze">分析内容</button>
+              <button id="copy-output" class="secondary">复制整理结果</button>
+            </div>
+            <div id="summary" class="note">等待分析。</div>
+            <pre id="converted"></pre>
+          </div>
+        </section>
+
+        <section id="help" class="panel">
+          <div class="surface">
+            <h2>模块和网站分别做什么</h2>
+            <div class="note good"><strong>主模块：</strong>装进 Shadowrocket 后才会生效。它负责接管 script.hub、grandpaniu.script.hub，并在支持的网站上识别模块链接。</div>
+            <div class="note"><strong>工具网站：</strong>不替代主模块。它适合新手找入口、复制链接、批量扫描文本，也适合在模块没装好时先生成 Shadowrocket 安装链接。</div>
+            <div class="note warn"><strong>网页跳转识别：</strong>网站可以解析你粘贴的跳转链接；主模块启用后，可以在支持的网站页面内自动发现隐藏的模块链接并显示助手面板。</div>
+            <h3>支持段落</h3>
+            <p>General、Header Rewrite、URL Rewrite、Body Rewrite、Script、MITM 都会被内容分析统计。真正的跨工具转换交给 Script-Hub 官方脚本地址处理，本项目不内嵌官方源码。</p>
+            <h3>Pages 还 404 怎么办</h3>
+            <p>仓库需要在 GitHub 设置里把 Pages 来源设为 <code>Deploy from a branch</code>，分支选择 <code>gh-pages</code>，目录选择 <code>/ (root)</code>。最新工作流会把静态网站发布到这个分支。</p>
+          </div>
+        </section>
+      </div>
+
+      <aside>
+        <div class="surface">
+          <h2>小白路径</h2>
+          <div class="side-list">
+            <div class="step"><strong>1. 安装主模块</strong><span>点击绿色按钮，Shadowrocket 弹窗后确认导入。</span></div>
+            <div class="step"><strong>2. 启用模块和 MITM</strong><span>Shadowrocket 模块列表启用，证书也要信任。</span></div>
+            <div class="step"><strong>3. 选择模块导入</strong><span>从模块库点“转换后导入”，或粘贴自己的链接。</span></div>
+          </div>
+        </div>
+        <div class="surface">
+          <h2>当前入口</h2>
+          <p>主安装页：</p>
+          <pre id="install-page-out"></pre>
+          <p>健康检查：</p>
+          <pre>http://grandpaniu.script.hub/health</pre>
+        </div>
+      </aside>
     </div>
-  </section>
+  </main>
 
-  <section id="content" class="panel">
-    <div class="box">
-      <h2>内容分析</h2>
-      <p>粘贴模块内容后，会统计 General、Header Rewrite、URL Rewrite、Body Rewrite、Script、MITM 等段落。这个功能只做本地文本整理，不会自动上传内容。</p>
-      <textarea id="module-content" placeholder="#!name=Demo&#10;[General]&#10;...&#10;[Script]&#10;...&#10;[MITM]&#10;hostname = example.com"></textarea>
-      <div class="toolbar"><input id="module-name" placeholder="输出模块名称，默认读取 #!name"><button id="analyze">分析</button><button id="copy-output" class="secondary">复制输出</button><button id="clear-content" class="danger">清空</button></div>
-      <div id="summary" class="notice">等待分析。</div>
-      <h3>整理后的模块内容</h3><pre id="converted"></pre>
-    </div>
-  </section>
+  <div id="toast" class="toast">已复制</div>
 
-  <div class="notice">
-    使用前请确认已安装并启用 <strong>Script Hub Grandpaniu V2</strong>。本地检测地址：<code>http://grandpaniu.script.hub/health</code>
-  </div>
-</main>
-<div id="toast" class="toast">已复制</div>
-<script>
-const LOCAL_HOST='http://grandpaniu.script.hub';
-const CORE_SECTIONS=['General','Header Rewrite','URL Rewrite','Body Rewrite','Script','MITM'];
-function $(id){return document.getElementById(id)}
-function setTab(name){document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active',b.dataset.tab===name));document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active',p.id===name))}
-document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>setTab(b.dataset.tab));
-function esc(v){return String(v??'').replace(/[&<>\"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[c]))}
-function escAttr(v){return esc(v).replace(/'/g,'&#039;').replace(/`/g,'&#096;')}
-function toast(t='已复制'){const el=$('toast');el.textContent=t;el.style.display='block';clearTimeout(toast.t);toast.t=setTimeout(()=>el.style.display='none',1400)}
-async function copyText(t){if(!t)return;try{await navigator.clipboard.writeText(t);toast('已复制')}catch{prompt('复制下面内容',t)}}
-function cleanUrl(v){let s=String(v||'').trim().replace(/^['\"]|['\"]$/g,'').replace(/&amp;/g,'&').replace(/[),.;，。；]+$/g,'');try{s=decodeURIComponent(s)}catch{}return /^https?:\/\//i.test(s)?s:''}
-function inferType(url){const l=String(url||'').toLowerCase();if(/\.(plugin|lpx)(?:$|[?#])/.test(l))return'loon-plugin';if(/\.conf(?:$|[?#])/.test(l))return'qx-rewrite';if(/\.list(?:$|[?#])/.test(l)||l.includes('rule-set')||l.includes('ruleset'))return'rule-set';if(/\.(sgmodule|module)(?:$|[?#])/.test(l))return'surge-module';return'all-module'}
-function typeLabel(t){return {'surge-module':'Surge 模块','qx-rewrite':'QX Rewrite','loon-plugin':'Loon 插件','rule-set':'规则集','all-module':'通用转换'}[t]||t||'未标注'}
-function fileName(url){try{return decodeURIComponent(new URL(url).pathname.split('/').filter(Boolean).pop()||url)}catch{return url}}
-function directUrl(url){return `shadowrocket://install?module=${encodeURIComponent(url)}`}
-function convertUrl(url,type){const t=type||inferType(url);const name=t==='qx-rewrite'?'auto-qx.sgmodule':t==='loon-plugin'?'auto-loon.sgmodule':t==='rule-set'?'auto-rule.sgmodule':'auto-surge.sgmodule';const sh=`http://script.hub/file/_start_/${url}/_end_/${name}?type=${t}&target=shadowrocket-module&del=true&jqEnabled=true`;return `shadowrocket://install?module=${encodeURIComponent(sh)}`}
-function analysisUrl(url,type){return `${LOCAL_HOST}/install?url=${encodeURIComponent(url)}&convertType=${encodeURIComponent(type||inferType(url))}`}
-function status(el,ok,msg){el.className='notice '+(ok?'good':'bad');el.textContent=msg}
-function buildOne(){const url=cleanUrl($('one-url').value);if(!url){status($('one-status'),false,'请输入 http/https 开头的模块链接。');return}const t=$('one-type').value==='auto'?inferType(url):$('one-type').value;const a=analysisUrl(url,t),d=directUrl(url),c=convertUrl(url,t);$('one-analysis').href=a;$('one-direct').href=d;$('one-convert').href=c;$('one-analysis-out').textContent=a;$('one-convert-out').textContent=c;status($('one-status'),true,`已识别：${typeLabel(t)} · ${fileName(url)}`)}
-function scanText(text){const items=[],seen=new Set();function add(u,t){const url=cleanUrl(u);if(!url||seen.has(url))return;seen.add(url);items.push({url,type:t||inferType(url)})}let m;const normal=/https?:\/\/[^\s\"'<>\\]+?\.(?:sgmodule|module|plugin|lpx|conf|list)(?:\?[^\s\"'<>\\]*)?/gi;while((m=normal.exec(text)))add(m[0]);const surge=/surge:\/\/\/install-module\?url=([^\s\"'<>]+)/gi;while((m=surge.exec(text)))add(m[1],'surge-module');const loon=/loon:\/\/import\?plugin=([^\s\"'<>]+)/gi;while((m=loon.exec(text)))add(m[1],'loon-plugin');const qx=/quantumult-x:\/\/\/add-resource\?[^\s\"'<>]*remote-resource=([^&\s\"'<>]+)/gi;while((m=qx.exec(text)))add(m[1],'qx-rewrite');return items}
-function renderBatch(){const items=scanText($('batch-text').value).slice(0,80);status($('batch-status'),!!items.length,items.length?`识别到 ${items.length} 个链接。`:'没有识别到可转换模块链接。');$('batch-results').innerHTML=items.map((it,i)=>`<div class="item"><h3>${i+1}. ${esc(fileName(it.url))}</h3><p><span class="pill">${esc(typeLabel(it.type))}</span></p><code>${esc(it.url)}</code><div class="actions"><a class="btn" href="${analysisUrl(it.url,it.type)}">分析/转换</a><a class="btn warn" href="${directUrl(it.url)}">直接导入</a><a class="btn secondary" href="${convertUrl(it.url,it.type)}">转换导入</a><button class="secondary" onclick="copyText('${escAttr(analysisUrl(it.url,it.type))}')">复制分析入口</button></div></div>`).join('')}
-function parseModuleContent(content){const metadata={},sections={};let current;for(const raw of String(content||'').replace(/\r\n/g,'\n').split('\n')){const line=raw.trimEnd(),trim=line.trim();if(!trim)continue;const meta=/^#!\s*([^=]+?)\s*=\s*(.*)$/.exec(trim);if(meta){metadata[meta[1].trim().toLowerCase()]=meta[2].trim();continue}const sec=/^\[([^\]]+)\]$/.exec(trim);if(sec){current=sec[1].trim();sections[current]||=[];continue}if(current)sections[current].push(line)}return{metadata,sections}}
-function analyzeContent(){const parsed=parseModuleContent($('module-content').value);const counts=CORE_SECTIONS.map(s=>`${s}：${(parsed.sections[s]||[]).length}`).join(' ｜ ');$('summary').textContent=counts;const name=$('module-name').value.trim()||parsed.metadata.name||'Converted Module';const out=[`#!name=${name}`,'#!desc=Converted by Script Hub Grandpaniu','#!author=GrandpaNiu',''];for(const sec of Object.keys(parsed.sections)){out.push(`[${sec}]`,...parsed.sections[sec],'')}$('converted').textContent=out.join('\n').trim()+"\n"}
-$('one-build').onclick=buildOne;$('one-url').oninput=buildOne;$('one-type').onchange=buildOne;$('one-clear').onclick=()=>{$('one-url').value='';$('one-analysis-out').textContent='';$('one-convert-out').textContent='';status($('one-status'),false,'已清空。')};$('one-copy-analysis').onclick=()=>copyText($('one-analysis-out').textContent);$('batch-scan').onclick=renderBatch;$('batch-clear').onclick=()=>{$('batch-text').value='';$('batch-results').innerHTML='';status($('batch-status'),false,'已清空。')};$('analyze').onclick=analyzeContent;$('copy-output').onclick=()=>copyText($('converted').textContent);$('clear-content').onclick=()=>{$('module-content').value='';$('converted').textContent='';$('summary').textContent='等待分析。'};
-</script>
+  <script>
+    const MAIN_MODULE_URL = "https://raw.githubusercontent.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/modules/script-hub-grandpaniu-v2.sgmodule";
+    const MAIN_INSTALL_URL = "shadowrocket://install?module=https%3A%2F%2Fraw.githubusercontent.com%2FGrandpaNiuu%2FScript-Hub-Grandpaniu%2Fmain%2Fmodules%2Fscript-hub-grandpaniu-v2.sgmodule";
+    const INSTALL_PAGE_URL = "https://grandpaniuu.github.io/Script-Hub-Grandpaniu/docs/grandpa-niu.html";
+    const LOCAL_HOST = "http://grandpaniu.script.hub";
+    const CORE_SECTIONS = ["General", "Header Rewrite", "URL Rewrite", "Body Rewrite", "Script", "MITM"];
+    const REDIRECT_PARAM_KEYS = ["url", "u", "target", "redirect", "redirect_url", "link", "src", "module", "plugin", "remote-resource", "remote_resource"];
+    let catalog = [];
+
+    function $(id) { return document.getElementById(id); }
+    function esc(value) {
+      return String(value ?? "").replace(/[&<>"]/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[char]));
+    }
+    function escAttr(value) { return esc(value).replace(/'/g, "&#039;").replace(/`/g, "&#096;"); }
+    function toast(text = "已复制") {
+      const el = $("toast");
+      el.textContent = text;
+      el.style.display = "block";
+      clearTimeout(toast.timer);
+      toast.timer = setTimeout(() => { el.style.display = "none"; }, 1500);
+    }
+    async function copyText(text) {
+      if (!text) return;
+      try {
+        await navigator.clipboard.writeText(text);
+        toast("已复制");
+      } catch {
+        prompt("复制下面内容", text);
+      }
+    }
+    function setStatus(id, tone, text) {
+      const el = $(id);
+      el.className = `note ${tone || ""}`.trim();
+      el.textContent = text;
+    }
+    function decodeDeep(value) {
+      let current = String(value || "").replace(/&amp;/g, "&").trim();
+      for (let i = 0; i < 5; i += 1) {
+        try {
+          const next = decodeURIComponent(current);
+          if (next === current) break;
+          current = next;
+        } catch {
+          break;
+        }
+      }
+      return current.trim().replace(/^['"]|['"]$/g, "").replace(/[),.;，。；]+$/g, "");
+    }
+    function cleanUrl(value) {
+      const decoded = decodeDeep(value);
+      return /^https?:\/\//i.test(decoded) ? decoded : "";
+    }
+    function isModuleUrl(url) {
+      const lower = String(url || "").toLowerCase();
+      return /\.(sgmodule|module|plugin|lpx|conf|list)(?:$|[?#])/i.test(lower)
+        || lower.includes("script.hub/file/_start_/");
+    }
+    function inferType(url) {
+      const lower = String(url || "").toLowerCase();
+      const queryType = /[?&]type=(surge-module|qx-rewrite|loon-plugin|rule-set|all-module)\b/i.exec(lower)?.[1];
+      if (queryType) return queryType;
+      if (/\.(plugin|lpx)(?:$|[?#])/.test(lower)) return "loon-plugin";
+      if (/\.conf(?:$|[?#])/.test(lower)) return "qx-rewrite";
+      if (/\.list(?:$|[?#])/.test(lower) || lower.includes("rule-set") || lower.includes("ruleset")) return "rule-set";
+      if (/\.(sgmodule|module)(?:$|[?#])/.test(lower)) return "surge-module";
+      return "all-module";
+    }
+    function typeLabel(type) {
+      return {
+        "surge-module": "Surge/Shadowrocket",
+        "qx-rewrite": "QX Rewrite",
+        "loon-plugin": "Loon 插件",
+        "rule-set": "规则集",
+        "all-module": "通用转换"
+      }[type] || "自动";
+    }
+    function riskLabel(level) {
+      return { low: "低风险", medium: "中风险", high: "高风险" }[level] || "未标注";
+    }
+    function fileName(url) {
+      try {
+        return decodeURIComponent(new URL(url).pathname.split("/").filter(Boolean).pop() || url);
+      } catch {
+        return String(url || "unknown");
+      }
+    }
+    function directUrl(url) {
+      return `shadowrocket://install?module=${encodeURIComponent(url)}`;
+    }
+    function scriptHubModuleUrl(url, type) {
+      const convertType = type || inferType(url);
+      const name = convertType === "qx-rewrite" ? "auto-qx.sgmodule"
+        : convertType === "loon-plugin" ? "auto-loon.sgmodule"
+        : convertType === "rule-set" ? "auto-rule.sgmodule"
+        : "auto-surge.sgmodule";
+      return `http://script.hub/file/_start_/${url}/_end_/${name}?type=${convertType}&target=shadowrocket-module&del=true&jqEnabled=true`;
+    }
+    function convertUrl(url, type) {
+      return `shadowrocket://install?module=${encodeURIComponent(scriptHubModuleUrl(url, type))}`;
+    }
+    function analysisUrl(url, type) {
+      return `${LOCAL_HOST}/install?url=${encodeURIComponent(url)}&convertType=${encodeURIComponent(type || inferType(url))}`;
+    }
+    function extractScriptHubSource(url) {
+      const decoded = decodeDeep(url);
+      const match = /script\.hub\/file\/_start_\/([\s\S]+?)\/_end_\/[^?\s]+(?:\?([^#\s]+))?/i.exec(decoded);
+      if (!match) return null;
+      const source = cleanUrl(match[1]);
+      const params = new URLSearchParams(match[2] || "");
+      return source ? { url: source, type: params.get("type") || inferType(source), source: "script-hub" } : null;
+    }
+    function findRedirectUrl(url) {
+      try {
+        const parsed = new URL(decodeDeep(url));
+        for (const key of REDIRECT_PARAM_KEYS) {
+          const value = parsed.searchParams.get(key);
+          if (!value) continue;
+          const decoded = cleanUrl(value);
+          if (decoded && isModuleUrl(decoded)) return decoded;
+        }
+      } catch {}
+      return "";
+    }
+    function addDetected(items, seen, rawUrl, type, source) {
+      const fromScriptHub = extractScriptHubSource(rawUrl);
+      const redirect = findRedirectUrl(rawUrl);
+      const url = fromScriptHub?.url || redirect || cleanUrl(rawUrl);
+      if (!url || !isModuleUrl(url) || seen.has(url)) return;
+      seen.add(url);
+      items.push({ url, type: type || fromScriptHub?.type || inferType(url), source: source || fromScriptHub?.source || (redirect ? "redirect" : "text") });
+    }
+    function scanText(text) {
+      const input = String(text || "");
+      const items = [];
+      const seen = new Set();
+      let match;
+      const normal = /https?:\/\/[^\s"'<>\\]+/gi;
+      while ((match = normal.exec(input))) addDetected(items, seen, match[0], "", "url");
+      const attrs = /\b(?:href|src|data-url|data-href|data-link|data-module|data-plugin)=["']([^"']+)["']/gi;
+      while ((match = attrs.exec(input))) addDetected(items, seen, match[1], "", "html-attr");
+      const jsLinks = /\b(?:window\.open|location\.href|window\.location|location\.assign)\s*\(?\s*["']([^"']+)["']/gi;
+      while ((match = jsLinks.exec(input))) addDetected(items, seen, match[1], "", "js-redirect");
+      const metaRefresh = /http-equiv=["']refresh["'][\s\S]{0,160}?url=([^"'>\s]+)/gi;
+      while ((match = metaRefresh.exec(input))) addDetected(items, seen, match[1], "", "meta-refresh");
+      const surge = /surge:\/\/\/install-module\?url=([^\s"'<>]+)/gi;
+      while ((match = surge.exec(input))) addDetected(items, seen, match[1], "surge-module", "surge-link");
+      const loon = /loon:\/\/import\?plugin=([^\s"'<>]+)/gi;
+      while ((match = loon.exec(input))) addDetected(items, seen, match[1], "loon-plugin", "loon-link");
+      const qx = /quantumult-x:\/\/\/add-resource\?[^\s"'<>]*remote-resource=([^&\s"'<>]+)/gi;
+      while ((match = qx.exec(input))) addDetected(items, seen, match[1], "qx-rewrite", "qx-link");
+      const shadowrocket = /shadowrocket:\/\/install\?module=([^\s"'<>]+)/gi;
+      while ((match = shadowrocket.exec(input))) addDetected(items, seen, match[1], "", "shadowrocket-link");
+      return items;
+    }
+    function renderLinks(item, includeSource = true) {
+      const type = item.convertType || item.type || inferType(item.url);
+      const riskClass = item.riskLevel ? `risk-${item.riskLevel}` : "";
+      const badges = [
+        `<span class="badge">${esc(typeLabel(type))}</span>`,
+        item.riskLevel ? `<span class="badge ${riskClass}">${esc(riskLabel(item.riskLevel))}</span>` : "",
+        item.requiresMitm ? `<span class="badge">MITM</span>` : "",
+        item.containsScript ? `<span class="badge">Script</span>` : "",
+        includeSource && item.source ? `<span class="badge">${esc(item.source)}</span>` : ""
+      ].filter(Boolean).join("");
+      return `
+        <div class="module-row">
+          <div class="module-head">
+            <div>
+              <div class="module-title">${esc(item.name || fileName(item.url))}</div>
+              <div class="module-source">${esc(item.category || item.source || item.sourceType || "识别结果")}</div>
+            </div>
+            <button class="secondary" onclick="copyText('${escAttr(item.url)}')">复制源链接</button>
+          </div>
+          <div class="badges">${badges}</div>
+          <p>${esc(item.description || item.riskNote || "请在导入前查看原始模块内容。")}</p>
+          <code>${esc(item.url)}</code>
+          <div class="actions">
+            <a class="btn" href="${analysisUrl(item.url, type)}">打开分析页</a>
+            <a class="btn green" href="${convertUrl(item.url, type)}">转换后导入</a>
+            <a class="btn amber" href="${directUrl(item.url)}">原链接导入</a>
+            <button class="secondary" onclick="copyText('${escAttr(convertUrl(item.url, type))}')">复制转换入口</button>
+          </div>
+        </div>`;
+    }
+    async function loadCatalog() {
+      setStatus("catalog-status", "", "正在加载公开模块库。");
+      try {
+        const response = await fetch("data/modules.json", { cache: "no-store" });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const payload = await response.json();
+        catalog = Array.isArray(payload.modules) ? payload.modules : [];
+        renderCatalog();
+      } catch (error) {
+        setStatus("catalog-status", "bad", `模块库加载失败：${error.message}`);
+        $("catalog-list").innerHTML = "";
+      }
+    }
+    function renderCatalog() {
+      const q = $("catalog-search").value.trim().toLowerCase();
+      const risk = $("catalog-risk").value;
+      const items = catalog.filter(item => {
+        const haystack = [item.name, item.category, item.source, item.url, item.description].join(" ").toLowerCase();
+        return (!q || haystack.includes(q)) && (!risk || item.riskLevel === risk);
+      });
+      setStatus("catalog-status", items.length ? "good" : "warn", items.length ? `已载入 ${items.length} 个可转换公开模块。` : "没有匹配的模块。");
+      $("catalog-list").innerHTML = items.map(item => renderLinks(item)).join("");
+    }
+    function buildOne() {
+      const raw = $("one-url").value;
+      const found = scanText(raw)[0];
+      const url = found?.url || cleanUrl(raw);
+      if (!url) {
+        setStatus("one-status", "bad", "请输入 http/https 开头的模块链接，或粘贴包含模块链接的跳转地址。");
+        return;
+      }
+      const type = $("one-type").value === "auto" ? (found?.type || inferType(url)) : $("one-type").value;
+      $("one-analysis").href = analysisUrl(url, type);
+      $("one-direct").href = directUrl(url);
+      $("one-convert").href = convertUrl(url, type);
+      $("one-analysis-out").textContent = analysisUrl(url, type);
+      $("one-convert-out").textContent = convertUrl(url, type);
+      setStatus("one-status", "good", `已识别：${typeLabel(type)} · ${fileName(url)}`);
+    }
+    function renderBatch() {
+      const items = scanText($("batch-text").value).slice(0, 100);
+      setStatus("batch-status", items.length ? "good" : "warn", items.length ? `识别到 ${items.length} 个可转换模块链接。` : "没有识别到可转换模块链接。");
+      $("batch-results").innerHTML = items.map((item, index) => renderLinks({ ...item, name: `${index + 1}. ${fileName(item.url)}`, source: item.sourceType || item.source }, false)).join("");
+    }
+    function normalizeSection(name) {
+      const key = String(name || "").trim().toLowerCase();
+      return {
+        "general": "General",
+        "header rewrite": "Header Rewrite",
+        "header-rewrite": "Header Rewrite",
+        "rewrite": "URL Rewrite",
+        "url rewrite": "URL Rewrite",
+        "url-rewrite": "URL Rewrite",
+        "body rewrite": "Body Rewrite",
+        "body-rewrite": "Body Rewrite",
+        "script": "Script",
+        "mitm": "MITM"
+      }[key] || String(name || "").trim();
+    }
+    function parseModuleContent(content) {
+      const metadata = {};
+      const sections = {};
+      let current = "";
+      for (const raw of String(content || "").replace(/\r\n/g, "\n").split("\n")) {
+        const line = raw.trimEnd();
+        const trimmed = line.trim();
+        if (!trimmed) continue;
+        const meta = /^#!\s*([^=]+?)\s*=\s*(.*)$/.exec(trimmed);
+        if (meta) {
+          metadata[meta[1].trim().toLowerCase()] = meta[2].trim();
+          continue;
+        }
+        const section = /^\[([^\]]+)\]$/.exec(trimmed);
+        if (section) {
+          current = normalizeSection(section[1]);
+          sections[current] ||= [];
+          continue;
+        }
+        if (current) sections[current].push(line);
+      }
+      return { metadata, sections };
+    }
+    function analyzeContent() {
+      const parsed = parseModuleContent($("module-content").value);
+      const counts = CORE_SECTIONS.map(section => `${section}: ${(parsed.sections[section] || []).length}`).join(" | ");
+      $("summary").className = "note good";
+      $("summary").textContent = counts;
+      const name = $("module-name").value.trim() || parsed.metadata.name || "Converted Module";
+      const output = [`#!name=${name}`, "#!desc=Converted by Script Hub Grandpaniu", "#!author=GrandpaNiu", ""];
+      for (const [section, rows] of Object.entries(parsed.sections)) {
+        output.push(`[${section}]`, ...rows, "");
+      }
+      $("converted").textContent = `${output.join("\n").trim()}\n`;
+    }
+    function setTab(name) {
+      document.querySelectorAll(".tab").forEach(button => button.classList.toggle("active", button.dataset.tab === name));
+      document.querySelectorAll(".panel").forEach(panel => panel.classList.toggle("active", panel.id === name));
+    }
+    function bind() {
+      $("top-install").href = MAIN_INSTALL_URL;
+      $("strip-install").href = MAIN_INSTALL_URL;
+      $("install-page-out").textContent = INSTALL_PAGE_URL;
+      $("copy-main").onclick = () => copyText(MAIN_INSTALL_URL);
+      document.querySelectorAll("[data-copy-main]").forEach(button => { button.onclick = () => copyText(MAIN_INSTALL_URL); });
+      document.querySelectorAll(".tab").forEach(button => { button.onclick = () => setTab(button.dataset.tab); });
+      $("catalog-search").oninput = renderCatalog;
+      $("catalog-risk").onchange = renderCatalog;
+      $("catalog-refresh").onclick = loadCatalog;
+      $("one-build").onclick = buildOne;
+      $("one-url").oninput = buildOne;
+      $("one-type").onchange = buildOne;
+      $("one-copy-convert").onclick = () => copyText($("one-convert-out").textContent);
+      $("batch-scan").onclick = renderBatch;
+      $("batch-clear").onclick = () => { $("batch-text").value = ""; $("batch-results").innerHTML = ""; setStatus("batch-status", "", "已清空。"); };
+      $("batch-demo").onclick = () => {
+        $("batch-text").value = [
+          "surge:///install-module?url=https://raw.githubusercontent.com/Script-Hub-Org/Script-Hub/main/modules/script-hub.surge.sgmodule",
+          "quantumult-x:///add-resource?remote-resource=https%3A%2F%2Fexample.com%2Fdemo.conf&resource-type=rewrite",
+          "https://example.com/go?target=https%253A%252F%252Fexample.com%252Fdemo.plugin"
+        ].join("\n");
+        renderBatch();
+      };
+      $("analyze").onclick = analyzeContent;
+      $("copy-output").onclick = () => copyText($("converted").textContent);
+    }
+    bind();
+    loadCatalog();
+  </script>
 </body>
 </html>
