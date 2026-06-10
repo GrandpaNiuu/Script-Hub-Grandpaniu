@@ -24,7 +24,7 @@ shadowrocket://install?module=https%3A%2F%2Fraw.githubusercontent.com%2FGrandpaN
 
 [打开 Grandpaniu 工具站](https://grandpaniuu.github.io/Script-Hub-Grandpaniu/docs/index.html)
 
-工具站的模块库只展示本仓库 `modules/` 目录中公开可用的模块，也可以粘贴自己的模块链接进行转换。
+工具站的模块库收录公开仓库中可通过 Script Hub Grandpaniu V2 转换链处理的模块、插件、Rewrite 和规则集；也可以粘贴自己的模块链接进行转换。
 
 ## 我该点哪个按钮
 
@@ -45,6 +45,7 @@ shadowrocket://install?module=https%3A%2F%2Fraw.githubusercontent.com%2FGrandpaN
 - Loon：`.plugin`、`.lpx`
 - Quantumult X：Rewrite `.conf`
 - 规则集：`.list`
+- Stash / Egern 等通用模块：`.stoverride`、`.yaml`、`.yml`
 - 常见网页跳转链接：`?url=`、`?target=`、`?redirect=`、`remote-resource=`
 - 常见 App Scheme：`surge://`、`loon://`、`quantumult-x://`、`shadowrocket://`
 - 模块段落：`General`、`Header Rewrite`、`URL Rewrite`、`Body Rewrite`、`Script`、`MITM`

@@ -12,6 +12,7 @@
     "./types": "./src/types.d.ts"
   },
   "scripts": {
+    "catalog:build": "node scripts/build-public-module-catalog.js",
     "test": "node --test tests/*.test.js",
     "check": "npm test"
   },

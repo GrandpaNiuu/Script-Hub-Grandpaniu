@@ -119,6 +119,7 @@
     .panel { display: none; }
     .panel.active { display: block; }
     .form-row { display: grid; grid-template-columns: minmax(0, 1fr) 220px auto; gap: 8px; align-items: center; }
+    .catalog-row { grid-template-columns: minmax(0, 1fr) 170px 170px auto; }
     .form-row.compact { grid-template-columns: minmax(0, 1fr) auto; }
     input, select, textarea {
       width: 100%;
@@ -164,6 +165,7 @@
     .note.bad { background: var(--red-soft); border-color: #fecdd3; color: #881337; }
     .actions { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; margin-top: 10px; }
     .module-list { display: grid; gap: 10px; }
+    .more-row { margin-top: 10px; }
     .module-row {
       border: 1px solid var(--line);
       border-radius: 8px;
@@ -216,7 +218,7 @@
       box-shadow: 0 10px 24px rgba(15, 23, 42, .18);
     }
     @media (max-width: 900px) {
-      .mast, .grid, .install-strip, .form-row { grid-template-columns: 1fr; }
+      .mast, .grid, .install-strip, .form-row, .catalog-row { grid-template-columns: 1fr; }
       .quick { grid-template-columns: 1fr; }
       h1 { font-size: 22px; }
     }
@@ -228,7 +230,7 @@
       <div>
         <h1>Script Hub Grandpaniu 工具站</h1>
         <p>先安装主模块，再用这个页面选择模块、粘贴链接或批量扫描，生成可拉起 Shadowrocket 的安装入口。</p>
-        <span class="version">页面版本：toolsite-v3-20260610</span>
+        <span class="version">页面版本：toolsite-v4-public-catalog-20260611</span>
       </div>
       <div class="quick">
         <a class="btn green" id="top-install" href="#">安装主模块</a>
@@ -262,8 +264,16 @@
         <section id="catalog" class="panel active">
           <div class="surface">
             <h2>模块库</h2>
-            <div class="form-row">
+            <div class="form-row catalog-row">
               <input id="catalog-search" placeholder="搜索名称、作者、分类或链接">
+              <select id="catalog-type">
+                <option value="">全部类型</option>
+                <option value="surge-module">Surge/Shadowrocket</option>
+                <option value="qx-rewrite">圈 X Rewrite</option>
+                <option value="loon-plugin">Loon 插件</option>
+                <option value="rule-set">规则集</option>
+                <option value="all-module">通用模块</option>
+              </select>
               <select id="catalog-risk">
                 <option value="">全部风险</option>
                 <option value="low">低风险</option>
@@ -274,6 +284,7 @@
             </div>
             <div id="catalog-status" class="note">正在加载公开模块库。</div>
             <div id="catalog-list" class="module-list"></div>
+            <div class="more-row"><button id="catalog-more" class="secondary" style="display:none">加载更多</button></div>
           </div>
         </section>
 
@@ -378,6 +389,8 @@
     const CORE_SECTIONS = ["General", "Header Rewrite", "URL Rewrite", "Body Rewrite", "Script", "MITM"];
     const REDIRECT_PARAM_KEYS = ["url", "u", "target", "redirect", "redirect_url", "link", "src", "module", "plugin", "remote-resource", "remote_resource"];
     let catalog = [];
+    let catalogPage = 1;
+    const CATALOG_PAGE_SIZE = 120;
 
     function $(id) { return document.getElementById(id); }
     function esc(value) {
@@ -561,21 +574,28 @@
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
         const payload = await response.json();
         catalog = Array.isArray(payload.modules) ? payload.modules : [];
+        catalogPage = 1;
         renderCatalog();
       } catch (error) {
         setStatus("catalog-status", "bad", `模块库加载失败：${error.message}`);
         $("catalog-list").innerHTML = "";
+        $("catalog-more").style.display = "none";
       }
     }
     function renderCatalog() {
       const q = $("catalog-search").value.trim().toLowerCase();
       const risk = $("catalog-risk").value;
+      const type = $("catalog-type").value;
       const items = catalog.filter(item => {
-        const haystack = [item.name, item.category, item.source, item.url, item.description].join(" ").toLowerCase();
-        return (!q || haystack.includes(q)) && (!risk || item.riskLevel === risk);
+        const haystack = [item.name, item.category, item.source, item.url, item.description, item.convertType].join(" ").toLowerCase();
+        return (!q || haystack.includes(q)) && (!risk || item.riskLevel === risk) && (!type || item.convertType === type);
       });
-      setStatus("catalog-status", items.length ? "good" : "warn", items.length ? `已载入 ${items.length} 个可转换公开模块。` : "没有匹配的模块。");
-      $("catalog-list").innerHTML = items.map(item => renderLinks(item)).join("");
+      const visible = items.slice(0, catalogPage * CATALOG_PAGE_SIZE);
+      setStatus("catalog-status", items.length ? "good" : "warn", items.length ? `已显示 ${visible.length}/${items.length} 个可转换公开模块。` : "没有匹配的模块。");
+      $("catalog-list").innerHTML = visible.map(item => renderLinks(item)).join("");
+      const more = $("catalog-more");
+      more.style.display = visible.length < items.length ? "inline-flex" : "none";
+      more.textContent = `加载更多（剩余 ${items.length - visible.length}）`;
     }
     function buildOne() {
       const raw = $("one-url").value;
@@ -659,9 +679,11 @@
       $("copy-main").onclick = () => copyText(MAIN_INSTALL_URL);
       document.querySelectorAll("[data-copy-main]").forEach(button => { button.onclick = () => copyText(MAIN_INSTALL_URL); });
       document.querySelectorAll(".tab").forEach(button => { button.onclick = () => setTab(button.dataset.tab); });
-      $("catalog-search").oninput = renderCatalog;
-      $("catalog-risk").onchange = renderCatalog;
+      $("catalog-search").oninput = () => { catalogPage = 1; renderCatalog(); };
+      $("catalog-type").onchange = () => { catalogPage = 1; renderCatalog(); };
+      $("catalog-risk").onchange = () => { catalogPage = 1; renderCatalog(); };
       $("catalog-refresh").onclick = loadCatalog;
+      $("catalog-more").onclick = () => { catalogPage += 1; renderCatalog(); };
       $("one-build").onclick = buildOne;
       $("one-url").oninput = buildOne;
       $("one-type").onchange = buildOne;

@@ -17,6 +17,7 @@ const textFiles = [
   "docs/data/modules.json",
   "modules/script-hub-grandpaniu.sgmodule",
   "modules/script-hub-grandpaniu-v2.sgmodule",
+  "scripts/build-public-module-catalog.js",
   "scripts/script-hub-grandpaniu-enhance.js",
   "scripts/web-link-enhance-20260604.js",
   ".github/workflows/jekyll-gh-pages.yml"
@@ -64,6 +65,7 @@ test("README 面向小白提供安装入口和工具网站入口", async () => {
   assert.equal(readme.includes("[打开 Grandpaniu 工具站](" + toolSiteUrl + ")"), true);
   assert.equal(readme.includes("网页跳转"), true);
   assert.equal(readme.includes("工具网站和主模块有什么区别"), true);
+  assert.equal(readme.includes("Stash / Egern"), true);
 
   const mainInstallMatches = readme.match(new RegExp(escapeRegExp(mainInstallUrl), "g")) ?? [];
   const webInstallMatches = readme.match(new RegExp(escapeRegExp(webInstallUrl), "g")) ?? [];
@@ -73,21 +75,27 @@ test("README 面向小白提供安装入口和工具网站入口", async () => {
   assert.equal(toolSiteMatches.length, 1, "README 不应重复出现工具网站入口");
 });
 
-test("模块库只收录本仓库公开可安装模块并包含风险元数据", async () => {
+test("模块库收录公开仓库可转换模块并包含风险元数据", async () => {
   const catalog = JSON.parse(await readFile("docs/data/modules.json", "utf8"));
   const ids = catalog.modules.map(item => item.id);
-  assert.equal(catalog.notice.includes("Grandpaniu 仓库公开模块库"), true);
-  assert.equal(catalog.notice.includes("外部第三方模块已移除"), true);
+  assert.equal(catalog.notice.includes("公开仓库模块索引"), true);
+  assert.equal(catalog.notice.includes("不复制第三方源码"), true);
+  assert.ok(catalog.modules.length >= 1000);
+  assert.ok(catalog.sourceRepositories.includes("GrandpaNiuu/Script-Hub-Grandpaniu"));
+  assert.ok(catalog.sourceRepositories.includes("blackmatrix7/ios_rule_script"));
+  assert.ok(catalog.sourceRepositories.includes("KOP-XIAO/QuantumultX"));
   assert.equal(Boolean(catalog.riskLevels.low), true);
   assert.equal(Boolean(catalog.riskLevels.medium), true);
   assert.equal(Boolean(catalog.riskLevels.high), true);
-  assert.deepEqual(ids.toSorted(), [
-    "script-hub-grandpaniu-legacy",
-    "script-hub-grandpaniu-v2"
-  ]);
+  assert.ok(ids.includes("grandpaniuu-script-hub-grandpaniu-modules-script-hub-grandpaniu-v2-sgmodule"));
+  assert.ok(catalog.modules.some(item => item.convertType === "qx-rewrite"), "缺少圈 X rewrite");
+  assert.ok(catalog.modules.some(item => item.convertType === "loon-plugin"), "缺少 Loon 插件");
+  assert.ok(catalog.modules.some(item => item.convertType === "surge-module"), "缺少 Surge/Shadowrocket 模块");
+  assert.ok(catalog.modules.some(item => item.convertType === "rule-set"), "缺少规则集");
+  assert.ok(catalog.modules.some(item => item.convertType === "all-module"), "缺少通用代理模块");
   for (const item of catalog.modules) {
-    assert.match(item.url, /^https:\/\/raw\.githubusercontent\.com\/GrandpaNiuu\/Script-Hub-Grandpaniu\/main\/modules\/.+\.sgmodule$/);
-    assert.equal(item.source, "GrandpaNiuu/Script-Hub-Grandpaniu");
+    assert.match(item.url, /^https:\/\/raw\.githubusercontent\.com\//);
+    assert.match(item.source, /^[^/]+\/[^/]+$/);
     assert.equal(item.verified, true, `${item.id} 必须是已验证模块`);
     assert.equal(typeof item.riskLevel, "string", `${item.id} 缺少 riskLevel`);
     assert.equal(typeof item.riskNote, "string", `${item.id} 缺少 riskNote`);
@@ -104,6 +112,10 @@ test("网站首页提供完整工具能力、精选模块兜底和风险展示",
   assert.equal(index.includes("批量识别"), true);
   assert.equal(index.includes("内容分析"), true);
   assert.equal(index.includes("工具网站"), true);
+  assert.equal(index.includes("toolsite-v4-public-catalog-20260611"), true);
+  assert.equal(index.includes("catalog-type"), true);
+  assert.equal(index.includes("catalog-more"), true);
+  assert.equal(index.includes("CATALOG_PAGE_SIZE"), true);
   assert.equal(index.includes("loadCatalog"), true);
   assert.equal(index.includes("scanText"), true);
   assert.equal(index.includes("inferType"), true);
