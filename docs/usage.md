@@ -32,7 +32,15 @@ https://raw.githack.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/docs/index.html
 
 RawGithack 首次打开会出现确认页，点击 `Open the page` 后进入工具页，页面顶部有“一键安装到 Shadowrocket”按钮。
 
-如果 Pages 仍显示 404，请到仓库 `Settings -> Pages` 确认 Source 已选择 `GitHub Actions`，然后手动运行 `Deploy Pages`。
+如果 Pages 仍显示 404，请到仓库 `Settings -> Pages` 设置：
+
+```text
+Source: Deploy from a branch
+Branch: gh-pages
+Folder: / (root)
+```
+
+仓库的 Actions 会把静态网站发布到 `gh-pages` 分支，避免 `actions/deploy-pages` 在当前仓库里出现 `Requires authentication`。
 
 ## 2. 安装 Shadowrocket 增强模块
 

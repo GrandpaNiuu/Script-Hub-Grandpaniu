@@ -35,21 +35,19 @@ test("仓库关键文本文件没有冲突标记或截断链接", async () => {
   }
 });
 
-test("Pages 工作流存在并具备部署权限", async () => {
+test("Pages 工作流发布静态站点到 gh-pages 分支", async () => {
   const workflow = await readFile(".github/workflows/jekyll-gh-pages.yml", "utf8");
-  assert.match(workflow, /name:\s*Deploy static site to GitHub Pages/);
+  assert.match(workflow, /name:\s*Publish static site branch/);
   assert.match(workflow, /workflow_dispatch:/);
   assert.match(workflow, /npm test/);
   assert.match(workflow, /cp -R docs modules scripts _site/);
   assert.match(workflow, /touch _site\/\.nojekyll/);
   assert.match(workflow, /node-version:\s*"24"/);
-  assert.match(workflow, /pages:\s*write/);
-  assert.match(workflow, /id-token:\s*write/);
-  assert.match(workflow, /actions\/configure-pages/);
-  assert.match(workflow, /enablement:\s*true/);
-  assert.match(workflow, /actions\/upload-pages-artifact/);
-  assert.match(workflow, /actions\/deploy-pages/);
+  assert.match(workflow, /contents:\s*write/);
+  assert.match(workflow, /git push --force origin gh-pages/);
   assert.equal(workflow.includes("actions/jekyll-build-pages"), false);
+  assert.equal(workflow.includes("actions/deploy-pages"), false);
+  assert.equal(workflow.includes("actions/upload-pages-artifact"), false);
 });
 
 test("根目录 index.html 会跳转到 docs 工具网站", async () => {
