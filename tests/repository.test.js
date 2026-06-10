@@ -16,6 +16,7 @@ const textFiles = [
   "docs/grandpa-niu.html",
   "docs/data/modules.json",
   "modules/script-hub-grandpaniu.sgmodule",
+  "modules/script-hub-grandpaniu-v2.sgmodule",
   "scripts/script-hub-grandpaniu-enhance.js",
   "scripts/web-link-enhance-20260604.js",
   ".github/workflows/jekyll-gh-pages.yml"
@@ -72,17 +73,22 @@ test("README 面向小白提供安装入口和工具网站入口", async () => {
   assert.equal(toolSiteMatches.length, 1, "README 不应重复出现工具网站入口");
 });
 
-test("模块库使用精选公开模块源并包含风险元数据", async () => {
+test("模块库只收录本仓库公开可安装模块并包含风险元数据", async () => {
   const catalog = JSON.parse(await readFile("docs/data/modules.json", "utf8"));
   const ids = catalog.modules.map(item => item.id);
-  assert.equal(catalog.notice.includes("公开模块"), true);
+  assert.equal(catalog.notice.includes("Grandpaniu 仓库公开模块库"), true);
+  assert.equal(catalog.notice.includes("外部第三方模块已移除"), true);
   assert.equal(Boolean(catalog.riskLevels.low), true);
   assert.equal(Boolean(catalog.riskLevels.medium), true);
   assert.equal(Boolean(catalog.riskLevels.high), true);
-  assert.equal(ids.includes("script-hub-shadowrocket"), true);
-  assert.equal(ids.includes("sub-store-surge"), true);
-  assert.equal(ids.includes("blackmatrix7-allinone-shadowrocket"), true);
+  assert.deepEqual(ids.toSorted(), [
+    "script-hub-grandpaniu-legacy",
+    "script-hub-grandpaniu-v2"
+  ]);
   for (const item of catalog.modules) {
+    assert.match(item.url, /^https:\/\/raw\.githubusercontent\.com\/GrandpaNiuu\/Script-Hub-Grandpaniu\/main\/modules\/.+\.sgmodule$/);
+    assert.equal(item.source, "GrandpaNiuu/Script-Hub-Grandpaniu");
+    assert.equal(item.verified, true, `${item.id} 必须是已验证模块`);
     assert.equal(typeof item.riskLevel, "string", `${item.id} 缺少 riskLevel`);
     assert.equal(typeof item.riskNote, "string", `${item.id} 缺少 riskNote`);
     assert.equal(typeof item.requiresMitm, "boolean", `${item.id} 缺少 requiresMitm`);

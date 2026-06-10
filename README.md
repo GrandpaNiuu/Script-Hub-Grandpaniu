@@ -24,7 +24,7 @@ shadowrocket://install?module=https%3A%2F%2Fraw.githubusercontent.com%2FGrandpaN
 
 [打开 Grandpaniu 工具站](https://grandpaniuu.github.io/Script-Hub-Grandpaniu/docs/index.html)
 
-工具站里可以直接选择模块，也可以粘贴自己的模块链接进行转换。
+工具站的模块库只展示本仓库 `modules/` 目录中公开可用的模块，也可以粘贴自己的模块链接进行转换。
 
 ## 我该点哪个按钮
 

@@ -670,9 +670,9 @@
       $("batch-clear").onclick = () => { $("batch-text").value = ""; $("batch-results").innerHTML = ""; setStatus("batch-status", "", "已清空。"); };
       $("batch-demo").onclick = () => {
         $("batch-text").value = [
-          "surge:///install-module?url=https://raw.githubusercontent.com/Script-Hub-Org/Script-Hub/main/modules/script-hub.surge.sgmodule",
-          "quantumult-x:///add-resource?remote-resource=https%3A%2F%2Fexample.com%2Fdemo.conf&resource-type=rewrite",
-          "https://example.com/go?target=https%253A%252F%252Fexample.com%252Fdemo.plugin"
+          "https://raw.githubusercontent.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/modules/script-hub-grandpaniu-v2.sgmodule",
+          "shadowrocket://install?module=https%3A%2F%2Fraw.githubusercontent.com%2FGrandpaNiuu%2FScript-Hub-Grandpaniu%2Fmain%2Fmodules%2Fscript-hub-grandpaniu-v2.sgmodule",
+          "https://grandpaniuu.github.io/Script-Hub-Grandpaniu/docs/redirect.html?url=https%3A%2F%2Fraw.githubusercontent.com%2FGrandpaNiuu%2FScript-Hub-Grandpaniu%2Fmain%2Fmodules%2Fscript-hub-grandpaniu.sgmodule"
         ].join("\n");
         renderBatch();
       };
