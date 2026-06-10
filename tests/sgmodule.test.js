@@ -23,10 +23,10 @@ test("增强模块包含 Script-Hub 官方脚本引用和关键段", async () =>
   assert.match(content, /type%3Dloon-plugin/);
   assert.match(
     content,
-    /force-http-engine-hosts = %APPEND% script\.hub, \*\.script\.hub, grandpaniu\.script-hub\.local/
+    /force-http-engine-hosts = %APPEND% script\.hub, \*\.script\.hub, grandpaniu\.script\.hub, grandpaniu\.script-hub\.local/
   );
   assert.match(
     content,
-    /hostname = %APPEND% script\.hub, \*\.script\.hub, hub\.kelee\.one, pluginhub\.kelee\.one, kelee\.one, grandpaniu\.script-hub\.local/
+    /hostname = %APPEND% script\.hub, \*\.script\.hub, hub\.kelee\.one, pluginhub\.kelee\.one, kelee\.one, grandpaniu\.script\.hub, grandpaniu\.script-hub\.local/
   );
 });

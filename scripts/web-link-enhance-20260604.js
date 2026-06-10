@@ -1,6 +1,19 @@
 const PANEL_ID = "grandpaniu-web-addon-panel";
 const LOCAL_HOST = "http://grandpaniu.script.hub";
 const MAX_ITEMS = 30;
+const REDIRECT_PARAM_KEYS = [
+  "url",
+  "u",
+  "target",
+  "redirect",
+  "redirect_url",
+  "link",
+  "src",
+  "module",
+  "plugin",
+  "remote-resource",
+  "remote_resource"
+];
 
 function main() {
   const request = typeof $request !== "undefined" ? $request : {};
@@ -13,7 +26,7 @@ function main() {
   if (!shouldProcess(url, contentType, body)) return done(body, headers);
   if (body.includes(PANEL_ID)) return done(body, headers);
 
-  const items = detectModuleLinks(body).slice(0, MAX_ITEMS);
+  const items = detectModuleLinks(body, url).slice(0, MAX_ITEMS);
   if (!items.length) return done(body, headers);
 
   const panel = buildPanel(items);
@@ -39,44 +52,97 @@ function shouldProcess(url, contentType, body) {
   if (/\.(png|jpg|jpeg|gif|webp|svg|ico|css|woff2?|ttf|mp4|mov|zip|gz|br)(?:$|[?#])/i.test(lowerUrl)) return false;
   if (contentType && !/text\/html|application\/xhtml\+xml|text\/plain|application\/json/i.test(contentType)) return false;
   if (!body || body.length < 20) return false;
-  return /https?:\/\/[^\s"'<>]+\.(?:sgmodule|module|plugin|lpx|conf|list)|surge:\/\/\/install-module|loon:\/\/import|quantumult-x:\/\/\/add-resource/i.test(body);
+
+  const haystack = `${url}\n${body}`;
+  return /https?:\/\/[^\s"'<>]+\.(?:sgmodule|module|plugin|lpx|conf|list)|https?%3a%2f%2f[^\s"'<>]+(?:%2e|\.)(?:sgmodule|module|plugin|lpx|conf|list)|surge:\/\/\/install-module|loon:\/\/import|quantumult-x:\/\/\/add-resource|(?:url|target|redirect|remote-resource|remote_resource|module|plugin)=/i.test(haystack);
 }
 
-function detectModuleLinks(text) {
+function detectModuleLinks(text, pageUrl) {
   const seen = new Set();
   const items = [];
   const add = (raw, type, source) => {
     const url = cleanUrl(raw);
-    if (!url || seen.has(url)) return;
+    if (!url) return;
+    if (!isModuleUrl(url)) {
+      detectRedirectParams(url, add, source || "redirect-url");
+      return;
+    }
+    if (seen.has(url)) return;
     seen.add(url);
     items.push({ url, convertType: type || inferConvertType(url), source: source || "url" });
   };
+
+  detectRedirectParams(pageUrl, add, "page-url-param");
 
   const normalUrlRegex = /https?:\/\/[^\s"'<>\\]+?\.(?:sgmodule|module|plugin|lpx|conf|list)(?:\?[^\s"'<>\\]*)?/gi;
   let match;
   while ((match = normalUrlRegex.exec(text)) !== null) add(match[0], inferConvertType(match[0]), "plain-url");
 
+  const encodedUrlRegex = /https?%3a%2f%2f[^\s"'<>\\]+?(?:%2e|\.)(?:sgmodule|module|plugin|lpx|conf|list)(?:%3f[^\s"'<>\\]*)?/gi;
+  while ((match = encodedUrlRegex.exec(text)) !== null) {
+    const decoded = decodeDeep(match[0]);
+    add(decoded, inferConvertType(decoded), "encoded-url");
+  }
+
   const surgeRegex = /surge:\/\/\/install-module\?url=([^\s"'<>]+)/gi;
-  while ((match = surgeRegex.exec(text)) !== null) add(decodeSafe(match[1]), "surge-module", "surge-scheme");
+  while ((match = surgeRegex.exec(text)) !== null) add(decodeDeep(match[1]), "surge-module", "surge-scheme");
 
   const loonRegex = /loon:\/\/import\?plugin=([^\s"'<>]+)/gi;
-  while ((match = loonRegex.exec(text)) !== null) add(decodeSafe(match[1]), "loon-plugin", "loon-scheme");
+  while ((match = loonRegex.exec(text)) !== null) add(decodeDeep(match[1]), "loon-plugin", "loon-scheme");
 
   const qxRegex = /quantumult-x:\/\/\/add-resource\?[^\s"'<>]*remote-resource=([^&\s"'<>]+)[^\s"'<>]*/gi;
-  while ((match = qxRegex.exec(text)) !== null) add(decodeSafe(match[1]), "qx-rewrite", "quantumult-x-scheme");
+  while ((match = qxRegex.exec(text)) !== null) add(decodeDeep(match[1]), "qx-rewrite", "quantumult-x-scheme");
+
+  const redirectLikeRegexes = [
+    /(?:href|src|data-url|data-href|data-link|data-module|data-plugin)=["']([^"']+)["']/gi,
+    /(?:location\.href|window\.location|window\.open)\s*(?:=|\()\s*["']([^"']+)["']/gi,
+    /http-equiv=["']refresh["'][^>]+url=([^"'>\s]+)/gi,
+    /(?:url|target|redirect|redirect_url|remote-resource|remote_resource|module|plugin)=([^&"'<>\s]+)/gi
+  ];
+  for (const regex of redirectLikeRegexes) {
+    while ((match = regex.exec(text)) !== null) add(decodeDeep(match[1]), undefined, "web-redirect");
+  }
 
   return items;
 }
 
 function cleanUrl(value) {
-  let url = decodeSafe(String(value || "").trim());
-  url = url.replace(/&amp;/g, "&").replace(/[),.;，。；]+$/g, "");
+  let url = decodeDeep(String(value || "").trim());
+  url = url.replace(/&amp;/g, "&").replace(/^["'`]+|["'`]+$/g, "").replace(/[),.;，。；]+$/g, "");
   if (!/^https?:\/\//i.test(url)) return "";
   return url;
 }
 
 function decodeSafe(value) {
   try { return decodeURIComponent(value); } catch { return String(value || ""); }
+}
+
+function decodeDeep(value) {
+  let current = String(value || "").replace(/&amp;/g, "&");
+  for (let i = 0; i < 3; i++) {
+    const next = decodeSafe(current);
+    if (next === current) break;
+    current = next;
+  }
+  return current;
+}
+
+function detectRedirectParams(rawUrl, add, source) {
+  const url = cleanUrl(rawUrl);
+  if (!url) return;
+  try {
+    const parsed = new URL(url);
+    for (const key of REDIRECT_PARAM_KEYS) {
+      const value = parsed.searchParams.get(key);
+      if (value) add(decodeDeep(value), undefined, source || `param:${key}`);
+    }
+  } catch {}
+}
+
+function isModuleUrl(url) {
+  const lower = String(url || "").toLowerCase();
+  return /\.(sgmodule|module|plugin|lpx|conf|list)(?:$|[?#])/.test(lower)
+    || lower.includes("script.hub/file/_start_/");
 }
 
 function inferConvertType(url) {
@@ -93,10 +159,11 @@ function buildPanel(items) {
     const title = escapeHtml(shortName(item.url) || `模块 ${index + 1}`);
     const url = escapeHtml(item.url);
     const type = escapeHtml(item.convertType);
+    const source = escapeHtml(item.source);
     const analysis = `${LOCAL_HOST}/install?url=${encodeURIComponent(item.url)}&convertType=${encodeURIComponent(item.convertType)}`;
     const direct = `shadowrocket://install?module=${encodeURIComponent(item.url)}`;
-    const copy = item.url.replace(/`/g, "&#096;");
-    return `<div class="gpn-item"><div class="gpn-title">${index + 1}. ${title}</div><div class="gpn-type">${type}</div><code>${url}</code><div class="gpn-actions"><a href="${analysis}">分析/转换</a><a href="${direct}">直接导入</a><button onclick="navigator.clipboard&&navigator.clipboard.writeText(\`${copy}\`);this.textContent='已复制'">复制链接</button></div></div>`;
+    const copy = escapeJs(item.url);
+    return `<div class="gpn-item"><div class="gpn-title">${index + 1}. ${title}</div><div class="gpn-type">${type} · ${source}</div><code>${url}</code><div class="gpn-actions"><a href="${analysis}">分析/转换</a><a href="${direct}">直接导入</a><button onclick="navigator.clipboard&&navigator.clipboard.writeText('${copy}');this.textContent='已复制'">复制链接</button></div></div>`;
   }).join("");
 
   return `<style>
@@ -116,6 +183,10 @@ function shortName(url) {
 
 function escapeHtml(value) {
   return String(value || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+}
+
+function escapeJs(value) {
+  return String(value || "").replace(/\\/g, "\\\\").replace(/'/g, "\\'");
 }
 
 function done(body, headers) {

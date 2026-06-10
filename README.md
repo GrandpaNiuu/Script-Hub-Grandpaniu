@@ -53,6 +53,7 @@ http://grandpaniu.script.hub
 - 识别 Surge 模块链接。
 - 识别 Loon 插件链接。
 - 识别常见 `.sgmodule`、`.module`、`.plugin`、`.lpx`、`.conf`、`.list` 链接。
+- 识别网页跳转里隐藏的模块链接，例如 `?url=`、`?target=`、`?redirect=`、`remote-resource=`、`meta refresh`、`location.href`、按钮 `data-url`。
 - 调用 Script-Hub 官方转换脚本。
 - 生成 Shadowrocket 可安装的模块入口。
 - 在指定网页中发现模块链接时，显示 Grandpaniu 模块助手。
@@ -91,11 +92,7 @@ RawGithack 和 Safari 都可能缓存旧页面。可以尝试：
 
 1. 下拉刷新页面。
 2. 关闭 Safari 标签页后重新打开。
-3. 在 URL 后面加参数强制刷新，例如：
-
-```text
-https://raw.githack.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/docs/index.html?v=20260604
-```
+3. 在当前 URL 后面加参数强制刷新，例如末尾追加 `?v=20260604`。
 
 如果页面顶部没有看到 `页面版本：V2-main-only-20260604`，说明你仍在看旧缓存。
 

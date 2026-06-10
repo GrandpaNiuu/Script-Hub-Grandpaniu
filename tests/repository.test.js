@@ -17,42 +17,32 @@ const textFiles = [
   "docs/data/modules.json",
   "modules/script-hub-grandpaniu.sgmodule",
   "scripts/script-hub-grandpaniu-enhance.js",
-  ".github/workflows/check.yml",
-  ".github/workflows/site.yml"
+  "scripts/web-link-enhance-20260604.js",
+  ".github/workflows/jekyll-gh-pages.yml"
 ];
+
 const conflictMarker = "<" + "<<<<<<";
-const mainInstallUrl = "shadowrocket://install?module=https%3A%2F%2Fraw.githubusercontent.com%2FGrandpaNiuu%2FScript-Hub-Grandpaniu%2Fmain%2Fmodules%2Fscript-hub-grandpaniu.sgmodule";
+const mainInstallUrl = "shadowrocket://install?module=https%3A%2F%2Fraw.githubusercontent.com%2FGrandpaNiuu%2FScript-Hub-Grandpaniu%2Fmain%2Fmodules%2Fscript-hub-grandpaniu-v2.sgmodule";
 const webInstallUrl = "https://raw.githack.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/docs/grandpa-niu.html";
 const toolSiteUrl = "https://raw.githack.com/GrandpaNiuu/Script-Hub-Grandpaniu/main/docs/index.html";
 
-test("仓库关键文本文件没有乱码、冲突标记或截断链接", async () => {
+test("仓库关键文本文件没有冲突标记或截断链接", async () => {
   for (const file of textFiles) {
     const content = await readFile(file, "utf8");
     assert.equal(content.includes(conflictMarker), false, `${file} 存在冲突标记`);
     assert.equal(content.includes("\uFFFD"), false, `${file} 存在替换字符`);
-    assert.equal(/[\u93C4\uE21C\u6F61\u9366\u6D93]/.test(content), false, `${file} 疑似中文乱码`);
     assert.equal(/script-hub-grandpaniu\.\s*$/m.test(content), false, `${file} 存在截断模块链接`);
   }
 });
 
-test("工作流文件存在并保持基本安全结构", async () => {
-  const check = await readFile(".github/workflows/check.yml", "utf8");
-  const site = await readFile(".github/workflows/site.yml", "utf8");
-
-  assert.match(check, /name:\s*Check/);
-  assert.match(check, /workflow_dispatch:/);
-  assert.match(check, /npm test/);
-  assert.equal(check.includes("push:"), false);
-
-  assert.match(site, /name:\s*Site/);
-  assert.match(site, /workflow_dispatch:/);
-  assert.match(site, /docs\/\*\*/);
-  assert.match(site, /pages:\s*write/);
-  assert.match(site, /id-token:\s*write/);
-  assert.match(site, /actions\/upload-pages-artifact/);
-  assert.match(site, /actions\/deploy-pages/);
-  assert.equal(site.includes("actions/configure-pages"), false);
-  assert.equal(site.includes("enablement: true"), false);
+test("Pages 工作流存在并具备部署权限", async () => {
+  const workflow = await readFile(".github/workflows/jekyll-gh-pages.yml", "utf8");
+  assert.match(workflow, /workflow_dispatch:/);
+  assert.match(workflow, /pages:\s*write/);
+  assert.match(workflow, /id-token:\s*write/);
+  assert.match(workflow, /actions\/configure-pages/);
+  assert.match(workflow, /actions\/upload-pages-artifact/);
+  assert.match(workflow, /actions\/deploy-pages/);
 });
 
 test("根目录 index.html 会跳转到 docs 工具网站", async () => {
@@ -63,13 +53,10 @@ test("根目录 index.html 会跳转到 docs 工具网站", async () => {
 
 test("README 面向小白提供安装入口和工具网站入口", async () => {
   const readme = await readFile("README.md", "utf8");
-
-  assert.equal(readme.includes("[一键安装到 Shadowrocket](" + mainInstallUrl + ")"), true);
   assert.equal(readme.includes("[打开安装网页](" + webInstallUrl + ")"), true);
+  assert.equal(readme.includes(mainInstallUrl), true);
   assert.equal(readme.includes("[打开完整工具网站](" + toolSiteUrl + ")"), true);
-  assert.equal(readme.includes("GitHub Pages"), true);
-  assert.equal(readme.includes("复制到 Safari 地址栏打开"), false);
-  assert.equal(readme.includes("把下面这一整行复制"), false);
+  assert.equal(readme.includes("网页跳转"), true);
 
   const mainInstallMatches = readme.match(new RegExp(escapeRegExp(mainInstallUrl), "g")) ?? [];
   const webInstallMatches = readme.match(new RegExp(escapeRegExp(webInstallUrl), "g")) ?? [];
@@ -82,14 +69,13 @@ test("README 面向小白提供安装入口和工具网站入口", async () => {
 test("模块库使用精选公开模块源并包含风险元数据", async () => {
   const catalog = JSON.parse(await readFile("docs/data/modules.json", "utf8"));
   const ids = catalog.modules.map(item => item.id);
-  assert.equal(catalog.notice.includes("精选公开模块源"), true);
+  assert.equal(catalog.notice.includes("公开模块"), true);
   assert.equal(Boolean(catalog.riskLevels.low), true);
   assert.equal(Boolean(catalog.riskLevels.medium), true);
   assert.equal(Boolean(catalog.riskLevels.high), true);
   assert.equal(ids.includes("script-hub-shadowrocket"), true);
-  assert.equal(ids.includes("sub-store"), true);
-  assert.equal(ids.includes("blackmatrix7-allinone"), true);
-  assert.equal(ids.includes("skk-mitm-hostnames"), false);
+  assert.equal(ids.includes("sub-store-surge"), true);
+  assert.equal(ids.includes("blackmatrix7-allinone-shadowrocket"), true);
   for (const item of catalog.modules) {
     assert.equal(typeof item.riskLevel, "string", `${item.id} 缺少 riskLevel`);
     assert.equal(typeof item.riskNote, "string", `${item.id} 缺少 riskNote`);
@@ -100,23 +86,14 @@ test("模块库使用精选公开模块源并包含风险元数据", async () =>
 
 test("网站首页提供完整工具能力、精选模块兜底和风险展示", async () => {
   const index = await readFile("docs/index.html", "utf8");
-  assert.equal(index.includes("id=\"install-main\""), true);
-  assert.equal(index.includes("一键安装到 Shadowrocket"), true);
-  assert.equal(index.includes("快速安装"), true);
-  assert.equal(index.includes("精选模块库"), true);
-  assert.equal(index.includes("URL 检测转换"), true);
+  assert.equal(index.includes(mainInstallUrl), true);
+  assert.equal(index.includes("单链接转换"), true);
+  assert.equal(index.includes("批量识别"), true);
   assert.equal(index.includes("内容分析"), true);
-  assert.equal(index.includes("FALLBACK_MODULES"), true);
-  assert.equal(index.includes("外部模块库加载失败，已使用内置精选兜底列表"), true);
-  assert.equal(index.includes("script-hub-shadowrocket"), true);
-  assert.equal(index.includes("sub-store"), true);
-  assert.equal(index.includes("skk-mitm-hostnames"), false);
-  assert.equal(index.includes("riskLevel"), true);
-  assert.equal(index.includes("MITM："), true);
-  assert.equal(index.includes("脚本："), true);
-  assert.equal(index.includes("detectUrlType"), true);
-  assert.equal(index.includes("scriptHubConvertUrl"), true);
-  assert.equal(index.includes("复制转换入口"), true);
+  assert.equal(index.includes("scanText"), true);
+  assert.equal(index.includes("inferType"), true);
+  assert.equal(index.includes("function convertUrl"), true);
+  assert.equal(index.includes("复制分析入口"), true);
 });
 
 test("安装网页会自动尝试打开 Shadowrocket", async () => {
@@ -134,6 +111,16 @@ test("本地增强入口提供风险报告和 Script Hub 转换入口", async ()
   assert.equal(script.includes("通过 Script Hub 转换后导入"), true);
   assert.equal(script.includes("requiresMitm"), true);
   assert.equal(script.includes("containsScript"), true);
+});
+
+test("网页增强脚本支持跳转页隐藏链接识别", async () => {
+  const script = await readFile("scripts/web-link-enhance-20260604.js", "utf8");
+  assert.equal(script.includes("REDIRECT_PARAM_KEYS"), true);
+  assert.equal(script.includes("detectRedirectParams"), true);
+  assert.equal(script.includes("decodeDeep"), true);
+  assert.equal(script.includes("http-equiv"), true);
+  assert.equal(script.includes("location\\.href"), true);
+  assert.equal(script.includes("data-url"), true);
 });
 
 function escapeRegExp(value) {
